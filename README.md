@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Getting Started 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a POC with the goal of integrating Smart Wallets and Aztec protocol.
 
 ## Available Scripts
 
@@ -44,3 +44,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## Graph
+
+- `cd graph & graph codegen subgraph.yaml --debug --output-dir ./types`
+- `graph create smart-wallet-graph --node http://127.0.0.1:8020`
+- `graph deploy smart-wallet-graph subgraph.yaml --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020 -l v1`
