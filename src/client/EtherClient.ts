@@ -1,10 +1,7 @@
 import { Web3Provider, JsonRpcSigner } from '@ethersproject/providers';
-import { ethers  } from 'ethers';
+import { ethers } from 'ethers';
 
 declare const window: any;
-
-//RSK Test
-const pk = '991a61c28759e9586ee6d065f2124e1c922fdd50d9f9bc68a2a6e27fdebe7c00';
 
 interface EtherRequest {
     method:string;
@@ -17,9 +14,10 @@ export default class EtherClient {
         return INSTANCE;
     }
     
-    provider:Web3Provider;
-    ethereum: ethers.providers.JsonRpcProvider;
-    events: any = {};
+    private provider:Web3Provider;
+    private ethereum: ethers.providers.JsonRpcProvider;
+    private events: any = {};
+    private PK:string = '';
 
     constructor(window:any) {
         this.ethereum = window.ethereum;
@@ -27,7 +25,7 @@ export default class EtherClient {
         this.initialize();
     }
 
-    private initialize(): void {
+    private async initialize() {
         this.on('accountsChanged', (accounts:any) => {
             console.log('accounts changed', accounts);
             if (accounts.length === 0) {
@@ -44,17 +42,31 @@ export default class EtherClient {
         this.on("networkChanged", () => {
             console.log('network');
             this.close();
+            this.initialize();
         });
 
         this.on('chainChanged', () => {
             console.log('chainChanged');
             this.close();
+            this.initialize();
         });
 
         this.on('disconnect', () => {
             console.log('disconnect');
             this.close();
+            this.initialize();
         });
+
+        this.on('block', (e) => {
+            console.log('block', e);
+        });
+        const msg = 'Connect to Aztec Dapp';
+        const signature = await this.getSigner().signMessage(msg);
+        this.PK = ethers.utils.recoverPublicKey(ethers.utils.hashMessage(msg), signature);
+    }
+
+    async sendTransaction(tx:ethers.providers.TransactionRequest): Promise<void | ethers.providers.TransactionResponse> {
+        return await this.getSigner().sendTransaction(tx);
     }
 
     send(req:EtherRequest):Promise<any> {
@@ -67,6 +79,14 @@ export default class EtherClient {
 
     getAddress() : Promise<string> {
         return this.getSigner().getAddress();
+    }
+
+    getPK() : string {
+        return this.PK;
+    }
+
+    getNonce() : Promise<number> {
+        return this.getSigner().getTransactionCount('latest');
     }
 
     getChainId(): Promise<number> {

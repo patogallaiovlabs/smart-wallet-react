@@ -1,29 +1,39 @@
-import { ethers, BigNumber } from 'ethers';
-import ISmartWalletFactory from './contracts/ISmartWalletFactory.json'
+import { ethers, Contract } from 'ethers';
+import ISmartWalletFactory from './contracts/ISmartWalletFactory.json';
+import SmartWallet from './contracts/SmartWallet.json';
 import EtherClient from './EtherClient';
 import web3 from 'web3';
-
-const config = {
-    "contracts": {
-        "smartWalletFactory": "0x7FE04eA23F7d6765E022792207F11Cb3bE343355",
-        "smartWalletTemplate": "0x76F662bdd3dB0afBef24aA4EebacbD37feCED26B",
-        "rifToken": "0x1122334455667788990000998877665544332211",
-        "testRecipient": "only if needed, used during the webinar presentation"
-    }
-}
+import appconfig from '../config/config'
+import WalletClient from './WalletClient';
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000';
 
-export default class SmartWalletClient {
+const config = appconfig.testnet;
 
+export default class SmartWalletClient extends WalletClient {
 
     static async getFactory(): Promise<ethers.Contract> {
         let client = EtherClient.instance();
-        return await new ethers.Contract(
-            config.contracts.smartWalletFactory,
+        return new ethers.Contract(
+            config.contracts.smartWallet.factory,
             ISmartWalletFactory.abi,
             client.getProvider()
         ).connect(client.getSigner());
+    }
+
+    static async getInstance(index: number): Promise<WalletClient> {
+        let address = await this.getAddress(index);
+        return this.getInstanceByAddress(index, address);
+    }
+
+    static async getInstanceByAddress(index:number, address: string): Promise<SmartWalletClient> {
+        let client = EtherClient.instance();
+        const contract = new ethers.Contract(
+            address,
+            SmartWallet.abi,
+            client.getProvider()
+        ).connect(client.getSigner());
+        return new SmartWalletClient(index, contract);
     }
 
     static async getEOA() {
@@ -39,16 +49,10 @@ export default class SmartWalletClient {
             index);
     }
 
-
     static async isSmartWalletDeployed(address:string) {
         let client = EtherClient.instance();
         let result = await client.getCode(address);
         return (result !== '0x' && result !== '0x00');
-    }
-
-    static async nonce(): Promise<BigNumber> {
-        return (await SmartWalletClient.getFactory())
-            .nonce(await SmartWalletClient.getEOA());
     }
 
     static async deploy(index: number) {
@@ -57,50 +61,61 @@ export default class SmartWalletClient {
         let owner = await client.getAddress();
         let signer = client.getSigner();
         let factory = await SmartWalletClient.getFactory();
-        const message: string =  web3.utils.encodePacked(
-            owner, ZERO_ADDR, index
-        ) ?? '';
-        console.log('message', message);
-        
-        const hash = ethers.utils.keccak256(message);
-        console.log('hash', hash);   
-        const digest = ethers.utils.arrayify(hash);
-        const signature = await signer.signMessage(digest);
-        console.log('signer', owner);
-        console.log('signature', signature);
-        console.log('index', index);
-        
-        console.log('ready to send tx: createUserSmartWallet', owner, ZERO_ADDR, index, signature);
-        //const result = 'ok';
-        const result = await factory.createUserSmartWallet(owner, ZERO_ADDR,
-            index, signature);
-        console.log('result', result);
 
+        // 1. Sign a message, for contract owner validation
+        // encode (validator, owner, recoverer, index)
+        let message: string =  web3.utils.encodePacked(
+            factory.address, owner, ZERO_ADDR, index
+        ) ?? '';
+        // hash and sign the message.
+        const hash = ethers.utils.keccak256(message);
+        const toSignAsBinaryArray = ethers.utils.arrayify(hash)
+        const signature = await signer.signMessage(toSignAsBinaryArray);
+
+        //Call factory contract
+        console.log('ready to send tx: {validator} createUserSmartWallet(owner, recoverer, index, signature)', factory.address, owner, ZERO_ADDR, index, signature);
+        const result = await factory.functions.createUserSmartWallet(
+            owner, ZERO_ADDR, index, signature);
+        
+        console.log('result', result);
         return result;
     }
 
-    public static async test() {
-        let client = EtherClient.instance();
-        let owner = await client.getAddress();
-        let signer = client.getSigner();
-        let hash = "0x3ea2f1d0abf3fc66cf29eebb70cbd4e7fe762ef8a09bcc06c8edf641230afec0";
-        
-        let bhash = ethers.utils.arrayify(hash);
-        //Sign
-        let signature = await signer.signMessage(bhash);
-        console.log('signature', signature);
-        
-        //Recover
-        let encoded = web3.utils.encodePacked(
-            String.fromCharCode(25)+'Ethereum Signed Message:\n32', hash)??'';
-        console.log('encoded', encoded);
-        
-        let hashRecover = ethers.utils.keccak256(encoded);
-        console.log('hashRecover', hashRecover);
-        let binaryData = ethers.utils.arrayify(hashRecover);
-        console.log('binaryData', binaryData);
-        const recovered = await ethers.utils.recoverAddress(hashRecover, signature);
-        console.log('recovered/address', recovered, owner);
- 
+    /** INSTANCE */
+
+    private index:number;
+    private contract:Contract;
+    private active:boolean;
+
+    constructor(index:number, contract:Contract){
+        super(EtherClient.instance(), contract.address);
+        this.index = index;
+        this.contract = contract;
+        this.active = false;
     }
+
+    async init() {
+        let result = await super.getClient().getCode(this.address);
+        this.active = (result !== '0x' && result !== '0x00');
+    }
+
+    getIndex(): number{
+        return this.index;
+    }
+
+    get nonce(): Promise<number> {
+        return this.contract.nonce();
+    }
+
+    isActive() : boolean {
+        return this.active;
+    }
+
+    async execute(to: string, calldata: string): Promise<any> {
+        console.log('Using wallet {#} with addresss {#}', this.index, this.contract.address);
+        //Call factory contract
+        console.log('Send tx: directExecute(to, calldata)', to, calldata);
+        return this.contract.directExecute(to, calldata);
+    }
+
 }

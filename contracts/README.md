@@ -1,0 +1,2 @@
+- aztec requires solc 0.5.17
+- smart-wallets requires solc 0.6.12

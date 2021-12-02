@@ -1,51 +1,75 @@
-import EtherClient from '../../client/EtherClient';
 import { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { AppBar, Box, Button, CircularProgress, Tab, Tabs } from '@mui/material';
 import SmartWalletClient from '../../client/SmartWalletClient';
 import Address from '../account/Address';
+import SmartWallet from './SmartWallet';
+import WalletClient from '../../client/WalletClient';
+import SwipeableViews from 'react-swipeable-views';
 
-interface ISmart {
-  address:string;
-  deployed:boolean;
+interface TabPanelProps {
+  children?: React.ReactNode;
+  dir?: string;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
 }
 
 export default function SmartWalletList() {
     
-    let client = EtherClient.instance();
-
-    const [address, setAddress] = useState<string>();
-    const [smarts, setSmarts] = useState<ISmart[]>();
-    const [nonce, setNonce] = useState<number>();
+    const [value, setValue] = useState(0);
+    const [wallet, setWallet] = useState<WalletClient>();
+    const [wallets, setWallets] = useState<WalletClient[]>();
+    const [loading, setLoading] = useState<boolean>(true);
     
-    const init = async ()=>{
-        let tempNonce = (await SmartWalletClient.nonce()).toNumber();  
-        setNonce(tempNonce);
-        console.log('tempNonce', tempNonce);
-        let addressTemp = await client.getAddress();
-        setAddress(addressTemp);
-        let temp:ISmart[] = [];
-        for (let i = 0;i<tempNonce + 1;i++) {
-          let tempAddress = await SmartWalletClient.getAddress(i)  
-          let tempDeployed = await SmartWalletClient.isSmartWalletDeployed(tempAddress)  
-          temp.push({
-            address: tempAddress,
-            deployed: tempDeployed
-          });
+    const init = async () => {
+        let mainWallet = await WalletClient.getInstance(0);
+        setWallet(mainWallet);
+        let temp:WalletClient[] = [mainWallet];
+        let active = true;
+        let i = 0;
+        while (active) {
+          let tempWallet = await SmartWalletClient.getInstance(i);
+          await tempWallet.init();
+          temp.push(tempWallet);
+          active = tempWallet.isActive();
+          i++;
         }
-        setSmarts(temp);
+        setWallets(temp);
         console.log('addresses', temp);
+        setLoading(false);
     }
     useEffect(()=>{
         init();
     }, []);
 
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+      setValue(newValue);
+    };
+    const handleChangeIndex = (index: number) => {
+      setValue(index);
+    };
 
     const deploy = (i: number) => {
       SmartWalletClient.deploy(i);
-    }
-
-    const test = () => {
-      SmartWalletClient.test();
     }
 
     return (
@@ -61,24 +85,57 @@ export default function SmartWalletList() {
             height: '100vh',
             overflow: 'auto',
             marginTop: '49px'
-          }}>EOA: <Address value={address}/> Nonce: {nonce}
-        {
-          smarts?.map((a, i)=>{
-            return <Box margin="10px" key={i}>
-              <div> Wallet {i}: <Address value={a.address}/> </div> 
-              <div>{(!a.deployed && 
-                  <Button variant="contained"
-                    onClick={() => deploy(i)}
-                  >Deploy</Button>
-              )}
-              
-              <Button variant="contained"
-                    onClick={() => test()}
-                  >Test</Button>
+          }}>
+            {(!loading && 
+            <div>
+              <AppBar position="static">
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  indicatorColor="secondary"
+                  textColor="inherit"
+                  aria-label="secondary tabs example"
+                >
+                {wallets?.map((a, i)=>{
+                  return <Tab key={i} value={i} label={"Wallet " + i + (!a.isActive()?' (inactive)':'')} />
+                })}
+                </Tabs>
+              </AppBar>
+
+              <SwipeableViews
+                index={value}
+                onChangeIndex={handleChangeIndex}
+              >
+              {wallets?.map((a, i)=>{
+                    let key = i - 1;
+                    return <TabPanel value={i} index={i} key={i}>
+                        {(!a.isActive() && 
+                        <Box margin="10px">
+                          <div>
+                            <p> New Wallet #{key}: </p> 
+                            <Address value={a.address} length={5} tail={true} />
+                            <Button variant="contained"
+                              onClick={() => deploy(key)}
+                            >Deploy</Button>
+                          </div>
+                        </Box>
+                          )}
+                        {(a.isActive() && 
+                          <SmartWallet wallet={a} allwallets={wallets}></SmartWallet>
+                        )}
+                    </TabPanel>
+                  })
+                }
+                </SwipeableViews>
               </div>
-            </Box>
-          })
-        }
+            )}
+            {(loading && 
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ m: 1, position: 'relative' }}>
+                    <CircularProgress color="inherit" placeholder="Loading..." />
+                  </Box>
+                </Box>
+            )}
         </Box>
     );
 }

@@ -20,9 +20,14 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SmartWalletList from './components/smart/SmartWalletList';
 import Sign from './components/sign/Sign';
+import dotenv from 'dotenv';
 
 export default function App() {
 
+  dotenv.config();
+  console.log('NODE_ENV', process.env.NODE_ENV);
+  console.log('process.env', process.env);
+  
   const mdTheme = createTheme();
   
   const drawerWidth: number = 240;

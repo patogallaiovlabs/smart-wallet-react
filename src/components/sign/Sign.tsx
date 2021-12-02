@@ -3,6 +3,10 @@ import { Grid, Button, ButtonGroup, Container, Paper, Box, TextField } from '@mu
 import { styled } from '@mui/material/styles';
 import EtherClient from '../../client/EtherClient';
 import { ethers } from 'ethers';
+import web3 from 'web3';
+import { Bytes, concat } from "@ethersproject/bytes";
+import { keccak256 } from "@ethersproject/keccak256";
+import { toUtf8Bytes } from "@ethersproject/strings";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -99,19 +103,23 @@ export default function Sign() {
     const handleSignData = (value:any) => {
       setSignDataResponse('loading...')
 
+      const message: string =  web3.utils.encodePacked(
+        '\x19\x00', ethers.utils.hashMessage(value)
+      ) ?? '';
+      console.log('message:', message);
       let hash = ethers.utils.hashMessage(value);
   
       providerRPC(
         provider.provider,
         {
           method: 'personal_sign',
-          params: [ value, account ]
+          params: [ message, account ]
         }
       )
       .then((response:any) => {
         setSignDataResponse(response)
         console.log('signedMessage:', response);
-        let v = ethers.utils.verifyMessage(value, response);
+        let v = ethers.utils.verifyMessage(message, response);
         console.log('v:', v);
         setVerify(v);
         let r = ethers.utils.recoverAddress(hash, response);
@@ -124,17 +132,37 @@ export default function Sign() {
   
     // Sign data Ethers
     const handleSignDataEthers = async (value:any) => {
-        let hash = ethers.utils.hashMessage(value);
-        const signedMessage = await signer.signMessage(value)
+        let owner = '0x20f51908c8CE306EE805ABeA650c2F23A1148908';
+        let ZERO_ADDR = '0x0000000000000000000000000000000000000000';
+        let validator = '0x10a7B60014fa06D841c3cADe1762f63869C99f42';
+        let index = 0;
+
+        let message: string =  web3.utils.encodePacked(
+            '\x19\x01', validator, owner, ZERO_ADDR, index
+        ) ?? '';
+        message = '0x1900' + message.substr(6);
+        console.log('message:', message);
+        let byteMsg = ethers.utils.arrayify(message);
+        
+        const signedMessage = await signer.signMessage(byteMsg)
         .catch((error:any) => setSignDataResponse(`[ERROR]: ${error.message}`))
         
         if(signedMessage) {
             setSignDataResponse(signedMessage);
             console.log('signedMessage:', signedMessage);
-            let v = ethers.utils.verifyMessage(value, signedMessage);
+            let v = ethers.utils.verifyMessage(byteMsg, signedMessage);
             console.log('v:', v);
             setVerify(v);
-            let r = ethers.utils.recoverAddress(hash, signedMessage);
+            const messagePrefix = "\x19Ethereum Signed Message:\n";
+            const hash = keccak256(concat([
+                  toUtf8Bytes(messagePrefix),
+                  toUtf8Bytes(String(message.length)),
+                message
+            ]));
+            const message1 = toUtf8Bytes(message);
+            const message2 = ethers.utils.hashMessage(byteMsg);
+            console.log('hmm', hash, message2);
+            let r = ethers.utils.recoverAddress(ethers.utils.hashMessage(byteMsg), signedMessage);
             console.log('r:', r);
             setRecover(r);
         }

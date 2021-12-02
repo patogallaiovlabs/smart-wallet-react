@@ -1,0 +1,1086 @@
+{
+  "contractName": "IWalletCustomLogic",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "initParams",
+          "type": "bytes"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "domainSeparator",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "suffixData",
+          "type": "bytes32"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "relayHub",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct IForwarder.ForwardRequest",
+          "name": "forwardRequest",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "signature",
+          "type": "bytes"
+        }
+      ],
+      "name": "execute",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "ret",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "directExecute",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "ret",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"directExecute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"ret\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"domainSeparator\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"suffixData\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"relayHub\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"tokenContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"tokenAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"tokenGas\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"internalType\":\"struct IForwarder.ForwardRequest\",\"name\":\"forwardRequest\",\"type\":\"tuple\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"ret\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"initParams\",\"type\":\"bytes\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"directExecute(address,bytes)\":{\"params\":{\"data\":\"Destination function \",\"to\":\"Target contract address\"}},\"initialize(bytes)\":{\"params\":{\"initParams\":\"Data required in order to initilize custom logic\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"directExecute(address,bytes)\":{\"notice\":\"Lets an account with RBTC execute the custom logic\"},\"execute(bytes32,bytes32,(address,address,address,address,uint256,uint256,uint256,uint256,uint256,bytes),bytes)\":{\"notice\":\"Lets a relayer execute the custom logic\"},\"initialize(bytes)\":{\"notice\":\"Setup any data required by the custom logic\"}},\"notice\":\"Interface defining the methods that should be implemented in order to provide custom logic to a CustomSmartWallet\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IWalletCustomLogic.sol\":\"IWalletCustomLogic\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":500},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IForwarder.sol\":{\"keccak256\":\"0xdd7b6c9742bec37ae920b771dd4767e996c6f98c09521cf8b46ed6d76d2a444e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8923fc9db311bad336061c87d6321e205f485ce8fd78efc1e687f3c45529ab1a\",\"dweb:/ipfs/QmTiix74YTBNkMdYaBz1qNskqUBnzcbLCqDV7V5bnr2pw3\"]},\"project:/contracts/interfaces/IWalletCustomLogic.sol\":{\"keccak256\":\"0xc527fc4079ae10d00178f4f873f819bb4e04f91980b9e3856989b04d631dc644\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2d30270e75f3af13541dc199563ce7c432fda8902b596a8059eab86eae907d50\",\"dweb:/ipfs/QmRJqGBbt4DmPZBHEDtNZhvz5xWoZzhUGoeXD4aYxPosZJ\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier:MIT\npragma solidity ^0.6.12;\npragma experimental ABIEncoderV2;\n\nimport \"./IForwarder.sol\";\n\n/**\n * Interface defining the methods that should be implemented\n * in order to provide custom logic to a CustomSmartWallet\n */\ninterface IWalletCustomLogic {\n\n    /**\n     * Setup any data required by the custom logic\n     * @param initParams Data required in order to initilize custom logic\n     */\n    function initialize(bytes memory initParams) external;\n\n    /**\n     * Lets a relayer execute the custom logic\n     */\n    function execute(\n        bytes32 domainSeparator,\n        bytes32 suffixData,\n        IForwarder.ForwardRequest calldata forwardRequest,\n        bytes calldata signature\n    )\n    external payable\n    returns (bytes memory ret);\n    \n    /**\n     * Lets an account with RBTC execute the custom logic\n     * @param to Target contract address\n     * @param data Destination function \n     */\n    function directExecute(address to, bytes calldata data) external payable returns (\n        bytes memory ret  \n    );\n}",
+  "sourcePath": "/Users/patricio/workspace/research/privacy/aztec/smart-wallet-react/contracts/smart-wallet/contracts/interfaces/IWalletCustomLogic.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IWalletCustomLogic.sol",
+    "exportedSymbols": {
+      "IWalletCustomLogic": [
+        1245
+      ]
+    },
+    "id": 1246,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1211,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "31:24:7"
+      },
+      {
+        "id": 1212,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "56:33:7"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces/IForwarder.sol",
+        "file": "./IForwarder.sol",
+        "id": 1213,
+        "nodeType": "ImportDirective",
+        "scope": 1246,
+        "sourceUnit": 1181,
+        "src": "91:26:7",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 1214,
+          "nodeType": "StructuredDocumentation",
+          "src": "119:127:7",
+          "text": " Interface defining the methods that should be implemented\n in order to provide custom logic to a CustomSmartWallet"
+        },
+        "fullyImplemented": false,
+        "id": 1245,
+        "linearizedBaseContracts": [
+          1245
+        ],
+        "name": "IWalletCustomLogic",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": {
+              "id": 1215,
+              "nodeType": "StructuredDocumentation",
+              "src": "283:136:7",
+              "text": " Setup any data required by the custom logic\n @param initParams Data required in order to initilize custom logic"
+            },
+            "functionSelector": "439fab91",
+            "id": 1220,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "initialize",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 1218,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1217,
+                  "mutability": "mutable",
+                  "name": "initParams",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1220,
+                  "src": "444:23:7",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1216,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "444:5:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "443:25:7"
+            },
+            "returnParameters": {
+              "id": 1219,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "477:0:7"
+            },
+            "scope": 1245,
+            "src": "424:54:7",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 1221,
+              "nodeType": "StructuredDocumentation",
+              "src": "484:58:7",
+              "text": " Lets a relayer execute the custom logic"
+            },
+            "functionSelector": "68f4153b",
+            "id": 1234,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "execute",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 1230,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1223,
+                  "mutability": "mutable",
+                  "name": "domainSeparator",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1234,
+                  "src": "573:23:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 1222,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "573:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1225,
+                  "mutability": "mutable",
+                  "name": "suffixData",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1234,
+                  "src": "606:18:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 1224,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "606:7:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1227,
+                  "mutability": "mutable",
+                  "name": "forwardRequest",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1234,
+                  "src": "634:49:7",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_ForwardRequest_$1112_calldata_ptr",
+                    "typeString": "struct IForwarder.ForwardRequest"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 1226,
+                    "name": "IForwarder.ForwardRequest",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 1112,
+                    "src": "634:25:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_ForwardRequest_$1112_storage_ptr",
+                      "typeString": "struct IForwarder.ForwardRequest"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1229,
+                  "mutability": "mutable",
+                  "name": "signature",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1234,
+                  "src": "693:24:7",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1228,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "693:5:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "563:160:7"
+            },
+            "returnParameters": {
+              "id": 1233,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1232,
+                  "mutability": "mutable",
+                  "name": "ret",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1234,
+                  "src": "758:16:7",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1231,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "758:5:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "757:18:7"
+            },
+            "scope": 1245,
+            "src": "547:229:7",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": {
+              "id": 1235,
+              "nodeType": "StructuredDocumentation",
+              "src": "786:151:7",
+              "text": " Lets an account with RBTC execute the custom logic\n @param to Target contract address\n @param data Destination function "
+            },
+            "functionSelector": "244f53b5",
+            "id": 1244,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "directExecute",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 1240,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1237,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1244,
+                  "src": "965:10:7",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 1236,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "965:7:7",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1239,
+                  "mutability": "mutable",
+                  "name": "data",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1244,
+                  "src": "977:19:7",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1238,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "977:5:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "964:33:7"
+            },
+            "returnParameters": {
+              "id": 1243,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1242,
+                  "mutability": "mutable",
+                  "name": "ret",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1244,
+                  "src": "1033:16:7",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 1241,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1033:5:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1023:34:7"
+            },
+            "scope": 1245,
+            "src": "942:116:7",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 1246,
+        "src": "247:813:7"
+      }
+    ],
+    "src": "31:1029:7"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/interfaces/IWalletCustomLogic.sol",
+      "exportedSymbols": {
+        "IWalletCustomLogic": [
+          1245
+        ]
+      },
+      "license": "MIT"
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.6",
+            ".12"
+          ]
+        },
+        "id": 1211,
+        "name": "PragmaDirective",
+        "src": "31:24:7"
+      },
+      {
+        "attributes": {
+          "literals": [
+            "experimental",
+            "ABIEncoderV2"
+          ]
+        },
+        "id": 1212,
+        "name": "PragmaDirective",
+        "src": "56:33:7"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1181,
+          "absolutePath": "project:/contracts/interfaces/IForwarder.sol",
+          "file": "./IForwarder.sol",
+          "scope": 1246,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1213,
+        "name": "ImportDirective",
+        "src": "91:26:7"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "interface",
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1245
+          ],
+          "name": "IWalletCustomLogic",
+          "scope": 1246
+        },
+        "children": [
+          {
+            "attributes": {
+              "text": " Interface defining the methods that should be implemented\n in order to provide custom logic to a CustomSmartWallet"
+            },
+            "id": 1214,
+            "name": "StructuredDocumentation",
+            "src": "119:127:7"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "functionSelector": "439fab91",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "initialize",
+              "overrides": null,
+              "scope": 1245,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "text": " Setup any data required by the custom logic\n @param initParams Data required in order to initilize custom logic"
+                },
+                "id": 1215,
+                "name": "StructuredDocumentation",
+                "src": "283:136:7"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "initParams",
+                      "overrides": null,
+                      "scope": 1220,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 1216,
+                        "name": "ElementaryTypeName",
+                        "src": "444:5:7"
+                      }
+                    ],
+                    "id": 1217,
+                    "name": "VariableDeclaration",
+                    "src": "444:23:7"
+                  }
+                ],
+                "id": 1218,
+                "name": "ParameterList",
+                "src": "443:25:7"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1219,
+                "name": "ParameterList",
+                "src": "477:0:7"
+              }
+            ],
+            "id": 1220,
+            "name": "FunctionDefinition",
+            "src": "424:54:7"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "functionSelector": "68f4153b",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "execute",
+              "overrides": null,
+              "scope": 1245,
+              "stateMutability": "payable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "text": " Lets a relayer execute the custom logic"
+                },
+                "id": 1221,
+                "name": "StructuredDocumentation",
+                "src": "484:58:7"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "domainSeparator",
+                      "overrides": null,
+                      "scope": 1234,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 1222,
+                        "name": "ElementaryTypeName",
+                        "src": "573:7:7"
+                      }
+                    ],
+                    "id": 1223,
+                    "name": "VariableDeclaration",
+                    "src": "573:23:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "suffixData",
+                      "overrides": null,
+                      "scope": 1234,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 1224,
+                        "name": "ElementaryTypeName",
+                        "src": "606:7:7"
+                      }
+                    ],
+                    "id": 1225,
+                    "name": "VariableDeclaration",
+                    "src": "606:18:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "forwardRequest",
+                      "overrides": null,
+                      "scope": 1234,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "struct IForwarder.ForwardRequest",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IForwarder.ForwardRequest",
+                          "referencedDeclaration": 1112,
+                          "type": "struct IForwarder.ForwardRequest"
+                        },
+                        "id": 1226,
+                        "name": "UserDefinedTypeName",
+                        "src": "634:25:7"
+                      }
+                    ],
+                    "id": 1227,
+                    "name": "VariableDeclaration",
+                    "src": "634:49:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "signature",
+                      "overrides": null,
+                      "scope": 1234,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 1228,
+                        "name": "ElementaryTypeName",
+                        "src": "693:5:7"
+                      }
+                    ],
+                    "id": 1229,
+                    "name": "VariableDeclaration",
+                    "src": "693:24:7"
+                  }
+                ],
+                "id": 1230,
+                "name": "ParameterList",
+                "src": "563:160:7"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "ret",
+                      "overrides": null,
+                      "scope": 1234,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 1231,
+                        "name": "ElementaryTypeName",
+                        "src": "758:5:7"
+                      }
+                    ],
+                    "id": 1232,
+                    "name": "VariableDeclaration",
+                    "src": "758:16:7"
+                  }
+                ],
+                "id": 1233,
+                "name": "ParameterList",
+                "src": "757:18:7"
+              }
+            ],
+            "id": 1234,
+            "name": "FunctionDefinition",
+            "src": "547:229:7"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "functionSelector": "244f53b5",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "directExecute",
+              "overrides": null,
+              "scope": 1245,
+              "stateMutability": "payable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "text": " Lets an account with RBTC execute the custom logic\n @param to Target contract address\n @param data Destination function "
+                },
+                "id": 1235,
+                "name": "StructuredDocumentation",
+                "src": "786:151:7"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "to",
+                      "overrides": null,
+                      "scope": 1244,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 1236,
+                        "name": "ElementaryTypeName",
+                        "src": "965:7:7"
+                      }
+                    ],
+                    "id": 1237,
+                    "name": "VariableDeclaration",
+                    "src": "965:10:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "data",
+                      "overrides": null,
+                      "scope": 1244,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 1238,
+                        "name": "ElementaryTypeName",
+                        "src": "977:5:7"
+                      }
+                    ],
+                    "id": 1239,
+                    "name": "VariableDeclaration",
+                    "src": "977:19:7"
+                  }
+                ],
+                "id": 1240,
+                "name": "ParameterList",
+                "src": "964:33:7"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "ret",
+                      "overrides": null,
+                      "scope": 1244,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 1241,
+                        "name": "ElementaryTypeName",
+                        "src": "1033:5:7"
+                      }
+                    ],
+                    "id": 1242,
+                    "name": "VariableDeclaration",
+                    "src": "1033:16:7"
+                  }
+                ],
+                "id": 1243,
+                "name": "ParameterList",
+                "src": "1023:34:7"
+              }
+            ],
+            "id": 1244,
+            "name": "FunctionDefinition",
+            "src": "942:116:7"
+          }
+        ],
+        "id": 1245,
+        "name": "ContractDefinition",
+        "src": "247:813:7"
+      }
+    ],
+    "id": 1246,
+    "name": "SourceUnit",
+    "src": "31:1029:7"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.12+commit.27d51765.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-11-16T18:37:41.492Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "directExecute(address,bytes)": {
+        "params": {
+          "data": "Destination function ",
+          "to": "Target contract address"
+        }
+      },
+      "initialize(bytes)": {
+        "params": {
+          "initParams": "Data required in order to initilize custom logic"
+        }
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "directExecute(address,bytes)": {
+        "notice": "Lets an account with RBTC execute the custom logic"
+      },
+      "execute(bytes32,bytes32,(address,address,address,address,uint256,uint256,uint256,uint256,uint256,bytes),bytes)": {
+        "notice": "Lets a relayer execute the custom logic"
+      },
+      "initialize(bytes)": {
+        "notice": "Setup any data required by the custom logic"
+      }
+    },
+    "notice": "Interface defining the methods that should be implemented in order to provide custom logic to a CustomSmartWallet",
+    "version": 1
+  }
+}

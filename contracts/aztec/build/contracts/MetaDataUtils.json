@@ -1,0 +1,772 @@
+{
+  "contractName": "MetaDataUtils",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.17+commit.d19bba13\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"author\":\"AZTEC\",\"details\":\"Library of MetaData manipulation operations  * Copyright 2020 Spilsbury Holdings Ltd  * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \\\"License\\\"); you may not use this file except in compliance with the License. * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. * You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.*\",\"methods\":{},\"title\":\"MetaDataUtils\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"@aztec/protocol/contracts/libs/MetaDataUtils.sol\":\"MetaDataUtils\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":500},\"remappings\":[]},\"sources\":{\"@aztec/protocol/contracts/libs/MetaDataUtils.sol\":{\"keccak256\":\"0xe5cc8bc4ceb2758eb40d7aa13645b2322846805e2ba15db9a558d34f4ce5a381\",\"urls\":[\"bzz-raw://7e3f2cb8eb0540d3cd3db3d74610935785f3272145f1bf611197d936a1ebdb19\",\"dweb:/ipfs/QmbJdMTdULWrv8DkZ952QrN4yvx1HTn4zK4ksRxKiDHnYY\"]}},\"version\":1}",
+  "bytecode": "0x60556023600b82828239805160001a607314601657fe5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea265627a7a723158208770c27b67e33c7134ea4b3bce62edf5b84e467f4a4819e0d280ebd3ed93336e64736f6c63430005110032",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea265627a7a723158208770c27b67e33c7134ea4b3bce62edf5b84e467f4a4819e0d280ebd3ed93336e64736f6c63430005110032",
+  "sourceMap": "749:1928:36:-;;132:2:-1;166:7;155:9;146:7;137:37;255:7;249:14;246:1;241:23;235:4;232:33;222:2;;269:9;222:2;293:9;290:1;283:20;323:4;314:7;306:22;347:7;338;331:24",
+  "deployedSourceMap": "749:1928:36:-;;;;;;;;",
+  "source": "pragma solidity >=0.5.0 <= 0.6.0;\n\n/**\n * @title MetaDataUtils\n * @author AZTEC\n * @dev Library of MetaData manipulation operations\n * \n * Copyright 2020 Spilsbury Holdings Ltd \n *\n * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n *\n * This program is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n * GNU Lesser General Public License for more details.\n *\n * You should have received a copy of the GNU Lesser General Public License\n * along with this program.  If not, see <https://www.gnu.org/licenses/>.\n**/\n\nlibrary MetaDataUtils {\n    /**\n    * @dev Extract a single approved address from the metaData\n    * @param metaData - metaData containing addresses according to the schema defined in x\n    * @param addressPos - indexer for the desired address, the one to be extracted\n    * @return desiredAddress - extracted address specified by the inputs to this function\n    */\n    function extractAddress(bytes memory metaData, uint256 addressPos) pure internal returns (address desiredAddress) {\n        /**\n        * Memory map of metaData. This is the ABI encoding of metaData, supplied by the client\n        * The first word of any dynamic bytes array within this map, is the number of discrete elements in that \n        * bytes array. e.g. first word at 0xe1 is the number of approvedAddresses\n        * 0x00 - 0x20 : length of metaData\n        * 0x20 - 0x81 : ephemeral key\n        * 0x81 - 0xa1 : approved addresses offset\n        * 0xa1 - 0xc1 : encrypted view keys offset\n        * 0xc1 - 0xe1 : app data offset\n        * 0xe1 - L_addresses : approvedAddresses\n        * (0xe1 + L_addresses) - (0xe1 + L_addresses + L_encryptedViewKeys) : encrypted view keys\n        * (0xe1 + L_addresses + L_encryptedViewKeys) - (0xe1 + L_addresses + L_encryptedViewKeys + L_appData) : appData\n        */\n\n        uint256 numAddresses;\n        assembly {\n            numAddresses := mload(add(metaData, 0x20))\n            desiredAddress := mload(\n                add(\n                    add(\n                        metaData,\n                        add(0xe1, 0x20)  // go to the start of addresses, jump over first word\n                    ),\n                    mul(addressPos, 0x20) // jump to the desired address\n                )\n            )\n        }\n\n        require(\n            addressPos < numAddresses, \n            'addressPos out of bounds - addressPos must be less than the number of addresses to be approved'\n        );\n    }\n}\n",
+  "sourcePath": "@aztec/protocol/contracts/libs/MetaDataUtils.sol",
+  "ast": {
+    "absolutePath": "@aztec/protocol/contracts/libs/MetaDataUtils.sol",
+    "exportedSymbols": {
+      "MetaDataUtils": [
+        4861
+      ]
+    },
+    "id": 4862,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4839,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.5",
+          ".0",
+          "<=",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:33:36"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": "@title MetaDataUtils\n@author AZTEC\n@dev Library of MetaData manipulation operations\n\n * Copyright 2020 Spilsbury Holdings Ltd \n * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \"License\");\nyou may not use this file except in compliance with the License.\n * This program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU Lesser General Public License for more details.\n * You should have received a copy of the GNU Lesser General Public License\nalong with this program.  If not, see <https://www.gnu.org/licenses/>.*",
+        "fullyImplemented": true,
+        "id": 4861,
+        "linearizedBaseContracts": [
+          4861
+        ],
+        "name": "MetaDataUtils",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 4859,
+              "nodeType": "Block",
+              "src": "1233:1442:36",
+              "statements": [
+                {
+                  "assignments": [
+                    4849
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 4849,
+                      "name": "numAddresses",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 4859,
+                      "src": "2046:20:36",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 4848,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "2046:7:36",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 4850,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "2046:20:36"
+                },
+                {
+                  "externalReferences": [
+                    {
+                      "numAddresses": {
+                        "declaration": 4849,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "2099:12:36",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "metaData": {
+                        "declaration": 4841,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "2125:8:36",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "desiredAddress": {
+                        "declaration": 4846,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "2154:14:36",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "metaData": {
+                        "declaration": 4841,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "2249:8:36",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "addressPos": {
+                        "declaration": 4843,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "2401:10:36",
+                        "valueSize": 1
+                      }
+                    }
+                  ],
+                  "id": 4851,
+                  "nodeType": "InlineAssembly",
+                  "operations": "{\n    numAddresses := mload(add(metaData, 0x20))\n    desiredAddress := mload(add(add(metaData, add(0xe1, 0x20)), mul(addressPos, 0x20)))\n}",
+                  "src": "2076:415:36"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 4855,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 4853,
+                          "name": "addressPos",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 4843,
+                          "src": "2522:10:36",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "<",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "id": 4854,
+                          "name": "numAddresses",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 4849,
+                          "src": "2535:12:36",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "src": "2522:25:36",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "61646472657373506f73206f7574206f6620626f756e6473202d2061646472657373506f73206d757374206265206c657373207468616e20746865206e756d626572206f662061646472657373657320746f20626520617070726f766564",
+                        "id": 4856,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "2562:96:36",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_d394617e00c071e84faadab7b3fe0f34cb16581bd5b8fff0dda7154e2c02f037",
+                          "typeString": "literal_string \"addressPos out of bounds - addressPos must be less than the number of addresses to be approved\""
+                        },
+                        "value": "addressPos out of bounds - addressPos must be less than the number of addresses to be approved"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_d394617e00c071e84faadab7b3fe0f34cb16581bd5b8fff0dda7154e2c02f037",
+                          "typeString": "literal_string \"addressPos out of bounds - addressPos must be less than the number of addresses to be approved\""
+                        }
+                      ],
+                      "id": 4852,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        6095,
+                        6096
+                      ],
+                      "referencedDeclaration": 6096,
+                      "src": "2501:7:36",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 4857,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2501:167:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4858,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2501:167:36"
+                }
+              ]
+            },
+            "documentation": "@dev Extract a single approved address from the metaData\n@param metaData - metaData containing addresses according to the schema defined in x\n@param addressPos - indexer for the desired address, the one to be extracted\n@return desiredAddress - extracted address specified by the inputs to this function",
+            "id": 4860,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "extractAddress",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4844,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4841,
+                  "name": "metaData",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4860,
+                  "src": "1143:21:36",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4840,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1143:5:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4843,
+                  "name": "addressPos",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4860,
+                  "src": "1166:18:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4842,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1166:7:36",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1142:43:36"
+            },
+            "returnParameters": {
+              "id": 4847,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4846,
+                  "name": "desiredAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4860,
+                  "src": "1209:22:36",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4845,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1209:7:36",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1208:24:36"
+            },
+            "scope": 4861,
+            "src": "1119:1556:36",
+            "stateMutability": "pure",
+            "superFunction": null,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 4862,
+        "src": "749:1928:36"
+      }
+    ],
+    "src": "0:2678:36"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "@aztec/protocol/contracts/libs/MetaDataUtils.sol",
+      "exportedSymbols": {
+        "MetaDataUtils": [
+          4861
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            ">=",
+            "0.5",
+            ".0",
+            "<=",
+            "0.6",
+            ".0"
+          ]
+        },
+        "id": 4839,
+        "name": "PragmaDirective",
+        "src": "0:33:36"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "library",
+          "documentation": "@title MetaDataUtils\n@author AZTEC\n@dev Library of MetaData manipulation operations\n\n * Copyright 2020 Spilsbury Holdings Ltd \n * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \"License\");\nyou may not use this file except in compliance with the License.\n * This program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU Lesser General Public License for more details.\n * You should have received a copy of the GNU Lesser General Public License\nalong with this program.  If not, see <https://www.gnu.org/licenses/>.*",
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            4861
+          ],
+          "name": "MetaDataUtils",
+          "scope": 4862
+        },
+        "children": [
+          {
+            "attributes": {
+              "documentation": "@dev Extract a single approved address from the metaData\n@param metaData - metaData containing addresses according to the schema defined in x\n@param addressPos - indexer for the desired address, the one to be extracted\n@return desiredAddress - extracted address specified by the inputs to this function",
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "extractAddress",
+              "scope": 4861,
+              "stateMutability": "pure",
+              "superFunction": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "metaData",
+                      "scope": 4860,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "bytes",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes"
+                        },
+                        "id": 4840,
+                        "name": "ElementaryTypeName",
+                        "src": "1143:5:36"
+                      }
+                    ],
+                    "id": 4841,
+                    "name": "VariableDeclaration",
+                    "src": "1143:21:36"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "addressPos",
+                      "scope": 4860,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 4842,
+                        "name": "ElementaryTypeName",
+                        "src": "1166:7:36"
+                      }
+                    ],
+                    "id": 4843,
+                    "name": "VariableDeclaration",
+                    "src": "1166:18:36"
+                  }
+                ],
+                "id": 4844,
+                "name": "ParameterList",
+                "src": "1142:43:36"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "desiredAddress",
+                      "scope": 4860,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 4845,
+                        "name": "ElementaryTypeName",
+                        "src": "1209:7:36"
+                      }
+                    ],
+                    "id": 4846,
+                    "name": "VariableDeclaration",
+                    "src": "1209:22:36"
+                  }
+                ],
+                "id": 4847,
+                "name": "ParameterList",
+                "src": "1208:24:36"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        4849
+                      ],
+                      "initialValue": null
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "numAddresses",
+                          "scope": 4859,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "uint256",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "uint256",
+                              "type": "uint256"
+                            },
+                            "id": 4848,
+                            "name": "ElementaryTypeName",
+                            "src": "2046:7:36"
+                          }
+                        ],
+                        "id": 4849,
+                        "name": "VariableDeclaration",
+                        "src": "2046:20:36"
+                      }
+                    ],
+                    "id": 4850,
+                    "name": "VariableDeclarationStatement",
+                    "src": "2046:20:36"
+                  },
+                  {
+                    "attributes": {
+                      "externalReferences": [
+                        {
+                          "numAddresses": {
+                            "declaration": 4849,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2099:12:36",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "metaData": {
+                            "declaration": 4841,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2125:8:36",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "desiredAddress": {
+                            "declaration": 4846,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2154:14:36",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "metaData": {
+                            "declaration": 4841,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2249:8:36",
+                            "valueSize": 1
+                          }
+                        },
+                        {
+                          "addressPos": {
+                            "declaration": 4843,
+                            "isOffset": false,
+                            "isSlot": false,
+                            "src": "2401:10:36",
+                            "valueSize": 1
+                          }
+                        }
+                      ],
+                      "operations": "{\n    numAddresses := mload(add(metaData, 0x20))\n    desiredAddress := mload(add(add(metaData, add(0xe1, 0x20)), mul(addressPos, 0x20)))\n}"
+                    },
+                    "children": [],
+                    "id": 4851,
+                    "name": "InlineAssembly",
+                    "src": "2076:415:36"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                },
+                                {
+                                  "typeIdentifier": "t_stringliteral_d394617e00c071e84faadab7b3fe0f34cb16581bd5b8fff0dda7154e2c02f037",
+                                  "typeString": "literal_string \"addressPos out of bounds - addressPos must be less than the number of addresses to be approved\""
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                6095,
+                                6096
+                              ],
+                              "referencedDeclaration": 6096,
+                              "type": "function (bool,string memory) pure",
+                              "value": "require"
+                            },
+                            "id": 4852,
+                            "name": "Identifier",
+                            "src": "2501:7:36"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "<",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 4843,
+                                  "type": "uint256",
+                                  "value": "addressPos"
+                                },
+                                "id": 4853,
+                                "name": "Identifier",
+                                "src": "2522:10:36"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 4849,
+                                  "type": "uint256",
+                                  "value": "numAddresses"
+                                },
+                                "id": 4854,
+                                "name": "Identifier",
+                                "src": "2535:12:36"
+                              }
+                            ],
+                            "id": 4855,
+                            "name": "BinaryOperation",
+                            "src": "2522:25:36"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "hexvalue": "61646472657373506f73206f7574206f6620626f756e6473202d2061646472657373506f73206d757374206265206c657373207468616e20746865206e756d626572206f662061646472657373657320746f20626520617070726f766564",
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "subdenomination": null,
+                              "token": "string",
+                              "type": "literal_string \"addressPos out of bounds - addressPos must be less than the number of addresses to be approved\"",
+                              "value": "addressPos out of bounds - addressPos must be less than the number of addresses to be approved"
+                            },
+                            "id": 4856,
+                            "name": "Literal",
+                            "src": "2562:96:36"
+                          }
+                        ],
+                        "id": 4857,
+                        "name": "FunctionCall",
+                        "src": "2501:167:36"
+                      }
+                    ],
+                    "id": 4858,
+                    "name": "ExpressionStatement",
+                    "src": "2501:167:36"
+                  }
+                ],
+                "id": 4859,
+                "name": "Block",
+                "src": "1233:1442:36"
+              }
+            ],
+            "id": 4860,
+            "name": "FunctionDefinition",
+            "src": "1119:1556:36"
+          }
+        ],
+        "id": 4861,
+        "name": "ContractDefinition",
+        "src": "749:1928:36"
+      }
+    ],
+    "id": 4862,
+    "name": "SourceUnit",
+    "src": "0:2678:36"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.17+commit.d19bba13.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-11-16T18:37:31.149Z",
+  "devdoc": {
+    "author": "AZTEC",
+    "details": "Library of MetaData manipulation operations  * Copyright 2020 Spilsbury Holdings Ltd  * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \"License\"); you may not use this file except in compliance with the License. * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. * You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.*",
+    "methods": {},
+    "title": "MetaDataUtils"
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

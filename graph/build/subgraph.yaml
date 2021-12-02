@@ -1,0 +1,27 @@
+specVersion: 0.0.2
+description: Loan Dapp Starter Kit
+repository: https://github.com/graphprotocol/example-subgraph
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ZKERC20
+    network: development
+    source:
+      abi: ZKERC20
+      startBlock: 2188053
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ZKERC20/ZKERC20.wasm
+      entities:
+        - Note Loan User
+      abis:
+        - name: ZKERC20
+          file: build/contracts/ZKERC20.json
+      eventHandlers:
+        - event: CreateNote(indexed address,indexed bytes32,bytes)
+          handler: createNote
+        - event: DestroyNote(indexed address,indexed bytes32)
+          handler: destroyNote
