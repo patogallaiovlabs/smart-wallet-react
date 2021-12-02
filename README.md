@@ -26,6 +26,14 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Graph
 
-- `cd graph & graph codegen subgraph.yaml --debug --output-dir ./types`
+Terminal 1:
+- `cd graph & docker-compose up`
+
+Terminal 2 (Optional - only first time deploy, or redeploy of subgraph) :
+- `cd graph`
+- `graph codegen subgraph.yaml --debug --output-dir ./types`
 - `graph create smart-wallet-graph --node http://127.0.0.1:8020`
 - `graph deploy smart-wallet-graph subgraph.yaml --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020 -l v1`
+
+Terminal 3:
+- `yarn start`
