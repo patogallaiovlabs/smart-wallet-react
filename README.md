@@ -37,3 +37,14 @@ Terminal 2 (Optional - only first time deploy, or redeploy of subgraph) :
 
 Terminal 3:
 - `yarn start`
+
+
+## TO-DO
+
+- `npm i patch-package`
+    - Prefix: `REACT_APP_` for `REACT_APP_LOCAL_DATABASE_PATH`
+- Note: Metadata
+- Revisar eth-sig-util, encrypt.
+- Encrypt/Decrypt:
+    - https://docs.metamask.io/guide/rpc-api.html#other-rpc-methods
+    - Warning with encrypting, length matters, we should pad in order to hide.

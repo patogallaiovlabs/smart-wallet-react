@@ -720,7 +720,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 6126,
+                              "referencedDeclaration": 6404,
                               "src": "1682:4:8",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_NoteRegistryFactory_$2576",
@@ -802,10 +802,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6095,
-                        6096
+                        6373,
+                        6374
                       ],
-                      "referencedDeclaration": 6096,
+                      "referencedDeclaration": 6374,
                       "src": "1636:7:8",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1779,10 +1779,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                6095,
-                                6096
+                                6373,
+                                6374
                               ],
-                              "referencedDeclaration": 6096,
+                              "referencedDeclaration": 6374,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -1940,7 +1940,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 6126,
+                                      "referencedDeclaration": 6404,
                                       "type": "contract NoteRegistryFactory",
                                       "value": "this"
                                     },
@@ -2243,7 +2243,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T18:37:31.045Z",
+  "updatedAt": "2021-12-22T16:36:24.303Z",
   "devdoc": {
     "author": "AZTEC",
     "details": "Interface definition for factories. Factory contracts have the responsibility of managing the full lifecycle of Behaviour contracts, from deploy to eventual upgrade. They are owned by ACE, and all methods should only be callable by ACE. * Copyright 2020 Spilsbury Holdings Ltd  * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \"License\"); you may not use this file except in compliance with the License. * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. * You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.*",

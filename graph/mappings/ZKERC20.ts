@@ -10,11 +10,13 @@ import {
 
 export function createNote(event: CreateNote): void {
   let noteId = event.params.noteHash.toHex();
+  let metadata = event.params.metadata;
   let ownerAddress = event.params.owner;
   let ownerId = ownerAddress.toHex();
   let note = new Note(noteId);
   note.ownerAddress = ownerAddress;
   note.currencyAddress = event.address;
+  note.metadata = metadata;
   note.status = 'CREATED';
   note.save();
 

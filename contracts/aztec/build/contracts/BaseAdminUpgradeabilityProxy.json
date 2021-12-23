@@ -335,7 +335,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6092,
+                        "referencedDeclaration": 6370,
                         "src": "1293:3:22",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -835,10 +835,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6095,
-                        6096
+                        6373,
+                        6374
                       ],
-                      "referencedDeclaration": 6096,
+                      "referencedDeclaration": 6374,
                       "src": "1964:7:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1407,10 +1407,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6095,
-                        6096
+                        6373,
+                        6374
                       ],
-                      "referencedDeclaration": 6095,
+                      "referencedDeclaration": 6373,
                       "src": "3178:7:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1837,7 +1837,7 @@
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 6092,
+                            "referencedDeclaration": 6370,
                             "src": "3809:3:22",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -1930,10 +1930,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6095,
-                        6096
+                        6373,
+                        6374
                       ],
-                      "referencedDeclaration": 6096,
+                      "referencedDeclaration": 6374,
                       "src": "3801:7:22",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1970,7 +1970,7 @@
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6137,
+                        "referencedDeclaration": 6415,
                         "src": "3896:5:22",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_BaseAdminUpgradeabilityProxy_$3993",
@@ -2292,7 +2292,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 6092,
+                                  "referencedDeclaration": 6370,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -2829,10 +2829,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                6095,
-                                6096
+                                6373,
+                                6374
                               ],
-                              "referencedDeclaration": 6096,
+                              "referencedDeclaration": 6374,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -3589,10 +3589,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                6095,
-                                6096
+                                6373,
+                                6374
                               ],
-                              "referencedDeclaration": 6095,
+                              "referencedDeclaration": 6373,
                               "type": "function (bool) pure",
                               "value": "require"
                             },
@@ -4012,10 +4012,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                6095,
-                                6096
+                                6373,
+                                6374
                               ],
-                              "referencedDeclaration": 6096,
+                              "referencedDeclaration": 6374,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -4056,7 +4056,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 6092,
+                                      "referencedDeclaration": 6370,
                                       "type": "msg",
                                       "value": "msg"
                                     },
@@ -4180,7 +4180,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 6137,
+                                  "referencedDeclaration": 6415,
                                   "type": "contract super BaseAdminUpgradeabilityProxy",
                                   "value": "super"
                                 },
@@ -4229,7 +4229,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T18:37:31.098Z",
+  "updatedAt": "2021-12-22T16:36:24.323Z",
   "devdoc": {
     "details": "This contract combines an upgradeability proxy with an authorization mechanism for administrative tasks. All external functions in this contract must be guarded by the `ifAdmin` modifier. See ethereum/solidity#3864 for a Solidity feature proposal that would enable this to be done automatically.",
     "methods": {

@@ -126,6 +126,10 @@ export class CreateNote__Params {
   get noteHash(): Bytes {
     return this._event.parameters[1].value.toBytes();
   }
+  
+  get metadata(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
 }
 
 export class DestroyNote extends ethereum.Event {

@@ -1309,14 +1309,86 @@
   },
   "networks": {
     "31": {
-      "events": {},
+      "events": {
+        "0xf0b9411f46edcf614ae2f9fe981a238b88f643e02271a06f46cae1674dfad295": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "behaviourContract",
+              "type": "address"
+            }
+          ],
+          "name": "NoteRegistryDeployed",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x1f35de5d26Cc4A1687C9e1cE7634112C8eAcc216",
-      "transactionHash": "0x1fad2d78f32617a6da91711d42d0b1e8cd31132c88a63357ecf9e235794d995c"
+      "address": "0xe36C10E88811c9D7F593D3E41Fb03ff397D505Ec",
+      "transactionHash": "0x76151992594218e899adcc882e9ea69fbf2f66d9a8734b767b893b52fd48504b"
+    },
+    "33": {
+      "events": {
+        "0xf0b9411f46edcf614ae2f9fe981a238b88f643e02271a06f46cae1674dfad295": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "behaviourContract",
+              "type": "address"
+            }
+          ],
+          "name": "NoteRegistryDeployed",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x63Db624F6Eb4B50a081c9B89222Bd13B96609193",
+      "transactionHash": "0x0e44785f8898996e03ad4e95f6254c283fa0f1dd17c10b5c9a7f767f5ff6a1b4"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T22:06:47.935Z",
+  "updatedAt": "2021-12-23T22:00:09.712Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "AZTEC",

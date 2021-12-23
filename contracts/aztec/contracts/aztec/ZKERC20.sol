@@ -1,6 +1,6 @@
 pragma solidity >= 0.5.0 <0.7.0;
 
-import "@aztec/protocol/contracts/ERC1724/ZkAsset.sol";
+import "./ZkAsset.sol";
 import "@aztec/protocol/contracts/ACE/ACE.sol";
 
 contract ZKERC20 is ZkAsset {
@@ -24,6 +24,5 @@ contract ZKERC20 is ZkAsset {
     aceContract.publicApprove(address(this), _proofHash, _value);
     emit Log(aceAddress, _value, _proofHash);
   }
-
 
 }

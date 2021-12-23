@@ -100,6 +100,15 @@ export class Note extends Entity {
     this.set("currencyAddress", Value.fromBytes(value));
   }
 
+  get metadata(): Bytes {
+    let value = this.get("metadata");
+    return value.toBytes();
+  }
+
+  set metadata(value: Bytes) {
+    this.set("metadata", Value.fromBytes(value));
+  }
+
   get access(): Array<string> | null {
     let value = this.get("access");
     if (value === null || value.kind == ValueKind.NULL) {

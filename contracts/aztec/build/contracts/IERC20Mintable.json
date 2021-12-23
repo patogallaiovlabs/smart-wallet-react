@@ -2196,7 +2196,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T18:37:31.129Z",
+  "updatedAt": "2021-12-22T16:36:24.330Z",
   "devdoc": {
     "details": "Interface for ERC20 with minting function Sourced from OpenZeppelin  (https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/IERC20.sol)  and with an added mint() function. The mint function is necessary because a ZkAssetMintable  may need to be able to mint from the linked note registry token. This need arises when the  total supply does not meet the extracted value (due to having called confidentialMint())",
     "methods": {},

@@ -33,7 +33,7 @@ export default class SmartWalletClient extends WalletClient {
             SmartWallet.abi,
             client.getProvider()
         ).connect(client.getSigner());
-        return new SmartWalletClient(index, contract);
+        return new SmartWalletClient(index, contract, await WalletClient.getInstance());
     }
 
     static async getEOA() {
@@ -86,10 +86,12 @@ export default class SmartWalletClient extends WalletClient {
     private index:number;
     private contract:Contract;
     private active:boolean;
+    private parent:WalletClient;
 
-    constructor(index:number, contract:Contract){
+    constructor(index:number, contract:Contract, parent:WalletClient){
         super(EtherClient.instance(), contract.address);
         this.index = index;
+        this.parent = parent;
         this.contract = contract;
         this.active = false;
     }
@@ -97,6 +99,10 @@ export default class SmartWalletClient extends WalletClient {
     async init() {
         let result = await super.getClient().getCode(this.address);
         this.active = (result !== '0x' && result !== '0x00');
+    }
+
+    get mainAddress() : string {
+        return this.parent.address;
     }
 
     getIndex(): number{
@@ -116,6 +122,11 @@ export default class SmartWalletClient extends WalletClient {
         //Call factory contract
         console.log('Send tx: directExecute(to, calldata)', to, calldata);
         return this.contract.directExecute(to, calldata);
+    }
+
+    async signTypedData(msg:any): Promise<any> {
+        console.log('SW:signTypedData', msg);
+        return Promise.resolve('0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');
     }
 
 }

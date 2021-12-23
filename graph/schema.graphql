@@ -7,6 +7,7 @@ type Note @entity {
   id: ID!
   ownerAddress: Bytes!
   currencyAddress: Bytes!
+  metadata: Bytes!
   access: [NoteAccess!] @derivedFrom(field:"note")
   status: String!
 }

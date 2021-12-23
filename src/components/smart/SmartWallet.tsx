@@ -7,6 +7,9 @@ import WalletClient from '../../client/WalletClient';
 import Grid from '@mui/material/Grid';
 import SendToken from './SendToken';
 import ConvertToken from './ConvertToken';
+import DecodeMetadata from './aztec/DecodeMetadata';
+import NoteHistory from './aztec/notes/NoteHistory';
+import Aztec from './aztec/Aztec';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -42,22 +45,24 @@ export default function SmartWallet(prop:PropTypes) {
         init();
     }, []);
 
-
     return (
         <div>
             {(!loading && wallet && 
-                <Box margin="1px">
-                  <Box margin="10px">
+                <Box margin="1px" >
+                  <Box margin="10px" sx={{ border: 1}}>
                     <div>Wallet {wallet && wallet.getIndex()<0?'(EOA)': wallet.getIndex() + 1}: <Address value={prop.wallet?.address}/></div>
                     <div>Balance DOC: $ {docs}</div>
                     <div>Balance RDOC: $ {rdocs}</div>
                   </Box>
                   <Grid container spacing={1} margin="10px">
-                    <Grid item xs={6}>
+                    <Grid item xs={4}  sx={{ border: 1}} margin="10px">
                       <SendToken wallet={wallet} allwallets={allwallets} />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4} sx={{ border: 1}} margin="10px">
                       <ConvertToken wallet={wallet} allwallets={allwallets} />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <NoteHistory wallet={wallet} allwallets={prop.allwallets} />
                     </Grid>
                   </Grid>
                 </Box>

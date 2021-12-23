@@ -518,7 +518,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T18:37:31.141Z",
+  "updatedAt": "2021-12-22T16:36:24.333Z",
   "devdoc": {
     "details": "Minimal interface for the proxy contract",
     "methods": {},

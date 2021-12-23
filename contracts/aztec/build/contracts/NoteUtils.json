@@ -323,10 +323,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6095,
-                        6096
+                        6373,
+                        6374
                       ],
-                      "referencedDeclaration": 6096,
+                      "referencedDeclaration": 6374,
                       "src": "3047:7:37",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1577,10 +1577,10 @@
                                 }
                               ],
                               "overloadedDeclarations": [
-                                6095,
-                                6096
+                                6373,
+                                6374
                               ],
-                              "referencedDeclaration": 6096,
+                              "referencedDeclaration": 6374,
                               "type": "function (bool,string memory) pure",
                               "value": "require"
                             },
@@ -2387,7 +2387,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-16T18:37:31.152Z",
+  "updatedAt": "2021-12-22T16:36:24.335Z",
   "devdoc": {
     "author": "AZTEC",
     "details": "NoteUtils is a utility library that extracts user-readable information from AZTEC proof outputs.     Specifically, `bytes proofOutput` objects can be extracted from `bytes proofOutputs`,     `bytes proofOutput` and `bytes note` can be extracted into their constituent components, * Copyright 2020 Spilsbury Holdings Ltd  * Licensed under the GNU Lesser General Public Licence, Version 3.0 (the \"License\"); you may not use this file except in compliance with the License. * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details. * You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.*",

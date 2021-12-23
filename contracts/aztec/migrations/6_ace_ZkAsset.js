@@ -8,8 +8,8 @@ const BaseFactory = artifacts.require('./noteRegistry/epochs/201907/base/Factory
 const AdjustableFactory = artifacts.require('./noteRegistry/epochs/201907/adjustable/FactoryAdjustable201907.sol');
 const ZkAsset = artifacts.require('./ZkAsset.sol');
 
-const DOC_TESTNET = '0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0';
-
+//const DOC_TESTNET = '0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0';
+const DOC_REGTEST = '0xC591D6b9238444A2ec22c8F1b54Eb995Ec2D4121';
 module.exports = async (deployer, network) => {
 
   let aceContract;
@@ -18,8 +18,8 @@ module.exports = async (deployer, network) => {
     await deployer.deploy(
       ZkAsset,
       aceContract.address, // address _aceAddress,
-      DOC_TESTNET,
-      1
+      DOC_REGTEST, //DOC_TESTNET,
+      16
     );
   }
 

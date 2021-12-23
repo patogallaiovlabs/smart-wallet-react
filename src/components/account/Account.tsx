@@ -22,13 +22,11 @@ export default function Account() {
         update(client);
       });
       update(client);
-      console.log('end login');
     }
 
     const update = (client:EtherClient) => {
-      console.log('updating...');
+      console.log('updating account...');
       client.getAddress().then((value:string) => {
-        console.log('account', value);
         setAccount(value);
       }).catch(console.log);
 

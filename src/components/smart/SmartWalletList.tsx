@@ -54,7 +54,6 @@ export default function SmartWalletList() {
           i++;
         }
         setWallets(temp);
-        console.log('addresses', temp);
         setLoading(false);
     }
     useEffect(()=>{
@@ -79,7 +78,7 @@ export default function SmartWalletList() {
           sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
+                ? 'white'
                 : theme.palette.grey[900],
             flexGrow: 1,
             height: '100vh',
@@ -110,7 +109,7 @@ export default function SmartWalletList() {
                     let key = i - 1;
                     return <TabPanel value={i} index={i} key={i}>
                         {(!a.isActive() && 
-                        <Box margin="10px">
+                        <Box margin="10px" sx={{ border: 1, borderColor: 'text.primary',}}>
                           <div>
                             <p> New Wallet #{key}: </p> 
                             <Address value={a.address} length={5} tail={true} />

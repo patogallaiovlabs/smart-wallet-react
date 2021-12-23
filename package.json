@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.5.6",
     "@aztec/bn128": "^1.3.2",
     "@aztec/dev-utils": "^2.4.0",
+    "@aztec/note-access": "^1.1.4",
     "@aztec/protocol": "^1.7.1",
     "@aztec/secp256k1": "^1.2.0",
     "@babel/register": "^7.16.0",
@@ -15,7 +17,7 @@
     "@mui/icons-material": "^5.0.5",
     "@mui/material": "^5.0.6",
     "@openeth/truffle-typings": "0.0.6",
-    "@openzeppelin/contracts": "^3.2.0",
+    "@openzeppelin/contracts": "^4.4.1",
     "@rsksmart/rlogin": "^1.3.0-beta.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -24,11 +26,15 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "apollo-server": "^3.5.0",
     "aztec.js": "^0.18.1",
     "dotenv": "^8.2.0",
+    "eth-sig-util": "^3.0.1",
     "ethers": "^5.5.1",
     "ethjs-query": "^0.3.8",
+    "graphql": "^16.1.0",
     "graphql-tag": "^2.10.1",
+    "patch-package": "^6.4.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.0",
@@ -42,13 +48,16 @@
     "web3": "^1.6.0"
   },
   "scripts": {
-    "start": "REACT_APP_LOCAL_DATABASE_PATH=./localSetupDatabase/ react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "truffle-compile": "cd contracts/aztec && truffle compile --all && cd ../smart-wallet && truffle compile --all",
     "truffle-migrate-reset": "cd contracts/aztec && truffle migrate --reset && cd ../smart-wallet && truffle migrate --reset",
-    "truffle-migrate": "cd contracts/aztec && truffle migrate && cd ../smart-wallet && truffle migrate"
+    "truffle-migrate": "cd contracts/aztec && truffle migrate && cd ../smart-wallet && truffle migrate",
+    "truffle-migrate-aztec": "cd contracts/aztec && truffle migrate --reset",
+    "truffle-migrate-smart": "cd contracts/smart-wallet && truffle migrate --reset",
+    "truffle-migrate-erc20": "cd contracts/erc20test && truffle migrate --reset"
   },
   "eslintConfig": {
     "extends": [

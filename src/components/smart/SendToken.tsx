@@ -36,13 +36,6 @@ export default function SendToken(prop:PropTypes) {
       console.log('send');
     }
 
-    const sendRDoc = () => {
-      const doc = ERC20Client.getRDOC();
-      let amountFormatted = ethers.utils.parseEther(amount??'0');
-      wallet?.execute(doc.contract.address, doc.encodeTransfer(sendTo, amountFormatted));
-      console.log('send');
-    }
-
     const onSendTo = (evt:any) => {
       setSendTo(evt.target.value);
     }
@@ -50,30 +43,28 @@ export default function SendToken(prop:PropTypes) {
     return (
         <div>
             {(!loading && wallet && 
+              <div> 
+              <h3>Send DOCs</h3>
                 <FormControl>
-                    <InputLabel id="demo-simple-select-label">To</InputLabel>
-                    <Select  
-                        variant="filled"
-                        labelId="demo-simple-select-label"
+                    <Select 
+                        labelId="toLabel"
                         id="demo-simple-select"
                         value={sendTo}
                         label="To"
                         onChange={onSendTo}
                     >
                         {prop.allwallets?.map((item:WalletClient,i)=>
-                          <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 1} - {item.address}</MenuItem>
+                          <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 1} - {item.address.substring(0, 5)}</MenuItem>
                         )}
                     </Select>
                     <TextField label="$" variant="standard" margin="normal" name="dataInput" value={amount} onChange={evt => setAmount(evt.target.value)}></TextField>
                     <ButtonGroup>
                       <Button variant="contained"
                               onClick={() => sendDoc()}
-                              >Send DOC</Button>
-                      <Button variant="contained"
-                              onClick={() => sendRDoc()}
-                              >Send RDOC</Button>
+                              >Send</Button>
                     </ButtonGroup>
                 </FormControl>
+              </div> 
             )}
 
             {/** LOADING */}

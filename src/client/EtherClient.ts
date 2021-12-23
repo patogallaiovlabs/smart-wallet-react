@@ -1,5 +1,6 @@
 import { Web3Provider, JsonRpcSigner } from '@ethersproject/providers';
 import { ethers } from 'ethers';
+import { encodeRevertReason } from '../../../../../rif-relay/rif-relay/test/TestUtils';
 
 declare const window: any;
 
@@ -14,10 +15,15 @@ export default class EtherClient {
         return INSTANCE;
     }
     
+    static encode(contract:ethers.Contract, call: string, params: any): string {
+        return contract.interface.encodeFunctionData(call, params);
+    }
+
     private provider:Web3Provider;
     private ethereum: ethers.providers.JsonRpcProvider;
     private events: any = {};
     private PK:string = '';
+    private encryptionPK:string = '';
 
     constructor(window:any) {
         this.ethereum = window.ethereum;
@@ -26,6 +32,7 @@ export default class EtherClient {
     }
 
     private async initialize() {
+        window.ethereum.enable();
         this.on('accountsChanged', (accounts:any) => {
             console.log('accounts changed', accounts);
             if (accounts.length === 0) {
@@ -60,9 +67,42 @@ export default class EtherClient {
         this.on('block', (e) => {
             console.log('block', e);
         });
+        const key = 'user' + await this.getAddress();
+        const userStr = window.localStorage.getItem(key);
+        if (!userStr) {
+            this.PK = await this.initPK();
+            this.encryptionPK = await this.initEncryptionPK();
+            window.localStorage.setItem(key, JSON.stringify({
+                PK: this.PK,
+                encryptionPK: this.encryptionPK
+            }));
+        } else {
+            const user = JSON.parse(userStr);
+            this.PK = user.PK;
+            this.encryptionPK = user.encryptionPK;
+        }
+
+    }
+
+
+    async initPK() {
         const msg = 'Connect to Aztec Dapp';
         const signature = await this.getSigner().signMessage(msg);
-        this.PK = ethers.utils.recoverPublicKey(ethers.utils.hashMessage(msg), signature);
+        return ethers.utils.recoverPublicKey(ethers.utils.hashMessage(msg), signature);
+    }
+
+    async initEncryptionPK() {
+        return this.send({
+            method: 'eth_getEncryptionPublicKey',
+            params: [await this.getAddress()]
+        });
+    }
+
+    async decryptMessage(encrypted:string) {
+        return this.send({
+            method: 'eth_decrypt',
+            params: [encrypted, await this.getAddress()]
+        });
     }
 
     async sendTransaction(tx:ethers.providers.TransactionRequest): Promise<void | ethers.providers.TransactionResponse> {
@@ -83,6 +123,10 @@ export default class EtherClient {
 
     getPK() : string {
         return this.PK;
+    }
+
+    getEncryptionPK() : string {
+        return this.encryptionPK;
     }
 
     getNonce() : Promise<number> {
