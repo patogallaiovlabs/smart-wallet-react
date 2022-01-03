@@ -4,7 +4,6 @@ import ERC20Client from './ERC20Client';
 import { TransactionResponse } from '@ethersproject/providers';
 import AztecClient from './aztec/AztecClient';
 import Note from './aztec/note';
-import BehaviourBase from './contracts/BehaviourBase201907.json';
 
 export default class WalletClient {
 
@@ -70,7 +69,6 @@ export default class WalletClient {
     }
 
     async signTypedData(msg:any): Promise<any> {
-        console.log('signTypedData', msg);
         return this.getClient().getProvider().send('eth_signTypedData_v4', [ this.address, JSON.stringify(msg) ]);
     }
 
@@ -105,9 +103,7 @@ export default class WalletClient {
             nonce: await this.nonce,
             data: calldata
         }
-        console.log('Send tx:', to, calldata);
         const result = await this.client.sendTransaction(tx);
-        console.log('result', result);
         return result;
     }
 

@@ -23,6 +23,9 @@ const ZkAsset = new ethers.Contract(
     IZkAsset.abi
 );
 
+const ENCRYPTION_ALGO = 'x25519-xsalsa20-poly1305';
+const UTF8 = 'utf8';
+
 export default class AztecClient {
     
     static async createDepositProof(PK:string, encryptionPK:any, publicOwner:string, sender:string, value:number) {
@@ -40,7 +43,6 @@ export default class AztecClient {
         const access = null;
         const newNote = await note.create(PK, value, access, toAddress);
         this.grantViewAccess([{address: toAddress, encryptionPK}], newNote);
-        console.log('hashes', inputs[0], newNote);
         const depositOutputNotes = [newNote];
         const publicValue = 0;
         return new JoinSplitProof(inputs, depositOutputNotes, fromAddress, publicValue, toAddress);
@@ -52,11 +54,6 @@ export default class AztecClient {
 
     static async confidentialTransfer(zkAsset:Contract, jsProof: typeof JoinSplitProof, inputOwners:any[]) {
         const data = jsProof.encodeABI(zkAsset.address);
-        //Here I have to change the way we sign the proof, idea:
-        /**
-        * inputOwners [{ pk : null, fnSign: callback}]
-        * where 'fnSign' will be the external implementation of the sign with Metamask.
-        **/
         const inputSignatures = jsProof.constructSignatures(zkAsset.address, inputOwners);
         return  EtherClient.encode(zkAsset, "confidentialTransfer(bytes,bytes)", [data, inputSignatures]);
     }
@@ -96,7 +93,6 @@ export default class AztecClient {
      static generateAccessMetaData(access:any, noteViewKey:any) {
         const noteAccess = access.map(({ address, encryptionPK }:any) => {
             const viewingKey = this.encryptMessage(noteViewKey, encryptionPK);
-            console.log('new - viewingKey', viewingKey);
             return {
                 address,
                 viewingKey: this.toHexString(viewingKey),
@@ -120,25 +116,14 @@ export default class AztecClient {
             encryptedObjt.ciphertext = this.hexToString(encryptedObjt.ciphertext);
             encryptedObjt.ephemPublicKey = this.hexToString(encryptedObjt.ephemPublicKey);
             encryptedObjt.nonce = this.hexToString(encryptedObjt.nonce);
-            encryptedObjt.version = "x25519-xsalsa20-poly1305";
+            encryptedObjt.version = ENCRYPTION_ALGO;
             metadata.encrypted = this._encodeData(encryptedObjt);
             metadata.decrypted = await wallet.decryptMessage(metadata.encrypted);
             metadata.note = await aztec.note.fromViewKey(metadata.decrypted);
         }
         return metadata;
     }
-    /*
-    ciphertext: "5upbPFOwaSRxfElZ4rkTtOpNIYjF44s0Gc5M6sqB4IQT9/Y3F/Zlh9RCwczUO9QXSU/lFOykaja/K/0CsbsfKMZ598fai/hzBE94iDU5Ndt8TdIvusnhI4RvCc47YpBBJTQsMimAzYe++SvhKgdNeW5lVBkGBDI0ADEGRRpJfyIPH0pGH55Bua3pWcOH4eBBbnXK5WS06nkTfSpj"
-    ephemPublicKey: "T04GkdiiB2zCC/VFsQmyq9F/hT+/2OeTjBvWuXFMNyM="
-    nonce: "B++w3uaSzs2OFx0gBBHCEhQgwWzp82/v"
-    version: "x25519-xsalsa20-poly1305"
-
-
-    ciphertext: "SW67druTmoz9vS/woAk=WSp2frnHpoSYdtq6663E1Zr2ZMgJVx6TttwS5RFnWopuL52wyMa6+UnENDkgqwYCcs6ULnnQreZObCkp1/r0HnlGayefOeNjqH5BdbTo40LpPdEEww49IF0UshS77uS4TNKqBJ"
-    ephemPublicKey: "9FzrP0IlqDtqjuNPUCUdFbIAG+5aIuWt"
-    nonce: "/E0ikv419JoqeGq5m6CljS2k"
-    version: "x25519-xsalsa20-poly1305"
-*/
+    
     static encryptMessage(msg:string, encryptionPK:any) {
         return this._encryptMessage(encryptionPK, msg);
     };
@@ -150,23 +135,21 @@ export default class AztecClient {
                     sigUtil.encrypt(
                         publicKey,
                         { data: msg },
-                        'x25519-xsalsa20-poly1305'
+                        ENCRYPTION_ALGO
                     )
                 ),
-                'utf8'
+                UTF8
             )
         );
-        console.log('new - _encryptMessage', encrypted);
         const buff = Buffer.from(encrypted.slice(2), 'hex');
-        const buffurf8 = buff.toString('utf8');
+        const buffurf8 = buff.toString(UTF8);
         const result = JSON.parse(buffurf8);
-        console.log('new - _encryptMessageObj', result);
         return result;
     };
 
     static hexToString(hex:string) {
         const buff = Buffer.from(hex.slice(2), 'hex');
-        return buff.toString('utf8');
+        return buff.toString(UTF8);
     }
 
     static _toHex(data:string) { 
@@ -181,21 +164,23 @@ export default class AztecClient {
                 JSON.stringify(
                     data
                 ),
-                'utf8'
+                UTF8
             )
         );
     };
 
-
+    /**
+     * Receives an encrypted object (returned by metamask) and serialize into Hex format
+     * Where result: 0x + nonce + ephemPublicKey + ciphertext
+     * @param encryptedData 
+     * @returns 
+     */
     static toHexString(encryptedData:any) {
         let { ciphertext, ephemPublicKey, nonce } = encryptedData;
         nonce = this._toHex(nonce);
         ciphertext = this._toHex(ciphertext);
         ephemPublicKey = this._toHex(ephemPublicKey);
-        console.log('ciphertext',ciphertext);
-        console.log('ephemPublicKey',ephemPublicKey);
         const result = [nonce, ephemPublicKey.slice(2), ciphertext.slice(2)].join('');
-        console.log('new - result', result);
         return result;
     }
 
