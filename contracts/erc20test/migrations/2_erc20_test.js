@@ -7,7 +7,7 @@ module.exports = async function (deployer) {
   console.log('|===================================|============================================|')
   console.log('| Contract                          | Address                                    |')
   console.log('|===================================|============================================|')
-  console.log(`| TestERC20                         | ${TestERC20.address} |`)
+  console.log(`     DOC: "${SmartWallet.address}"`);
   console.log('|===================================|============================================|\n')
 
 }

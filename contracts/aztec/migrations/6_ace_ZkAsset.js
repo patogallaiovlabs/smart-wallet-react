@@ -1,3 +1,5 @@
+import TestERC20 from '../../erc20test/build/contracts/TestERC20.json';
+
 const ACE = artifacts.require('./ACE.sol');
 const JoinSplitFluid = artifacts.require('./JoinSplitFluid.sol');
 const Swap = artifacts.require('./Swap.sol');
@@ -9,7 +11,6 @@ const AdjustableFactory = artifacts.require('./noteRegistry/epochs/201907/adjust
 const ZkAsset = artifacts.require('./ZkAsset.sol');
 
 //const DOC_TESTNET = '0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0';
-const DOC_REGTEST = '0xC591D6b9238444A2ec22c8F1b54Eb995Ec2D4121';
 module.exports = async (deployer, network) => {
 
   let aceContract;
@@ -18,7 +19,7 @@ module.exports = async (deployer, network) => {
     await deployer.deploy(
       ZkAsset,
       aceContract.address, // address _aceAddress,
-      DOC_REGTEST, //DOC_TESTNET,
+      TestERC20.networks[33].address, //DOC_TESTNET,
       16
     );
   }
@@ -29,15 +30,14 @@ module.exports = async (deployer, network) => {
   console.log('| Contract                          | Address                                    |')
   console.log('|===================================|============================================|')
   console.log('| AZTEC Contracts ===============================================================|')
-  console.log(`| ACE                               | ${ACE.address} |`)
-  console.log(`| JoinSplitFluid                    | ${JoinSplitFluid.address} |`)
-  console.log(`| Swap                              | ${Swap.address} |`)
-  console.log(`| Dividend                          | ${Dividend.address} |`)
-  console.log(`| PrivateRange                      | ${PrivateRange.address} |`)
-  console.log(`| JoinSplit                         | ${JoinSplit.address} |`)
-  console.log(`| BaseFactory                       | ${BaseFactory.address} |`)
-  console.log(`| AdjustableFactory                 | ${AdjustableFactory.address} |`)
-  console.log(`| ZkAsset                           | ${ZkAsset.address} |`)
-  console.log('|===================================|============================================|\n')
-
+  console.log(`     ACE: "${ACE.address}",`);
+  console.log(`     JoinSplitFluid: "${JoinSplitFluid.address}",`);
+  console.log(`     Swap: "${Swap.address}",`);
+  console.log(`     Dividend: "${Dividend.address}",`);
+  console.log(`     PrivateRange: "${PrivateRange.address}",`);
+  console.log(`     JoinSplit: "${JoinSplit.address}",`);
+  console.log(`     FactoryBase201907: "${BaseFactory.address}",`);
+  console.log(`     FactoryAdjustable201907: "${AdjustableFactory.address}",`);
+  console.log(`     ZkAsset: "${ZkAsset.address}"`);
+  console.log('|===================================|============================================|\n');
 };

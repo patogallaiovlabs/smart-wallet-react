@@ -17,11 +17,11 @@ module.exports = async function (deployer) {
   console.log('| Contract                          | Address                                    |')
   console.log('|===================================|============================================|')
   console.log('| Smart Wallet Contracts ========================================================|')
-  console.log(`| SmartWallet                       | ${SmartWallet.address} |`)
-  console.log(`| SmartWalletFactory                | ${SmartWalletFactory.address} |`)
+  console.log(`     template: "${SmartWallet.address}",`);
+  console.log(`     factory: "${SmartWalletFactory.address}"`);
   console.log('| Custom Smart Wallet Contracts =================================================|')
-  console.log(`| CustomSmartWallet                 | ${CustomSmartWallet.address} |`)
-  console.log(`| CustomSmartWalletFactory          | ${CustomSmartWalletFactory.address} |`)
+  console.log(`     template: "${CustomSmartWallet.address}",`);
+  console.log(`     factory: "${CustomSmartWalletFactory.address}"`);
   console.log('|===================================|============================================|\n')
 
 }
