@@ -1,4 +1,4 @@
-# Getting Started 
+# Aztec and Smart Wallets PoC
 
 This project is a POC with the goal of integrating Smart Wallets and Aztec protocol.
 
