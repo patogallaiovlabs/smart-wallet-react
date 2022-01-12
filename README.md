@@ -3,9 +3,11 @@
 This project is a POC with the goal of integrating Smart Wallets and Aztec protocol.
 
 ## Getting started
-0. Pre-requisites
-1. Start *RSKj* Node
-2. Start *Graph DB* Node
+0. [Pre-requisites](#0-pre-requisites)
+1. [Start *RSKj* Node](#1-start-rskj-node)
+2. [Start *Graph DB* Node](#2-start-graph-db)
+3. [Deploy the protocol/contracts](#3-deploy-the-protocolcontracts)
+4. [Start the App](#4-start-the-app)
 
 ### 0. Pre-requisites
 1. Docker
@@ -53,7 +55,7 @@ For truffle config you can check each of the files here:
 
 
 
-### Start the App
+### 4. Start the App
 
 In the project directory, you can run:
 
