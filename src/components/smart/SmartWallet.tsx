@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, FormControl, InputLabel, Select, TextField, MenuItem } from '@mui/material';
+import { Box, Grid, CircularProgress, Container, Paper} from '@mui/material';
 import Address from '../account/Address';
 import { ethers } from 'ethers';
 import ERC20Client from '../../client/ERC20Client';
 import WalletClient from '../../client/WalletClient';
-import Grid from '@mui/material/Grid';
 import SendToken from './SendToken';
 import ConvertToken from './ConvertToken';
-import DecodeMetadata from './aztec/DecodeMetadata';
 import NoteHistory from './aztec/notes/NoteHistory';
-import Aztec from './aztec/Aztec';
 
 interface PropTypes {
   wallet:WalletClient;
   allwallets:WalletClient[];
+  onUpdate: any;
 }
 
 export default function SmartWallet(prop:PropTypes) {
@@ -31,12 +29,12 @@ export default function SmartWallet(prop:PropTypes) {
         const aw = prop.allwallets;
         setAllwallet(aw);
         const balanceD = await ERC20Client.getDOC().balanceOf(w.address);
-        let b = ethers.utils.formatEther(balanceD);
-        let formated = parseFloat(b);//.toFixed(2);
+        let b =  ethers.utils.formatUnits(balanceD, "ether");
+        let formated = parseFloat(b).toFixed(6);
         setDocs(formated.toString());
         const balanceRD = await ERC20Client.getRDOC().balanceOf(w.address);
         b = ethers.utils.formatUnits(balanceRD, "ether");
-        let formatedb = parseFloat(b).toFixed(2);
+        let formatedb = parseFloat(b).toFixed(6);
         setRDocs(formatedb.toString());
         setLoading(false);
       }
@@ -46,37 +44,82 @@ export default function SmartWallet(prop:PropTypes) {
     }, []);
 
     return (
-        <div>
+        
+      <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }}>
+        <Grid container spacing={2}>
             {(!loading && wallet && 
-                <Box margin="1px" >
-                  <Box margin="10px" sx={{ border: 1}}>
-                    <div>Wallet {wallet && wallet.getIndex()<0?'(EOA)': wallet.getIndex() + 1}: <Address value={prop.wallet?.address}/></div>
-                    <div>Balance DOC: $ {docs}</div>
-                    <div>Balance RDOC: $ {rdocs}</div>
-                  </Box>
-                  <Grid container spacing={1} margin="10px">
-                    <Grid item xs={4}  sx={{ border: 1}} margin="10px">
-                      <SendToken wallet={wallet} allwallets={allwallets} />
-                    </Grid>
-                    <Grid item xs={4} sx={{ border: 1}} margin="10px">
-                      <ConvertToken wallet={wallet} allwallets={allwallets} />
-                    </Grid>
-                    <Grid item xs={8}>
-                      <NoteHistory wallet={wallet} allwallets={prop.allwallets} />
-                    </Grid>
-                  </Grid>
-                </Box>
+              <Grid item xs={12} md={4} lg={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 280,
+                  }}
+                >
+                  <h3>Info</h3>
+                  <div>Address: <Address value={prop.wallet?.address} length={5} tail={true} /></div>
+                  <div> DOC: $ {docs}</div>
+                  <div> RDOC: $ {rdocs}</div>                
+                </Paper>
+              </Grid>
             )}
+          {(!loading && wallet && 
+              <Grid item xs={12} md={4} lg={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 280,
+                  }}
+                >
+                  <SendToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate} />
+                </Paper>
+              </Grid>
+            )}
+            {(!loading && wallet && 
+              <Grid item xs={12} md={4} lg={4}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 280,
+                  }}
+                >
+                  <ConvertToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate}  />            
+                </Paper>
+              </Grid>
+            )}
+            {(!loading && wallet && 
+              <Grid item xs={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 350,
+                    overflow: 'auto'
+                  }}
+                >
+                  <NoteHistory wallet={wallet} allwallets={prop.allwallets} onUpdate={prop.onUpdate}  />
+                </Paper>
+              </Grid>
+            )}
+            
 
-            {/** LOADING */}
-            {(loading && 
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ m: 1, position: 'relative' }}>
-                    <CircularProgress color="inherit" placeholder="Loading..." />
-                  </Box>
+          {/** LOADING */}
+          {(loading && 
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ m: 1, position: 'relative' }}>
+                  <CircularProgress color="inherit" placeholder="Loading..." />
                 </Box>
-            )}
-        </div>
+              </Box>
+          )}
+          
+        </Grid>
+      </Container>
     );
 }
 

@@ -7,7 +7,8 @@ import SendNote from '../SendNote';
 interface PropTypes {
     wallet:WalletClient;
     allwallets?:WalletClient[];
-    note:any
+    note:any;
+    onUpdate:any;
 }
 
 export default function NoteItem(props: PropTypes) {
@@ -57,7 +58,7 @@ export default function NoteItem(props: PropTypes) {
             <TableCell><Button variant="contained"
                 onClick={() => action()}
                 >Decrypt</Button></TableCell>
-            <TableCell><SendNote note={result?.note} wallet={props.wallet} allwallets={props.allwallets}/></TableCell>
+            <TableCell><SendNote note={result?.note} wallet={props.wallet} allwallets={props.allwallets} onUpdate={props.onUpdate}/></TableCell>
           </TableRow>
         );
 }

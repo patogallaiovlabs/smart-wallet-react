@@ -7,6 +7,7 @@ interface PropTypes {
   wallet:WalletClient;
   allwallets?:WalletClient[];
   note:Note;
+  onUpdate:any;
 }
 
 export default function SendNote(prop:PropTypes) {
@@ -39,7 +40,10 @@ export default function SendNote(prop:PropTypes) {
       }catch (e) {
         console.log(e);
       } finally {
-        setLoading(false);
+        setTimeout(()=>{
+          setLoading(false);
+          prop.onUpdate();
+        }, 10000);
       }
     }
 

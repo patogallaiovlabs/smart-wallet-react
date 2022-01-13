@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const msgParams = {
   domain: {
     // Defining the chain aka Rinkeby testnet or Ethereum Main Net
-    chainId: 31,
+    chainId: 33,
     // Give a user friendly name to the specific contract you are signing for.
     name: 'Ether Mail',
     // Just let's you know the latest version. Definitely make sure the field name is correct.
@@ -167,33 +167,52 @@ export default function Sign() {
             setRecover(r);
         }
     }
-    let style = {overflow: 'auto'};
     return (
-        <Container >
+        <Container maxWidth="lg" sx={{ mt: 3, mb: 3 ,
+          marginTop: '49px'}}>
           <Box>
             <Grid container alignItems="stretch"
                             spacing={2} >
             
-                <Grid item xs={6}>
-                    <Item>
+                <Grid item xs={12} md={4} lg={4}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: 500,
+                      overflow: 'auto',
+                      whiteSpace: 'initial',
+                      wordWrap: 'break-word'
+                    }}
+                  >
                         <h3>Sign Data with personal_sign</h3>
                         <TextField label="Data" variant="standard" margin="normal" name="dataInput" value={signDataInput} onChange={evt => setSignDataInput(evt.target.value)} />
-                        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                        <ButtonGroup variant="contained" >
                             <Button className="sign" onClick={() => handleSignData(signDataInput)}>Sign</Button>
                             <Button className="signEthers" onClick={() => handleSignDataEthers(signDataInput)}>Sign Ethers</Button>
                         </ButtonGroup>
                     {signDataResponse && (
                         <div>
-                            <p>Response:</p>
-                            <p style={style} className="response">{signDataResponse}</p>
-                            <p style={style} className="response">Verify {verify}</p>
-                            <p style={style} className="response">Recover {recover}</p>
+                            <p className="response">Response: {signDataResponse}</p>
+                            <p className="response">Verify: {verify}</p>
+                            <p className="response">Recover: {recover}</p>
                         </div>)}
-                    </Item>
+                  </Paper>
                 </Grid>
     
-                <Grid item xs={6}>
-                    <Item>
+                <Grid item xs={12} md={4} lg={4}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: 500,
+                      overflow: 'auto',
+                      whiteSpace: 'initial',
+                      wordWrap: 'break-word'
+                    }}
+                  >
                         <h3>Sign Typed Data</h3>
                         <TextField fullWidth label="Data" margin="normal" variant="standard" name="dataInput" type="text" value={signTypedDataInput} onChange={evt => setSignTypedDataInput(evt.target.value)} />
                         <Button variant="contained" className="signTypeData" onClick={() => handleSignTypedData(signTypedDataInput)}>Sign</Button>
@@ -202,7 +221,7 @@ export default function Sign() {
                             <p>Response:</p>
                             <div className="response">{signTypedDataResponse}</div>
                         </div>)}
-                    </Item>
+                  </Paper>
                 </Grid>
             </Grid>
           </Box>

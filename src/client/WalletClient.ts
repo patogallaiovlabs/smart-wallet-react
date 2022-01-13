@@ -80,7 +80,7 @@ export default class WalletClient {
         return true;
     }
 
-    async approve(erc20: ERC20Client, approvee:string, amount:number): Promise<void | TransactionResponse> {
+    async approve(erc20: ERC20Client, approvee:string, amount:any): Promise<void | TransactionResponse> {
         const encoded = erc20.encodeApprove(approvee, amount);
         return await this.execute(erc20.getAddress(), encoded);
     }
@@ -115,17 +115,17 @@ export default class WalletClient {
         const proof = await AztecClient.createDepositProof(PK, encryptionPK, myaddress, myaddress, amountFormatted);
         const ace = AztecClient.getACE();
         const zkAsset = AztecClient.getZkAsset();
-
+        const amountHex = ethers.BigNumber.from(amountFormatted).mul(1000000000000000).toHexString();
         console.log('--------------------');
         // ERC20 approve
-        const txApprove = await this.approve(doc, ace.address, amountFormatted * 1000000000000000);
+        const txApprove = await this.approve(doc, ace.address, amountHex);
         console.log('approve sent...', txApprove);
         const txApproveResult = await txApprove?.wait();
         console.log('approve result:', txApproveResult);
         console.log('--------------------');
 
         // Aztec/ZKAsset public approve
-        const encoded = await AztecClient.publicApprove(zkAsset.address, proof, amountFormatted * 1000000000000000);
+        const encoded = await AztecClient.publicApprove(zkAsset.address, proof, amountHex);
         const txPublicApprove = await this.execute(ace.address, encoded);
         console.log('publicApprove sent...',txPublicApprove);
         const txPublicApproveResult = await txPublicApprove?.wait();

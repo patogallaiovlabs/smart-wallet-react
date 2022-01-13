@@ -41,6 +41,8 @@ export default function SmartWalletList() {
     const [loading, setLoading] = useState<boolean>(true);
     
     const init = async () => {
+        setWallet(undefined);
+        setWallets(undefined);
         let mainWallet = await WalletClient.getInstance(0);
         setWallet(mainWallet);
         let temp:WalletClient[] = [mainWallet];
@@ -69,6 +71,11 @@ export default function SmartWalletList() {
 
     const deploy = (i: number) => {
       SmartWalletClient.deploy(i);
+    }
+
+    const onUpdate = () => {
+      console.log('***updating...');
+      init();
     }
 
     return (
@@ -120,7 +127,7 @@ export default function SmartWalletList() {
                         </Box>
                           )}
                         {(a.isActive() && 
-                          <SmartWallet wallet={a} allwallets={wallets}></SmartWallet>
+                          <SmartWallet wallet={a} allwallets={wallets} onUpdate={onUpdate}></SmartWallet>
                         )}
                     </TabPanel>
                   })

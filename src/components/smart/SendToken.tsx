@@ -7,6 +7,7 @@ import WalletClient from '../../client/WalletClient';
 interface PropTypes {
   wallet:WalletClient;
   allwallets?:WalletClient[];
+  onUpdate:any;
 }
 
 export default function SendToken(prop:PropTypes) {
@@ -14,7 +15,7 @@ export default function SendToken(prop:PropTypes) {
     const [loading, setLoading] = useState<boolean>(true);
     const [wallet, setWallet] = useState<WalletClient>();
     const [sendTo, setSendTo] = useState<string>();
-    const [amount, setAmount] = useState<string>();
+    const [amount, setAmount] = useState<string>('1');
     
     const init = async () => {
         //init 
@@ -29,11 +30,16 @@ export default function SendToken(prop:PropTypes) {
     }, []);
 
 
-    const sendDoc = () => {
+    const sendDoc = async () => {
+      setLoading(true);
       const doc = ERC20Client.getDOC();
       let amountFormatted = ethers.utils.parseEther(amount??'0');
-      wallet?.execute(doc.contract.address, doc.encodeTransfer(sendTo, amountFormatted));
-      console.log('send');
+      let result = await wallet?.execute(doc.contract.address, doc.encodeTransfer(sendTo, amountFormatted));
+      if(result) {
+        await result.wait();
+        prop.onUpdate();
+      }
+      setLoading(false);
     }
 
     const onSendTo = (evt:any) => {
@@ -44,8 +50,9 @@ export default function SendToken(prop:PropTypes) {
         <div>
             {(!loading && wallet && 
               <div> 
-              <h3>Send DOCs</h3>
+                <h3>Send DOCs</h3>
                 <FormControl>
+                    <InputLabel id="toLabel">To</InputLabel>
                     <Select 
                         labelId="toLabel"
                         id="demo-simple-select"
@@ -53,11 +60,14 @@ export default function SendToken(prop:PropTypes) {
                         label="To"
                         onChange={onSendTo}
                     >
-                        {prop.allwallets?.map((item:WalletClient,i)=>
-                          <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 1} - {item.address.substring(0, 5)}</MenuItem>
-                        )}
+                        {prop.allwallets?.map((item:WalletClient,i)=> { 
+                          return item.isActive() ? <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 1} - {item.address.substring(0, 5)}</MenuItem> : '';
+                        })}
                     </Select>
-                    <TextField label="$" variant="standard" margin="normal" name="dataInput" value={amount} onChange={evt => setAmount(evt.target.value)}></TextField>
+                    <TextField label="$" variant="standard" margin="normal" name="dataInput" value={amount} 
+                      onChange={evt => setAmount(evt.target.value)}
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
+                    ></TextField>
                     <ButtonGroup>
                       <Button variant="contained"
                               onClick={() => sendDoc()}

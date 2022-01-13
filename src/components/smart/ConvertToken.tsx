@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, FormControl, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, TextField, ButtonGroup } from '@mui/material';
 import WalletClient from '../../client/WalletClient';
 
 interface PropTypes {
   wallet:WalletClient;
   allwallets?:WalletClient[];
+  onUpdate: any;
 }
 
 export default function ConvertToken(prop:PropTypes) {
@@ -35,7 +36,10 @@ export default function ConvertToken(prop:PropTypes) {
           console.warn(e);
           setError(e);
         }finally{
-          setLoading(false);
+          setTimeout(()=>{
+            setLoading(false);
+            prop.onUpdate();
+          }, 5000);
         }
       }
     }
@@ -54,9 +58,11 @@ export default function ConvertToken(prop:PropTypes) {
                       onChange={evt => setAmount(evt.target.value)} 
                       inputProps={{min: 0, style: { textAlign: 'right' }}}
                     />
-                    <Button variant="contained"
+                    <ButtonGroup>
+                      <Button variant="contained"
                             onClick={() => convertDoc()}
                             >Convert</Button>
+                    </ButtonGroup>
                 </FormControl>
             )}
 

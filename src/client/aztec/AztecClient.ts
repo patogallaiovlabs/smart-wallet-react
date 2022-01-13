@@ -48,7 +48,7 @@ export default class AztecClient {
         return new JoinSplitProof(inputs, depositOutputNotes, fromAddress, publicValue, toAddress);
     }
 
-    static async publicApprove(approvee:string, depositProof: typeof JoinSplitProof, amount:number) {
+    static async publicApprove(approvee:string, depositProof: typeof JoinSplitProof, amount:any) {
         return  EtherClient.encode(ACE, "publicApprove", [approvee, depositProof.hash, amount]);
     }
 

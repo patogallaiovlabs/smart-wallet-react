@@ -4,6 +4,7 @@ import Loading from '../../../Loading';
 import WalletClient from '../../../../client/WalletClient';
 import NoteItem from './NoteItem';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { useEffect } from 'react';
 
 const userQuery = `
 user($id: ID!) {
@@ -29,13 +30,26 @@ const variables = {
 interface PropTypes {
     wallet:WalletClient;
     allwallets?:WalletClient[];
+    onUpdate: any;
 }
 
 export default function NoteHistory(props: PropTypes) {
     variables.id = props.wallet.address?.toLowerCase();
-    const { loading, error, data } = useQuery(LOAD_QUERY(userQuery), {variables});
+    
+    const { loading, error, data, refetch} = useQuery(LOAD_QUERY(userQuery), {variables});
+    
+    useEffect(() => {
+      refetch(); 
+    }, [props.wallet]);
+
+    const onUpdate = () => {
+      refetch();
+      props.onUpdate();
+    };
+
     if (loading) return <Loading></Loading>;
     if (error) return <p>Error: {error.message}</p>;
+
     return (
       <div>
         <h3>ZkDOC Notes</h3>
@@ -53,7 +67,7 @@ export default function NoteHistory(props: PropTypes) {
           <TableBody>
             {
               data?.user?.balance.map((note:any, i:number)=>{
-                return <NoteItem key={i} wallet={props.wallet} allwallets={props.allwallets} note={note}></NoteItem>
+                return <NoteItem key={i} wallet={props.wallet} allwallets={props.allwallets} note={note} onUpdate={onUpdate}></NoteItem>
               })
             }
           </TableBody>
