@@ -69,10 +69,6 @@ export default function SmartWalletList() {
       setValue(index);
     };
 
-    const deploy = (i: number) => {
-      SmartWalletClient.deploy(i);
-    }
-
     const onUpdate = () => {
       console.log('***updating...');
       init();
@@ -115,20 +111,7 @@ export default function SmartWalletList() {
               {wallets?.map((a, i)=>{
                     let key = i - 1;
                     return <TabPanel value={i} index={i} key={i}>
-                        {(!a.isActive() && 
-                        <Box margin="10px" sx={{ border: 1, borderColor: 'text.primary',}}>
-                          <div>
-                            <p> New Wallet #{key}: </p> 
-                            <Address value={a.address} length={5} tail={true} />
-                            <Button variant="contained"
-                              onClick={() => deploy(key)}
-                            >Deploy</Button>
-                          </div>
-                        </Box>
-                          )}
-                        {(a.isActive() && 
-                          <SmartWallet wallet={a} allwallets={wallets} onUpdate={onUpdate}></SmartWallet>
-                        )}
+                          <SmartWallet wallet={a} identifier={key} allwallets={wallets} onUpdate={onUpdate}></SmartWallet>
                     </TabPanel>
                   })
                 }

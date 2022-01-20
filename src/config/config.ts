@@ -20,19 +20,19 @@ const appconfig = {
                 factory: "0xE0825f57Dd05Ef62FF731c27222A86E104CC4Cad"
             },
             erc20: {
-                DOC: "0x0e19674ebc2c2B6Df3e7a1417c49b50235c61924",
-                RDOC: "0x0e19674ebc2c2B6Df3e7a1417c49b50235c61924"
+                DOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED",
+                RDOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED"
             },
             aztec: {
-                ACE: "0x320c72614222bD0C615e52eac5B23900cEf2b889",
-                JoinSplitFluid: "0x37d2e83C04a4be0a6c577B3f091a41eb21f7dFBb",
-                Swap: "0x24307fAF57D235783582F1912Ef6A384ab456568",
-                Dividend: "0x13cF0a53b6102b518e8b547d5E50b38C1b089E08",
-                PrivateRange: "0x848FD4E195dBb156F245E3E5FaB5b36706776Ba5",
-                JoinSplit: "0xd6681FD2d471c044BDdDc9DF00D1Af195Bd58bfa",
-                FactoryBase201907: "0x8650B271F7cC565aa604F9f98Aa1A5B723B5b2f3",
-                FactoryAdjustable201907: "0xb887D5B504028f88e21dfC042648C379AF3f1F20",
-                ZkAsset: "0xB752c0a21553abA0BCd68f6B4e32E44c4b8B657e"
+                ACE: "0x4F7b5156094e8cFcda28821dC05c5d2Cea58448f",
+                JoinSplitFluid: "0x7b089cfE50C1a5fE5b0DA352348A43bBa81ADdd4",
+                Swap: "0x2a468fbfcfc86f84535d5631Bc1e591cF4f34CD0",
+                Dividend: "0xF76e6b7db78ac46BBDC7F9013CE4c761B7E7024e",
+                PrivateRange: "0xB7548b871f60dc23233521Cea54Acbb7F0CaDbA6",
+                JoinSplit: "0x423c8Ded907505378364eB52d5cbF1fC3b68dF19",
+                FactoryBase201907: "0x2820c09211a077A9d54E6fB9f5fd1e3faBe79e07",
+                FactoryAdjustable201907: "0x911F77160b2d4f929CD22De8EAa586b8761F1859",
+                ZkAsset: "0xA8eE9964B79f1D88E8DDC5A2821e6be0d31D0eb0"
             }
         }
     },
@@ -44,19 +44,19 @@ const appconfig = {
                 factory: "0xE0825f57Dd05Ef62FF731c27222A86E104CC4Cad"
             },
             erc20: {
-                DOC: "0x0e19674ebc2c2B6Df3e7a1417c49b50235c61924",
-                RDOC: "0x0e19674ebc2c2B6Df3e7a1417c49b50235c61924"
+                DOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED",
+                RDOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED"
             },
             aztec: {
-                ACE: "0x320c72614222bD0C615e52eac5B23900cEf2b889",
-                JoinSplitFluid: "0x37d2e83C04a4be0a6c577B3f091a41eb21f7dFBb",
-                Swap: "0x24307fAF57D235783582F1912Ef6A384ab456568",
-                Dividend: "0x13cF0a53b6102b518e8b547d5E50b38C1b089E08",
-                PrivateRange: "0x848FD4E195dBb156F245E3E5FaB5b36706776Ba5",
-                JoinSplit: "0xd6681FD2d471c044BDdDc9DF00D1Af195Bd58bfa",
-                FactoryBase201907: "0x8650B271F7cC565aa604F9f98Aa1A5B723B5b2f3",
-                FactoryAdjustable201907: "0xb887D5B504028f88e21dfC042648C379AF3f1F20",
-                ZkAsset: "0xB752c0a21553abA0BCd68f6B4e32E44c4b8B657e"
+                ACE: "0x4F7b5156094e8cFcda28821dC05c5d2Cea58448f",
+                JoinSplitFluid: "0x7b089cfE50C1a5fE5b0DA352348A43bBa81ADdd4",
+                Swap: "0x2a468fbfcfc86f84535d5631Bc1e591cF4f34CD0",
+                Dividend: "0xF76e6b7db78ac46BBDC7F9013CE4c761B7E7024e",
+                PrivateRange: "0xB7548b871f60dc23233521Cea54Acbb7F0CaDbA6",
+                JoinSplit: "0x423c8Ded907505378364eB52d5cbF1fC3b68dF19",
+                FactoryBase201907: "0x2820c09211a077A9d54E6fB9f5fd1e3faBe79e07",
+                FactoryAdjustable201907: "0x911F77160b2d4f929CD22De8EAa586b8761F1859",
+                ZkAsset: "0xA8eE9964B79f1D88E8DDC5A2821e6be0d31D0eb0"
             }
         }
     },

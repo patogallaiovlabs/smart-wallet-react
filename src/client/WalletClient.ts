@@ -82,6 +82,7 @@ export default class WalletClient {
 
     async approve(erc20: ERC20Client, approvee:string, amount:any): Promise<void | TransactionResponse> {
         const encoded = erc20.encodeApprove(approvee, amount);
+        console.log('approving...');
         return await this.execute(erc20.getAddress(), encoded);
     }
 
@@ -108,14 +109,15 @@ export default class WalletClient {
     }
 
     async convertDocs(amountFormatted: number) {
+        console.log('convertDocs');
         const doc = ERC20Client.getDOC();
         const myaddress = this.address;
         const PK = this.getPK();
         const encryptionPK = this.getEncryptionPK();
+        const amountHex = ethers.BigNumber.from(amountFormatted).mul(ethers.BigNumber.from('0x16345785D8A0000')).toHexString();
         const proof = await AztecClient.createDepositProof(PK, encryptionPK, myaddress, myaddress, amountFormatted);
         const ace = AztecClient.getACE();
         const zkAsset = AztecClient.getZkAsset();
-        const amountHex = ethers.BigNumber.from(amountFormatted).mul(1000000000000000).toHexString();
         console.log('--------------------');
         // ERC20 approve
         const txApprove = await this.approve(doc, ace.address, amountHex);
@@ -132,13 +134,20 @@ export default class WalletClient {
         console.log('publicApprove result', txPublicApproveResult);
         console.log('--------------------');
 
-        // ZKAsset confidential transfer (deposit)
-        const encoded2 = await AztecClient.confidentialTransfer(zkAsset, proof, []);
-        const txConfidentialTransfer = await this.execute(zkAsset.address, encoded2);
-        console.log('confidentialTransfer sent...',txConfidentialTransfer);
-        const txConfidentialTransferResult = await txConfidentialTransfer?.wait()
-        console.log('confidentialTransfer result', txConfidentialTransferResult);
-        console.log('--------------------');
+        try {
+            // ZKAsset confidential transfer (deposit)
+            console.log('confidentialTransfer sending...');
+            const encoded2 = await AztecClient.confidentialTransfer(zkAsset, proof, []);
+            console.log('confidentialTransfer sending...', encoded2);
+            const txConfidentialTransfer = await this.execute(zkAsset.address, encoded2);
+            console.log('confidentialTransfer sent...',txConfidentialTransfer);
+            const txConfidentialTransferResult = await txConfidentialTransfer?.wait()
+            console.log('confidentialTransfer result', txConfidentialTransferResult);
+            console.log('--------------------');
+
+        } catch (e) {
+            console.log('confidential transfer error', e);
+        }
     }
 
     async sendNote(note: Note, to:string) {
@@ -167,6 +176,23 @@ export default class WalletClient {
         const encoded2 = await AztecClient.encodeConfidentialTransfer(zkAsset, sendProofData, sendProofSignatures);
         const txConfidentialTransfer = await this.execute(zkAsset.address, encoded2);
         console.log('confidentialTransfer sent...',txConfidentialTransfer);
+        return txConfidentialTransfer;
+    }
+
+
+    async withdrawNote(note: any): Promise<void | TransactionResponse> {
+        const myaddress = this.address;
+        const proof = await AztecClient.createWithdrawProof(myaddress, myaddress, [note]);
+        const zkAsset = AztecClient.getZkAsset();
+        console.log('--------------------');
+
+        // ZKAsset confidential transfer (deposit)
+        const encoded2 = await AztecClient.confidentialTransfer(zkAsset, proof, []);
+        const txConfidentialTransfer = await this.execute(zkAsset.address, encoded2);
+        console.log('confidentialTransfer sent...',txConfidentialTransfer);
+        const txConfidentialTransferResult = await txConfidentialTransfer?.wait()
+        console.log('confidentialTransfer result', txConfidentialTransferResult);
+        console.log('--------------------');
         return txConfidentialTransfer;
     }
 

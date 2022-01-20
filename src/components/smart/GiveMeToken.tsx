@@ -10,7 +10,7 @@ interface PropTypes {
   onUpdate:any;
 }
 
-export default function SendToken(prop:PropTypes) {
+export default function GiveMeToken(prop:PropTypes) {
     
     const [loading, setLoading] = useState<boolean>(true);
     const [wallet, setWallet] = useState<WalletClient>();
@@ -34,7 +34,7 @@ export default function SendToken(prop:PropTypes) {
       setLoading(true);
       const doc = ERC20Client.getDOC();
       let amountFormatted = ethers.utils.parseEther(amount??'0');
-      let result = await wallet?.execute(doc.contract.address, doc.encodeTransfer(sendTo, amountFormatted));
+      let result = await wallet?.execute(doc.contract.address, doc.encodeGiveMeTokens(sendTo, amountFormatted));
       if(result) {
         await result.wait();
         prop.onUpdate();
@@ -50,7 +50,7 @@ export default function SendToken(prop:PropTypes) {
         <div>
             {(!loading && wallet && 
               <div> 
-                <h3>Send Tokens</h3>
+                <h3>Gimme Tokens</h3>
                 <FormControl>
                     <InputLabel id="toLabel">To</InputLabel>
                     <Select 

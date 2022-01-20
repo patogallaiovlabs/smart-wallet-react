@@ -10,10 +10,11 @@ const userQuery = `
 user($id: ID!) {
   user(id: $id) {
     id
-    balance {
+    balance (where: {status: "CREATED"}, orderBy:time,orderDirection:desc){
         status
         metadata
         currencyAddress
+        time
     }
   }
 }
@@ -52,16 +53,16 @@ export default function NoteHistory(props: PropTypes) {
 
     return (
       <div>
-        <h3>ZkDOC Notes</h3>
+        <h3>ZkToken Notes</h3>
         <Table size="small">
           <TableHead>
             <TableRow>
+              <TableCell>Date</TableCell>
               <TableCell>Hash</TableCell>
               <TableCell>Currency</TableCell>
-              <TableCell>Value</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>View</TableCell>
+              <TableCell sx={{ textAlign : "center"}}>Value</TableCell>
               <TableCell>Send</TableCell>
+              <TableCell>Withdraw</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

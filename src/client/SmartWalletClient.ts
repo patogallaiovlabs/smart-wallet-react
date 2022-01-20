@@ -5,6 +5,7 @@ import EtherClient from './EtherClient';
 import web3 from 'web3';
 import appconfig from '../config/config'
 import WalletClient from './WalletClient';
+import { TransactionResponse } from '@ethersproject/providers';
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000';
 
@@ -55,7 +56,7 @@ export default class SmartWalletClient extends WalletClient {
         return (result !== '0x' && result !== '0x00');
     }
 
-    static async deploy(index: number) {
+    static async deploy(index: number): Promise<void | TransactionResponse>  {
         
         let client = EtherClient.instance();
         let owner = await client.getAddress();

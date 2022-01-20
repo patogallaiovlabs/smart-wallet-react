@@ -4,7 +4,6 @@ import {
 } from '../types/templates/ZKERC20/ZKERC20';
 import {
   Note,
-  Loan,
   User,
 } from '../types/schema';
 
@@ -18,23 +17,18 @@ export function createNote(event: CreateNote): void {
   note.currencyAddress = event.address;
   note.metadata = metadata;
   note.status = 'CREATED';
+  note.time = event.block.timestamp;
   note.save();
 
-  let loan = Loan.load(ownerId);
-  if (loan != null) {
-    let prevBalance = loan.balance;
-    loan.balance = prevBalance.concat([noteId]);
-    loan.save();
-  } else {
-    let user = User.load(ownerId);
-    if (user == null) {
-      user = new User(ownerId);
-      user.address = ownerAddress;
-    }
-    let prevBalance = user.balance;
-    user.balance = prevBalance.concat([noteId]);
-    user.save();
+ 
+  let user = User.load(ownerId);
+  if (user == null) {
+    user = new User(ownerId);
+    user.address = ownerAddress;
   }
+  let prevBalance = user.balance;
+  user.balance = prevBalance.concat([noteId]);
+  user.save();
 }
 
 export function destroyNote(event: DestroyNote): void {

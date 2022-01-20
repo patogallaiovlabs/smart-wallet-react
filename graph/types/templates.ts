@@ -6,25 +6,6 @@ import {
   DataSourceContext
 } from "@graphprotocol/graph-ts";
 
-export class Loan extends DataSourceTemplate {
-  
-  static createWithAddress(address: Address) {
-    DataSourceTemplate.create("Loan", [address.toHex()]);
-  }
-  
-  static create(name: string, params: Array<string>): void {
-    DataSourceTemplate.create("Loan", params);
-  }
-
-  static createWithContext(
-    name: string,
-    params: Array<string>,
-    context: DataSourceContext,
-  ): void {
-    DataSourceTemplate.createWithContext("Loan", params, context)
-  }
-}
-
 export class ZKERC20 extends DataSourceTemplate {
   
   static createWithAddress(address: Address) {

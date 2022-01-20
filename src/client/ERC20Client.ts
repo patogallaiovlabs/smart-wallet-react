@@ -1,5 +1,5 @@
 import { BigNumber, ethers, Contract } from 'ethers';
-import ERC20 from './contracts/ERC20.json';
+import ERC20 from './contracts/TestERC20.json';
 import EtherClient from './EtherClient';
 import appconfig from '../config/config'
 
@@ -48,6 +48,18 @@ export default class ERC20Client {
 
     balanceOf(address: string): Promise<BigNumber> {
         return this.contract.balanceOf(address);
+    }
+
+    allowance(owner: string, spender: string): Promise<any>{
+        return this.contract.allowance(owner, spender);
+    }
+
+    giveMeTokens(address: string, value: any): Promise<any> {
+        return this.contract.giveMeTokens(address, value);
+    }
+
+    encodeGiveMeTokens(...params:any): string {
+        return this._encode("giveMeTokens", params);
     }
 
     encodeApprove(...params:any): string {

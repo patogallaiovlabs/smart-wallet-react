@@ -38,6 +38,16 @@ export default class AztecClient {
 
         return new JoinSplitProof(inputs, depositOutputNotes, sender, publicValue, publicOwner);
     }
+
+    static async createWithdrawProof(publicOwner:string, sender:string, wnotes:[any]) {
+        let publicValue = 0;
+        const outputs:any[] = [];
+        wnotes.forEach((n:any) => {
+            publicValue += n.k.toNumber();
+        });
+
+        return new JoinSplitProof(wnotes, outputs, sender, publicValue, publicOwner);
+    }
      
     static async createJoinProof(PK:string, encryptionPK:any, toAddress:string, fromAddress:string, inputs:any[], value:number) {
         const access = null;

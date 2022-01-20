@@ -21,6 +21,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SmartWalletList from './components/smart/SmartWalletList';
 import Sign from './components/sign/Sign';
 import dotenv from 'dotenv';
+import Balances from './components/balance/Balances';
 
 export default function App() {
 
@@ -167,6 +168,7 @@ export default function App() {
                 <Route path="/" exact component={Dashboard} /> 
                 <Route path="/smart" exact component={SmartWalletList} /> 
                 <Route path="/sign" exact component={Sign} /> 
+                <Route path="/balances" exact component={Balances} /> 
               </div>
           </Box>
         </Box>

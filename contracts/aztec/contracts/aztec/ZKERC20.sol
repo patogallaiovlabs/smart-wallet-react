@@ -13,7 +13,7 @@ contract ZKERC20 is ZkAsset {
   constructor(
     address _aceAddress,
     address _erc20Address
-   ) public ZkAsset(_aceAddress, address(_erc20Address), 1) {
+   ) public ZkAsset(_aceAddress, address(_erc20Address), 1000000000000000) {
      aceAddress = _aceAddress;
      erc20Address = _erc20Address;
   }

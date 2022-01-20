@@ -1,4 +1,4 @@
-import TestERC20 from '../../erc20test/build/contracts/TestERC20.json';
+const TestERC20 = require('../../erc20test/build/contracts/TestERC20.json');
 
 const ACE = artifacts.require('./ACE.sol');
 const JoinSplitFluid = artifacts.require('./JoinSplitFluid.sol');
@@ -20,7 +20,7 @@ module.exports = async (deployer, network) => {
       ZkAsset,
       aceContract.address, // address _aceAddress,
       TestERC20.networks[33].address, //DOC_TESTNET,
-      16
+      '0x16345785D8A0000'//1000000000000000
     );
   }
 

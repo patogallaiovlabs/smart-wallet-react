@@ -55,9 +55,10 @@ export default function SendNote(prop:PropTypes) {
         <div>
             {(!loading && wallet && 
               <div> 
-                <FormControl>
+                <FormControl size="small" margin="normal">
                     <InputLabel id="toLabel" >To</InputLabel>
                     <Select 
+                        size="small"
                         labelId="toLabel"
                         id="demo-simple-select"
                         value={sendTo}
@@ -69,6 +70,7 @@ export default function SendNote(prop:PropTypes) {
                         )}
                     </Select>
                     <Button variant="contained"
+                            disabled={!prop?.note?.k}
                             onClick={() => send()}
                             >Send</Button>
                 </FormControl>

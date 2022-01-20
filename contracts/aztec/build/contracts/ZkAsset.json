@@ -1467,12 +1467,12 @@
         }
       },
       "links": {},
-      "address": "0xB752c0a21553abA0BCd68f6B4e32E44c4b8B657e",
-      "transactionHash": "0x990c20c8ab36640a889b3e54c7cd3227281e3c4ef8c71ca5ed5fd4280ba9aa8b"
+      "address": "0xA8eE9964B79f1D88E8DDC5A2821e6be0d31D0eb0",
+      "transactionHash": "0xa0810fa4cfca3544790436de8163e7df3bc971bdf6a48ae75ddd92d7f5c4ed04"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-11T21:34:42.703Z",
+  "updatedAt": "2022-01-17T22:50:52.509Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "AZTEC",

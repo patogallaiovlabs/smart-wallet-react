@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, FormControl, TextField, ButtonGroup } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, TextField, ButtonGroup, InputAdornment } from '@mui/material';
 import WalletClient from '../../client/WalletClient';
 
 interface PropTypes {
@@ -27,7 +27,7 @@ export default function ConvertToken(prop:PropTypes) {
 
 
     const convertDoc = async () => {
-      let amountFormatted:number = amount?+amount:0; // ethers.utils.parseEther(amount??'0');
+      let amountFormatted:number = (amount?+amount:0) * 10; // ethers.utils.parseEther(amount??'0');
       if (wallet) {
         setLoading(true);
         try {
@@ -46,17 +46,21 @@ export default function ConvertToken(prop:PropTypes) {
 
     return (
         <div>
-            <h3>Convert DOC to ZkDOC</h3>
+            <h3>Convert Tokens to ZkTokens</h3>
             {(wallet && 
                 <FormControl>
                     <TextField 
-                      label="Amount DOC$" 
+                      label="Amount" 
                       variant="standard" 
                       margin="normal" 
                       name="dataInput" 
                       value={amount} 
-                      onChange={evt => setAmount(evt.target.value)} 
+                      onChange={(e) => setAmount(parseFloat(e.target.value).toFixed(1))}
                       inputProps={{min: 0, style: { textAlign: 'right' }}}
+                      type="number"
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      }}
                     />
                     <ButtonGroup>
                       <Button variant="contained"
