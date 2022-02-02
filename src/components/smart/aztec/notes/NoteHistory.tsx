@@ -1,32 +1,15 @@
-
-import { gql, useQuery } from '@apollo/client';
 import Loading from '../../../Loading';
-import WalletClient from '../../../../client/WalletClient';
+import WalletClient from '../../../../client/wallet/WalletClient';
 import NoteItem from './NoteItem';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow, FormControlLabel } from '@mui/material';
 import { useEffect } from 'react';
+import GraphClient from '../../../../client/graph/GraphClient';
+import { useQuery } from '@apollo/client';
 
-const userQuery = `
-user($id: ID!) {
-  user(id: $id) {
-    id
-    balance (where: {status: "CREATED"}, orderBy:time,orderDirection:desc){
-        status
-        metadata
-        currencyAddress
-        time
-    }
-  }
-}
-`;
+const CREATED = 'CREATED';
+const DESTROYED = 'DESTROYED';
 
-const LOAD_QUERY = (query:any) => gql`
-  query ${query}
-`;
 
-const variables = {
-    id: '',
-  };
 
 interface PropTypes {
     wallet:WalletClient;
@@ -35,9 +18,14 @@ interface PropTypes {
 }
 
 export default function NoteHistory(props: PropTypes) {
+
+    const variables = {
+      id: '',
+      status: CREATED
+    };
     variables.id = props.wallet.address?.toLowerCase();
     
-    const { loading, error, data, refetch} = useQuery(LOAD_QUERY(userQuery), {variables});
+    const { loading, error, data, refetch} = useQuery(GraphClient.LOAD_QUERY(GraphClient.USER_BALANCE_QUERY), {variables});
     
     useEffect(() => {
       refetch(); 
@@ -48,12 +36,18 @@ export default function NoteHistory(props: PropTypes) {
       props.onUpdate();
     };
 
+    const showDestroyed = (evt:any) => {
+       variables.status = evt.target.checked ? DESTROYED:CREATED;
+       refetch(variables); 
+    }
+
     if (loading) return <Loading></Loading>;
     if (error) return <p>Error: {error.message}</p>;
 
     return (
       <div>
         <h3>ZkToken Notes</h3>
+        <FormControlLabel control={<Checkbox defaultChecked={false} onChange={showDestroyed} />} label="Show destroyed notes" />     
         <Table size="small">
           <TableHead>
             <TableRow>

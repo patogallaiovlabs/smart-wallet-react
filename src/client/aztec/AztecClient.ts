@@ -2,11 +2,11 @@
 import appconfig from "../../config/config";
 import { ethers, Contract } from 'ethers';
 import IACE from '../contracts/ACE.json';
-import IZkAsset from '../contracts/IZkAsset.json';
+import IZkAsset from '../contracts/ZkAsset.json';
 import * as aztec from 'aztec.js';
 import * as notelib from '@aztec/note-access';
-import WalletClient from '../WalletClient';
-import EtherClient from '../EtherClient';
+import WalletClient from '../wallet/WalletClient';
+import EtherClient from '../wallet/EtherClient';
 const { JoinSplitProof, note } = aztec;
 
 const sigUtil = require('eth-sig-util');
@@ -70,6 +70,11 @@ export default class AztecClient {
 
     static async encodeConfidentialTransfer(zkAsset:Contract, data:string, signatures:string) {
         return EtherClient.encode(zkAsset, "confidentialTransfer(bytes,bytes)", [data, signatures]);
+    }
+
+    static async encodeSetEncryptionKey(zkAsset:Contract, key:string) {
+        const param = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(key));
+        return EtherClient.encode(zkAsset, "setEncryptionPK(bytes)", [param]);
     }
 
     static getACE() {

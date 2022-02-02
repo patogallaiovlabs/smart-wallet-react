@@ -1,19 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Grid, Button, ButtonGroup, Container, Paper, Box, TextField } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import EtherClient from '../../client/EtherClient';
+import EtherClient from '../../client/wallet/EtherClient';
 import { ethers } from 'ethers';
 import web3 from 'web3';
-import { Bytes, concat } from "@ethersproject/bytes";
+import { concat } from "@ethersproject/bytes";
 import { keccak256 } from "@ethersproject/keccak256";
 import { toUtf8Bytes } from "@ethersproject/strings";
-
-const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
 
 const msgParams = {
   domain: {

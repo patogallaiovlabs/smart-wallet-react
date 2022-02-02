@@ -16,7 +16,7 @@ services:
       postgres_pass: let-me-in
       postgres_db: graph-node
       ipfs: 'ipfs:5001'
-      ethereum: 'development:http://host.docker.internal:4444'
+      ethereum: 'development:http://18.195.70.216:4444'
       RUST_LOG: info
       RUST_BACKTRACE: 1
       RUST_BACKTRACE: full

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { AppBar, Box, Button, CircularProgress, Tab, Tabs } from '@mui/material';
-import SmartWalletClient from '../../client/SmartWalletClient';
+import SmartWalletClient from '../../client/wallet/SmartWalletClient';
 import Address from '../account/Address';
 import SmartWallet from './SmartWallet';
-import WalletClient from '../../client/WalletClient';
+import WalletClient from '../../client/wallet/WalletClient';
 import SwipeableViews from 'react-swipeable-views';
 
 interface TabPanelProps {
@@ -44,6 +44,7 @@ export default function SmartWalletList() {
         setWallet(undefined);
         setWallets(undefined);
         let mainWallet = await WalletClient.getInstance(0);
+        mainWallet.init();
         setWallet(mainWallet);
         let temp:WalletClient[] = [mainWallet];
         let active = true;

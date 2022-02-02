@@ -1,9 +1,9 @@
 import { useState, MouseEvent, useEffect } from 'react';
-import { Menu, MenuItem, IconButton } from '@mui/material';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import NoAccountsIcon from '@mui/icons-material/NoAccounts';
-import EtherClient from '../../client/EtherClient';
+import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText, ListItem } from '@mui/material';
+import EtherClient from '../../client/wallet/EtherClient';
 import Address from './Address';
+import { Settings as SettingsIcon, NoAccounts as NoAccountsIcon, ManageAccounts as ManageAccountsIcon } from '@mui/icons-material';
+import { Link } from "react-router-dom";
 
 
 export default function Account() {
@@ -93,6 +93,12 @@ export default function Account() {
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}>
+            <ListItem button component={Link} to="/settings">
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Settings" />
+            </ListItem>
             <MenuItem><strong>Address: </strong><Address value={account}/></MenuItem>
             <MenuItem><strong>ChainId: </strong>{chainId}</MenuItem>
             <MenuItem onClick={() => logout()}>Logout</MenuItem>

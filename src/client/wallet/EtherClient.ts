@@ -1,6 +1,5 @@
 import { Web3Provider, JsonRpcSigner } from '@ethersproject/providers';
 import { ethers } from 'ethers';
-import { encodeRevertReason } from '../../../../../rif-relay/rif-relay/test/TestUtils';
 
 declare const window: any;
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, FormControl, TextField, ButtonGroup, InputAdornment } from '@mui/material';
-import WalletClient from '../../client/WalletClient';
+import { Box, Button, FormControl, TextField, ButtonGroup, InputAdornment, Stepper, Step, StepLabel, Dialog, DialogTitle, Paper, Typography, DialogActions, LinearProgress } from '@mui/material';
+import WalletClient from '../../client/wallet/WalletClient';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -8,17 +8,22 @@ interface PropTypes {
   onUpdate: any;
 }
 
+const steps = ['Approve ERC20', 'Aztec Public Approve', 'Confidential Transfer'];
+
 export default function ConvertToken(prop:PropTypes) {
     
     const [loading, setLoading] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
     const [wallet, setWallet] = useState<WalletClient>();
     const [amount, setAmount] = useState<string>('1');
     const [error, setError] = useState<any>();
+    const [activeStep, setActiveStep] = useState(0);
     
     const init = async () => {
         //init 
         const w = prop.wallet;
         setWallet(w);
+        setError(null);
       }
 
     useEffect(()=>{
@@ -29,24 +34,42 @@ export default function ConvertToken(prop:PropTypes) {
     const convertDoc = async () => {
       let amountFormatted:number = (amount?+amount:0) * 10; // ethers.utils.parseEther(amount??'0');
       if (wallet) {
+        setOpen(true);
         setLoading(true);
         try {
-          await wallet.convertDocs(amountFormatted);
-        } catch (e) {
-          console.warn(e);
-          setError(e);
-        }finally{
+          let result = await wallet.erc20Approve(amountFormatted);
+          setActiveStep(1);
+          const proof = await wallet.createDepositProof(amountFormatted);
+          result = await wallet.aztecPublicApprove(amountFormatted, proof);
+          setActiveStep(2);
+          result = await wallet.confidentialTransfer(proof);
+          setActiveStep(3);
           setTimeout(()=>{
-            setLoading(false);
+            setOpen(false);
+            setActiveStep(0);
             prop.onUpdate();
           }, 5000);
+        } catch (e) {
+          console.warn('error convertDoc', e);
+          setError(e);
+        } finally {
+          setLoading(false);
         }
       }
     }
 
+    const onClose = async (update:boolean) => {
+      setLoading(false);
+      setOpen(false);
+      setError(null);
+      if(update) {
+        prop.onUpdate();
+      }
+    };
+
     return (
         <div>
-            <h3>Convert Tokens to ZkTokens</h3>
+            <h3>Convert Tokens</h3>
             {(wallet && 
                 <FormControl>
                     <TextField 
@@ -70,23 +93,58 @@ export default function ConvertToken(prop:PropTypes) {
                 </FormControl>
             )}
 
-            {/** LOADING */}
-            {(loading && 
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {/** POPUP */}
+              <Dialog open={open} onClose={() => onClose(true)} fullWidth >
+                <DialogTitle color='black' >Converting Tokens</DialogTitle>
+                <Paper>
                   <Box sx={{ m: 1, position: 'relative' }}>
-                    <div>Converting {amount} DOCs to ZkDOCs...</div>
-                    <div>This could take several minutes, please don't close the window.</div>
-                    <CircularProgress color="inherit" placeholder="Loading..." />
 
+              
+                    <Stepper activeStep={activeStep}>
+                      {steps.map((label, index) => {
+                        const stepProps: { completed?: boolean } = {};
+                        const labelProps: {
+                          optional?: React.ReactNode;
+                          error?: boolean;
+                        } = {};
+                        if (error && activeStep == index) {
+                          labelProps.optional = (
+                            <Typography variant="caption" color="error">
+                              {error.message}
+                            </Typography>
+                          );
+                          labelProps.error = true;
+                        }
+                        return (
+                          <Step key={label} {...stepProps}>
+                            <StepLabel {...labelProps}>{label}</StepLabel>
+                          </Step>
+                        );
+                      })}
+                    </Stepper>
+                    {(loading && 
+                      <Paper 
+                        sx={{
+                          p: 2,
+                          m: 1, 
+                          flexDirection: 'column',
+                          height: '100px',
+                        }}>
+                        <div>Converting {amount} DOCs to ZkDOCs...</div>
+                        <div>This could take several minutes, please don't close the window.</div>
+                        <LinearProgress color="warning" placeholder="Loading..." />
+                      </Paper>
+                    )}
                   </Box>
-                </Box>
-            )}
-            {(error && 
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  {error.message}
-                </Box>
-            )}
-        </div>
-    );
+                </Paper>
+                {(error && 
+                    <DialogActions>
+                      <Button variant='text'
+                              onClick={() => onClose(false)}
+                              >Close</Button>
+                    </DialogActions>
+                )}
+              </Dialog>
+            </div>
+        );
 }
-

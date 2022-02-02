@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, FormControl, InputLabel, Select, TextField, MenuItem, ButtonGroup, InputAdornment } from '@mui/material';
 import { ethers } from 'ethers';
-import ERC20Client from '../../client/ERC20Client';
-import WalletClient from '../../client/WalletClient';
+import ERC20Client from '../../client/wallet/ERC20Client';
+import WalletClient from '../../client/wallet/WalletClient';
 
 interface PropTypes {
   wallet:WalletClient;

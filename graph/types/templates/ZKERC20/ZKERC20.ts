@@ -10,6 +10,128 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class ConvertTokens extends ethereum.Event {
+  get params(): ConvertTokens__Params {
+    return new ConvertTokens__Params(this);
+  }
+}
+
+export class ConvertTokens__Params {
+  _event: ConvertTokens;
+
+  constructor(event: ConvertTokens) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class CreateNote extends ethereum.Event {
+  get params(): CreateNote__Params {
+    return new CreateNote__Params(this);
+  }
+}
+
+export class CreateNote__Params {
+  _event: CreateNote;
+
+  constructor(event: CreateNote) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get noteHash(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+
+  get metadata(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
+}
+
+export class CreateNoteRegistry extends ethereum.Event {
+  get params(): CreateNoteRegistry__Params {
+    return new CreateNoteRegistry__Params(this);
+  }
+}
+
+export class CreateNoteRegistry__Params {
+  _event: CreateNoteRegistry;
+
+  constructor(event: CreateNoteRegistry) {
+    this._event = event;
+  }
+
+  get noteRegistryId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class CreateZkAsset extends ethereum.Event {
+  get params(): CreateZkAsset__Params {
+    return new CreateZkAsset__Params(this);
+  }
+}
+
+export class CreateZkAsset__Params {
+  _event: CreateZkAsset;
+
+  constructor(event: CreateZkAsset) {
+    this._event = event;
+  }
+
+  get aceAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get linkedTokenAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get scalingFactor(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get _canAdjustSupply(): boolean {
+    return this._event.parameters[3].value.toBoolean();
+  }
+
+  get _canConvert(): boolean {
+    return this._event.parameters[4].value.toBoolean();
+  }
+}
+
+export class DestroyNote extends ethereum.Event {
+  get params(): DestroyNote__Params {
+    return new DestroyNote__Params(this);
+  }
+}
+
+export class DestroyNote__Params {
+  _event: DestroyNote;
+
+  constructor(event: DestroyNote) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get noteHash(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+}
+
 export class Log extends ethereum.Event {
   get params(): Log__Params {
     return new Log__Params(this);
@@ -54,128 +176,6 @@ export class LogString__Params {
   }
 }
 
-export class CreateZkAsset extends ethereum.Event {
-  get params(): CreateZkAsset__Params {
-    return new CreateZkAsset__Params(this);
-  }
-}
-
-export class CreateZkAsset__Params {
-  _event: CreateZkAsset;
-
-  constructor(event: CreateZkAsset) {
-    this._event = event;
-  }
-
-  get aceAddress(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get linkedTokenAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get scalingFactor(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-
-  get _canAdjustSupply(): boolean {
-    return this._event.parameters[3].value.toBoolean();
-  }
-
-  get _canConvert(): boolean {
-    return this._event.parameters[4].value.toBoolean();
-  }
-}
-
-export class CreateNoteRegistry extends ethereum.Event {
-  get params(): CreateNoteRegistry__Params {
-    return new CreateNoteRegistry__Params(this);
-  }
-}
-
-export class CreateNoteRegistry__Params {
-  _event: CreateNoteRegistry;
-
-  constructor(event: CreateNoteRegistry) {
-    this._event = event;
-  }
-
-  get noteRegistryId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
-export class CreateNote extends ethereum.Event {
-  get params(): CreateNote__Params {
-    return new CreateNote__Params(this);
-  }
-}
-
-export class CreateNote__Params {
-  _event: CreateNote;
-
-  constructor(event: CreateNote) {
-    this._event = event;
-  }
-
-  get owner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get noteHash(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-  
-  get metadata(): Bytes {
-    return this._event.parameters[2].value.toBytes();
-  }
-}
-
-export class DestroyNote extends ethereum.Event {
-  get params(): DestroyNote__Params {
-    return new DestroyNote__Params(this);
-  }
-}
-
-export class DestroyNote__Params {
-  _event: DestroyNote;
-
-  constructor(event: DestroyNote) {
-    this._event = event;
-  }
-
-  get owner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get noteHash(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-}
-
-export class ConvertTokens extends ethereum.Event {
-  get params(): ConvertTokens__Params {
-    return new ConvertTokens__Params(this);
-  }
-}
-
-export class ConvertTokens__Params {
-  _event: ConvertTokens;
-
-  constructor(event: ConvertTokens) {
-    this._event = event;
-  }
-
-  get owner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get value(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
 export class RedeemTokens extends ethereum.Event {
   get params(): RedeemTokens__Params {
     return new RedeemTokens__Params(this);
@@ -198,29 +198,114 @@ export class RedeemTokens__Params {
   }
 }
 
-export class ZKERC20__flagsResult {
-  value0: boolean;
-  value1: boolean;
-  value2: boolean;
+export class SetEncryptionPK extends ethereum.Event {
+  get params(): SetEncryptionPK__Params {
+    return new SetEncryptionPK__Params(this);
+  }
+}
 
-  constructor(value0: boolean, value1: boolean, value2: boolean) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
+export class SetEncryptionPK__Params {
+  _event: SetEncryptionPK;
+
+  constructor(event: SetEncryptionPK) {
+    this._event = event;
   }
 
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromBoolean(this.value0));
-    map.set("value1", ethereum.Value.fromBoolean(this.value1));
-    map.set("value2", ethereum.Value.fromBoolean(this.value2));
-    return map;
+  get userAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get encryptionPK(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+}
+
+export class UpdateNoteMetaData extends ethereum.Event {
+  get params(): UpdateNoteMetaData__Params {
+    return new UpdateNoteMetaData__Params(this);
+  }
+}
+
+export class UpdateNoteMetaData__Params {
+  _event: UpdateNoteMetaData;
+
+  constructor(event: UpdateNoteMetaData) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get noteHash(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+
+  get metadata(): Bytes {
+    return this._event.parameters[2].value.toBytes();
   }
 }
 
 export class ZKERC20 extends ethereum.SmartContract {
   static bind(address: Address): ZKERC20 {
     return new ZKERC20("ZKERC20", address);
+  }
+
+  BURN_PROOF(): i32 {
+    let result = super.call("BURN_PROOF", "BURN_PROOF():(uint24)", []);
+
+    return result[0].toI32();
+  }
+
+  try_BURN_PROOF(): ethereum.CallResult<i32> {
+    let result = super.tryCall("BURN_PROOF", "BURN_PROOF():(uint24)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
+  DIVIDEND_PROOF(): i32 {
+    let result = super.call("DIVIDEND_PROOF", "DIVIDEND_PROOF():(uint24)", []);
+
+    return result[0].toI32();
+  }
+
+  try_DIVIDEND_PROOF(): ethereum.CallResult<i32> {
+    let result = super.tryCall(
+      "DIVIDEND_PROOF",
+      "DIVIDEND_PROOF():(uint24)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
+  EIP712_DOMAIN_HASH(): Bytes {
+    let result = super.call(
+      "EIP712_DOMAIN_HASH",
+      "EIP712_DOMAIN_HASH():(bytes32)",
+      []
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_EIP712_DOMAIN_HASH(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "EIP712_DOMAIN_HASH",
+      "EIP712_DOMAIN_HASH():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   JOIN_SPLIT_PROOF(): i32 {
@@ -246,27 +331,80 @@ export class ZKERC20 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
-  ZERO_VALUE_NOTE_HASH(): Bytes {
+  MINT_PROOF(): i32 {
+    let result = super.call("MINT_PROOF", "MINT_PROOF():(uint24)", []);
+
+    return result[0].toI32();
+  }
+
+  try_MINT_PROOF(): ethereum.CallResult<i32> {
+    let result = super.tryCall("MINT_PROOF", "MINT_PROOF():(uint24)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
+  PRIVATE_RANGE_PROOF(): i32 {
     let result = super.call(
-      "ZERO_VALUE_NOTE_HASH",
-      "ZERO_VALUE_NOTE_HASH():(bytes32)",
+      "PRIVATE_RANGE_PROOF",
+      "PRIVATE_RANGE_PROOF():(uint24)",
       []
     );
 
-    return result[0].toBytes();
+    return result[0].toI32();
   }
 
-  try_ZERO_VALUE_NOTE_HASH(): ethereum.CallResult<Bytes> {
+  try_PRIVATE_RANGE_PROOF(): ethereum.CallResult<i32> {
     let result = super.tryCall(
-      "ZERO_VALUE_NOTE_HASH",
-      "ZERO_VALUE_NOTE_HASH():(bytes32)",
+      "PRIVATE_RANGE_PROOF",
+      "PRIVATE_RANGE_PROOF():(uint24)",
       []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
+  PUBLIC_RANGE_PROOF(): i32 {
+    let result = super.call(
+      "PUBLIC_RANGE_PROOF",
+      "PUBLIC_RANGE_PROOF():(uint24)",
+      []
+    );
+
+    return result[0].toI32();
+  }
+
+  try_PUBLIC_RANGE_PROOF(): ethereum.CallResult<i32> {
+    let result = super.tryCall(
+      "PUBLIC_RANGE_PROOF",
+      "PUBLIC_RANGE_PROOF():(uint24)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toI32());
+  }
+
+  ace(): Address {
+    let result = super.call("ace", "ace():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_ace(): ethereum.CallResult<Address> {
+    let result = super.tryCall("ace", "ace():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   confidentialApproved(param0: Bytes, param1: Address): boolean {
@@ -316,141 +454,6 @@ export class ZKERC20 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  PRIVATE_RANGE_PROOF(): i32 {
-    let result = super.call(
-      "PRIVATE_RANGE_PROOF",
-      "PRIVATE_RANGE_PROOF():(uint24)",
-      []
-    );
-
-    return result[0].toI32();
-  }
-
-  try_PRIVATE_RANGE_PROOF(): ethereum.CallResult<i32> {
-    let result = super.tryCall(
-      "PRIVATE_RANGE_PROOF",
-      "PRIVATE_RANGE_PROOF():(uint24)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
-  flags(): ZKERC20__flagsResult {
-    let result = super.call("flags", "flags():(bool,bool,bool)", []);
-
-    return new ZKERC20__flagsResult(
-      result[0].toBoolean(),
-      result[1].toBoolean(),
-      result[2].toBoolean()
-    );
-  }
-
-  try_flags(): ethereum.CallResult<ZKERC20__flagsResult> {
-    let result = super.tryCall("flags", "flags():(bool,bool,bool)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new ZKERC20__flagsResult(
-        value[0].toBoolean(),
-        value[1].toBoolean(),
-        value[2].toBoolean()
-      )
-    );
-  }
-
-  DIVIDEND_PROOF(): i32 {
-    let result = super.call("DIVIDEND_PROOF", "DIVIDEND_PROOF():(uint24)", []);
-
-    return result[0].toI32();
-  }
-
-  try_DIVIDEND_PROOF(): ethereum.CallResult<i32> {
-    let result = super.tryCall(
-      "DIVIDEND_PROOF",
-      "DIVIDEND_PROOF():(uint24)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
-  MINT_PROOF(): i32 {
-    let result = super.call("MINT_PROOF", "MINT_PROOF():(uint24)", []);
-
-    return result[0].toI32();
-  }
-
-  try_MINT_PROOF(): ethereum.CallResult<i32> {
-    let result = super.tryCall("MINT_PROOF", "MINT_PROOF():(uint24)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
-  ace(): Address {
-    let result = super.call("ace", "ace():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_ace(): ethereum.CallResult<Address> {
-    let result = super.tryCall("ace", "ace():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  BURN_PROOF(): i32 {
-    let result = super.call("BURN_PROOF", "BURN_PROOF():(uint24)", []);
-
-    return result[0].toI32();
-  }
-
-  try_BURN_PROOF(): ethereum.CallResult<i32> {
-    let result = super.tryCall("BURN_PROOF", "BURN_PROOF():(uint24)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
-  }
-
-  EIP712_DOMAIN_HASH(): Bytes {
-    let result = super.call(
-      "EIP712_DOMAIN_HASH",
-      "EIP712_DOMAIN_HASH():(bytes32)",
-      []
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_EIP712_DOMAIN_HASH(): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "EIP712_DOMAIN_HASH",
-      "EIP712_DOMAIN_HASH():(bytes32)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
   linkedToken(): Address {
     let result = super.call("linkedToken", "linkedToken():(address)", []);
 
@@ -466,23 +469,145 @@ export class ZKERC20 extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  scalingFactor(): BigInt {
-    let result = super.call("scalingFactor", "scalingFactor():(uint256)", []);
+  metaDataTimeLog(param0: Bytes): BigInt {
+    let result = super.call(
+      "metaDataTimeLog",
+      "metaDataTimeLog(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
 
     return result[0].toBigInt();
   }
 
-  try_scalingFactor(): ethereum.CallResult<BigInt> {
+  try_metaDataTimeLog(param0: Bytes): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "scalingFactor",
-      "scalingFactor():(uint256)",
-      []
+      "metaDataTimeLog",
+      "metaDataTimeLog(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(param0)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  noteAccess(param0: Bytes): BigInt {
+    let result = super.call("noteAccess", "noteAccess(bytes32):(uint256)", [
+      ethereum.Value.fromFixedBytes(param0)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_noteAccess(param0: Bytes): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("noteAccess", "noteAccess(bytes32):(uint256)", [
+      ethereum.Value.fromFixedBytes(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  signatureLog(param0: Bytes): boolean {
+    let result = super.call("signatureLog", "signatureLog(bytes32):(bool)", [
+      ethereum.Value.fromFixedBytes(param0)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_signatureLog(param0: Bytes): ethereum.CallResult<boolean> {
+    let result = super.tryCall("signatureLog", "signatureLog(bytes32):(bool)", [
+      ethereum.Value.fromFixedBytes(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+}
+
+export class ConstructorCall extends ethereum.Call {
+  get inputs(): ConstructorCall__Inputs {
+    return new ConstructorCall__Inputs(this);
+  }
+
+  get outputs(): ConstructorCall__Outputs {
+    return new ConstructorCall__Outputs(this);
+  }
+}
+
+export class ConstructorCall__Inputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+
+  get _aceAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _erc20Address(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class ConstructorCall__Outputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+}
+
+export class ApproveProofCall extends ethereum.Call {
+  get inputs(): ApproveProofCall__Inputs {
+    return new ApproveProofCall__Inputs(this);
+  }
+
+  get outputs(): ApproveProofCall__Outputs {
+    return new ApproveProofCall__Outputs(this);
+  }
+}
+
+export class ApproveProofCall__Inputs {
+  _call: ApproveProofCall;
+
+  constructor(call: ApproveProofCall) {
+    this._call = call;
+  }
+
+  get _proofId(): i32 {
+    return this._call.inputValues[0].value.toI32();
+  }
+
+  get _proofOutputs(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get _spender(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get _approval(): boolean {
+    return this._call.inputValues[3].value.toBoolean();
+  }
+
+  get _proofSignature(): Bytes {
+    return this._call.inputValues[4].value.toBytes();
+  }
+}
+
+export class ApproveProofCall__Outputs {
+  _call: ApproveProofCall;
+
+  constructor(call: ApproveProofCall) {
+    this._call = call;
   }
 }
 
@@ -511,7 +636,7 @@ export class ConfidentialApproveCall__Inputs {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _status(): boolean {
+  get _spenderApproval(): boolean {
     return this._call.inputValues[2].value.toBoolean();
   }
 
@@ -545,6 +670,44 @@ export class ConfidentialTransferCall__Inputs {
     this._call = call;
   }
 
+  get _proofId(): i32 {
+    return this._call.inputValues[0].value.toI32();
+  }
+
+  get _proofData(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get _signatures(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+}
+
+export class ConfidentialTransferCall__Outputs {
+  _call: ConfidentialTransferCall;
+
+  constructor(call: ConfidentialTransferCall) {
+    this._call = call;
+  }
+}
+
+export class ConfidentialTransfer1Call extends ethereum.Call {
+  get inputs(): ConfidentialTransfer1Call__Inputs {
+    return new ConfidentialTransfer1Call__Inputs(this);
+  }
+
+  get outputs(): ConfidentialTransfer1Call__Outputs {
+    return new ConfidentialTransfer1Call__Outputs(this);
+  }
+}
+
+export class ConfidentialTransfer1Call__Inputs {
+  _call: ConfidentialTransfer1Call;
+
+  constructor(call: ConfidentialTransfer1Call) {
+    this._call = call;
+  }
+
   get _proofData(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
@@ -554,10 +717,10 @@ export class ConfidentialTransferCall__Inputs {
   }
 }
 
-export class ConfidentialTransferCall__Outputs {
-  _call: ConfidentialTransferCall;
+export class ConfidentialTransfer1Call__Outputs {
+  _call: ConfidentialTransfer1Call;
 
-  constructor(call: ConfidentialTransferCall) {
+  constructor(call: ConfidentialTransfer1Call) {
     this._call = call;
   }
 }
@@ -596,36 +759,66 @@ export class ConfidentialTransferFromCall__Outputs {
   }
 }
 
-export class ConstructorCall extends ethereum.Call {
-  get inputs(): ConstructorCall__Inputs {
-    return new ConstructorCall__Inputs(this);
+export class SetEncryptionPKCall extends ethereum.Call {
+  get inputs(): SetEncryptionPKCall__Inputs {
+    return new SetEncryptionPKCall__Inputs(this);
   }
 
-  get outputs(): ConstructorCall__Outputs {
-    return new ConstructorCall__Outputs(this);
+  get outputs(): SetEncryptionPKCall__Outputs {
+    return new SetEncryptionPKCall__Outputs(this);
   }
 }
 
-export class ConstructorCall__Inputs {
-  _call: ConstructorCall;
+export class SetEncryptionPKCall__Inputs {
+  _call: SetEncryptionPKCall;
 
-  constructor(call: ConstructorCall) {
+  constructor(call: SetEncryptionPKCall) {
     this._call = call;
   }
 
-  get _aceAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _erc20Address(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get encryptionPK(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
   }
 }
 
-export class ConstructorCall__Outputs {
-  _call: ConstructorCall;
+export class SetEncryptionPKCall__Outputs {
+  _call: SetEncryptionPKCall;
 
-  constructor(call: ConstructorCall) {
+  constructor(call: SetEncryptionPKCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateNoteMetaDataCall extends ethereum.Call {
+  get inputs(): UpdateNoteMetaDataCall__Inputs {
+    return new UpdateNoteMetaDataCall__Inputs(this);
+  }
+
+  get outputs(): UpdateNoteMetaDataCall__Outputs {
+    return new UpdateNoteMetaDataCall__Outputs(this);
+  }
+}
+
+export class UpdateNoteMetaDataCall__Inputs {
+  _call: UpdateNoteMetaDataCall;
+
+  constructor(call: UpdateNoteMetaDataCall) {
+    this._call = call;
+  }
+
+  get noteHash(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get metaData(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class UpdateNoteMetaDataCall__Outputs {
+  _call: UpdateNoteMetaDataCall;
+
+  constructor(call: UpdateNoteMetaDataCall) {
     this._call = call;
   }
 }

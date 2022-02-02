@@ -11,3 +11,5 @@
   }
 }
 
+
+`graph codegen  --output-dir folder subgraph.yaml`

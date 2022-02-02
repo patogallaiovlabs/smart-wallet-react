@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, FormControl, InputLabel, Select, TextField, MenuItem, FormGroup } from '@mui/material';
-import WalletClient from '../../../client/WalletClient';
+import WalletClient from '../../../client/wallet/WalletClient';
 import contracts from '../../../client/contracts';
 
 interface PropTypes {

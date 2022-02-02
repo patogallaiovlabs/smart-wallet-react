@@ -198,6 +198,28 @@ export class RedeemTokens__Params {
   }
 }
 
+export class SetEncryptionPK extends ethereum.Event {
+  get params(): SetEncryptionPK__Params {
+    return new SetEncryptionPK__Params(this);
+  }
+}
+
+export class SetEncryptionPK__Params {
+  _event: SetEncryptionPK;
+
+  constructor(event: SetEncryptionPK) {
+    this._event = event;
+  }
+
+  get userAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get encryptionPK(): Bytes {
+    return this._event.parameters[1].value.toBytes();
+  }
+}
+
 export class UpdateNoteMetaData extends ethereum.Event {
   get params(): UpdateNoteMetaData__Params {
     return new UpdateNoteMetaData__Params(this);
@@ -733,6 +755,36 @@ export class ConfidentialTransferFromCall__Outputs {
   _call: ConfidentialTransferFromCall;
 
   constructor(call: ConfidentialTransferFromCall) {
+    this._call = call;
+  }
+}
+
+export class SetEncryptionPKCall extends ethereum.Call {
+  get inputs(): SetEncryptionPKCall__Inputs {
+    return new SetEncryptionPKCall__Inputs(this);
+  }
+
+  get outputs(): SetEncryptionPKCall__Outputs {
+    return new SetEncryptionPKCall__Outputs(this);
+  }
+}
+
+export class SetEncryptionPKCall__Inputs {
+  _call: SetEncryptionPKCall;
+
+  constructor(call: SetEncryptionPKCall) {
+    this._call = call;
+  }
+
+  get encryptionPK(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+}
+
+export class SetEncryptionPKCall__Outputs {
+  _call: SetEncryptionPKCall;
+
+  constructor(call: SetEncryptionPKCall) {
     this._call = call;
   }
 }

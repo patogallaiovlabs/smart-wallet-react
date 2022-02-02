@@ -1,4 +1,4 @@
-const TestERC20 = require('../../erc20test/build/contracts/TestERC20.json');
+//const TestERC20 = require('../../erc20test/build/contracts/TestERC20.json');
 
 const ACE = artifacts.require('./ACE.sol');
 const JoinSplitFluid = artifacts.require('./JoinSplitFluid.sol');
@@ -10,7 +10,7 @@ const BaseFactory = artifacts.require('./noteRegistry/epochs/201907/base/Factory
 const AdjustableFactory = artifacts.require('./noteRegistry/epochs/201907/adjustable/FactoryAdjustable201907.sol');
 const ZkAsset = artifacts.require('./ZkAsset.sol');
 
-//const DOC_TESTNET = '0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0';
+const DOC_TESTNET = '0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0';
 module.exports = async (deployer, network) => {
 
   let aceContract;
@@ -19,7 +19,7 @@ module.exports = async (deployer, network) => {
     await deployer.deploy(
       ZkAsset,
       aceContract.address, // address _aceAddress,
-      TestERC20.networks[33].address, //DOC_TESTNET,
+      DOC_TESTNET,//TestERC20.networks[33].address, 
       '0x16345785D8A0000'//1000000000000000
     );
   }

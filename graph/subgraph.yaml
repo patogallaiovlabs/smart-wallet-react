@@ -9,7 +9,7 @@ dataSources:
     network: development
     source:
       abi: ZKERC20
-      startBlock: 0
+      startBlock: 2536200
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -17,13 +17,14 @@ dataSources:
       file: ./mappings/ZKERC20.ts
       entities:
         - Note
-          Loan
           User
       abis:
         - name: ZKERC20
-          file: ../build/contracts/ZKERC20.json
+          file: ../contracts/aztec/build/contracts/ZKERC20.json
       eventHandlers:
         - event: CreateNote(indexed address,indexed bytes32,bytes)
           handler: createNote
         - event: DestroyNote(indexed address,indexed bytes32)
           handler: destroyNote
+        - event: SetEncryptionPK(indexed address,bytes)
+          handler: setEncryptionPK

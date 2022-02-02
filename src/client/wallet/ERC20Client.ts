@@ -1,7 +1,7 @@
 import { BigNumber, ethers, Contract } from 'ethers';
-import ERC20 from './contracts/TestERC20.json';
+import ERC20 from '../contracts/TestERC20.json';
 import EtherClient from './EtherClient';
-import appconfig from '../config/config'
+import appconfig from '../../config/config'
 
 const config = appconfig.testnet;
 

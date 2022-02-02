@@ -2,8 +2,8 @@ import { ethers } from 'ethers';
 import EtherClient from './EtherClient';
 import ERC20Client from './ERC20Client';
 import { TransactionResponse } from '@ethersproject/providers';
-import AztecClient from './aztec/AztecClient';
-import Note from './aztec/note';
+import AztecClient from '../aztec/AztecClient';
+import Note from '../aztec/note';
 
 export default class WalletClient {
 
@@ -13,9 +13,12 @@ export default class WalletClient {
     }
 
     /** INSTANCE */
-
     protected client:EtherClient;
     _address:string;
+    config:{encryptionPK:string, defaultPrivate:boolean} = {
+        encryptionPK: '',
+        defaultPrivate: true
+    };
 
     constructor(client:EtherClient, address: string){
         this.client = client;
@@ -23,7 +26,28 @@ export default class WalletClient {
     }
 
     async init() {
+        const key = 'wallet-config-' + this.address;
+        const configStr = window.localStorage.getItem(key);
+        if (!configStr) {
+            this.config.encryptionPK = await this.getEncryptionPK();
+            window.localStorage.setItem(key, JSON.stringify(this.config));
+        } else {
+            this.config = JSON.parse(configStr);
+        }
+    }
 
+    getDefaultPrivate(): boolean {
+        return this.config.defaultPrivate;
+    }
+
+    setDefaultPrivate(defaultPrivate:boolean) {
+        const key = 'wallet-config-' + this.address;
+        this.config.defaultPrivate = defaultPrivate;
+        window.localStorage.setItem(key, JSON.stringify(this.config));
+    }
+
+    getConfig() {
+        return this.config;
     }
 
     getIndex(): number{
@@ -108,53 +132,55 @@ export default class WalletClient {
         return result;
     }
 
-    async convertDocs(amountFormatted: number) {
-        console.log('convertDocs');
-        const doc = ERC20Client.getDOC();
-        const myaddress = this.address;
-        const PK = this.getPK();
-        const encryptionPK = this.getEncryptionPK();
-        const amountHex = ethers.BigNumber.from(amountFormatted).mul(ethers.BigNumber.from('0x16345785D8A0000')).toHexString();
-        const proof = await AztecClient.createDepositProof(PK, encryptionPK, myaddress, myaddress, amountFormatted);
-        const ace = AztecClient.getACE();
-        const zkAsset = AztecClient.getZkAsset();
-        console.log('--------------------');
-        // ERC20 approve
-        const txApprove = await this.approve(doc, ace.address, amountHex);
-        console.log('approve sent...', txApprove);
-        const txApproveResult = await txApprove?.wait();
-        console.log('approve result:', txApproveResult);
-        console.log('--------------------');
-
-        // Aztec/ZKAsset public approve
-        const encoded = await AztecClient.publicApprove(zkAsset.address, proof, amountHex);
-        const txPublicApprove = await this.execute(ace.address, encoded);
-        console.log('publicApprove sent...',txPublicApprove);
-        const txPublicApproveResult = await txPublicApprove?.wait();
-        console.log('publicApprove result', txPublicApproveResult);
-        console.log('--------------------');
-
+    async confidentialTransfer(proof: any) {
         try {
-            // ZKAsset confidential transfer (deposit)
-            console.log('confidentialTransfer sending...');
+            const zkAsset = AztecClient.getZkAsset();
             const encoded2 = await AztecClient.confidentialTransfer(zkAsset, proof, []);
-            console.log('confidentialTransfer sending...', encoded2);
             const txConfidentialTransfer = await this.execute(zkAsset.address, encoded2);
-            console.log('confidentialTransfer sent...',txConfidentialTransfer);
-            const txConfidentialTransferResult = await txConfidentialTransfer?.wait()
-            console.log('confidentialTransfer result', txConfidentialTransferResult);
-            console.log('--------------------');
-
+            return await txConfidentialTransfer?.wait();
         } catch (e) {
             console.log('confidential transfer error', e);
+            throw e;
         }
     }
 
-    async sendNote(note: Note, to:string) {
+    async createDepositProof(amountFormatted: number) {
         const myaddress = this.address;
         const PK = this.getPK();
         const encryptionPK = this.getEncryptionPK();
-        const proof = await AztecClient.createJoinProof(PK, encryptionPK, to, myaddress, [note], note.k.toNumber());
+        return await AztecClient.createDepositProof(PK, encryptionPK, myaddress, myaddress, amountFormatted);
+    }
+
+    async erc20Approve(amountFormatted: number) {
+        try {
+            const doc = ERC20Client.getDOC();
+            const ace = AztecClient.getACE();
+            const txApprove = await this.approve(doc, ace.address, this.amountToHex(amountFormatted));
+            return await txApprove?.wait();
+        } catch (e) {
+            console.log('erc20Approve error', e);
+            throw e;
+        }
+    }
+
+    async aztecPublicApprove(amountFormatted: number, proof: any, ) {
+        try {
+            const zkAsset = AztecClient.getZkAsset();
+            const ace = AztecClient.getACE();
+            const encoded = await AztecClient.publicApprove(zkAsset.address, proof, this.amountToHex(amountFormatted));
+            const txPublicApprove = await this.execute(ace.address, encoded);
+            return await txPublicApprove?.wait();
+        } catch (e) {
+            console.log('aztecPublicApprove error', e);
+            throw e;
+        }
+    }
+
+    async sendNote(note: Note, to:string, encryptionPK:string) { 
+        const encryptionPKString = ethers.utils.toUtf8String(encryptionPK);
+        const myaddress = this.address;
+        const PK = this.getPK();
+        const proof = await AztecClient.createJoinProof(PK, encryptionPKString, to, myaddress, [note], note.k.toNumber());
         const zkAsset = AztecClient.getZkAsset();
         console.log('--------------------');
         
@@ -198,6 +224,10 @@ export default class WalletClient {
 
     async decodeMetadata(data:string, decrypt?:boolean):Promise<any> {
         return await AztecClient.decodeMetadata(data, this, decrypt);
+    }
+
+    amountToHex(amountFormatted: number) {
+        return ethers.BigNumber.from(amountFormatted).mul(ethers.BigNumber.from('0x16345785D8A0000')).toHexString();
     }
 
 }

@@ -22,6 +22,7 @@ import SmartWalletList from './components/smart/SmartWalletList';
 import Sign from './components/sign/Sign';
 import dotenv from 'dotenv';
 import Balances from './components/balance/Balances';
+import Settings from './components/account/Settings';
 
 export default function App() {
 
@@ -84,13 +85,6 @@ export default function App() {
     setOpen(!open);
   };
 
-  function Index() {
-    return <h2>Home</h2>;
-  }
-    
-  function Product(req:any) {
-    return <h2>This is a page for product with ID: {req.match.params.id} </h2>;
-  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -169,6 +163,7 @@ export default function App() {
                 <Route path="/smart" exact component={SmartWalletList} /> 
                 <Route path="/sign" exact component={Sign} /> 
                 <Route path="/balances" exact component={Balances} /> 
+                <Route path="/settings" exact component={Settings} /> 
               </div>
           </Box>
         </Box>

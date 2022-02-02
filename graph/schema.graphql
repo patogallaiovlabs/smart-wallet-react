@@ -1,3 +1,4 @@
+
 type Currency @entity {
   id: ID!
   address: Bytes!

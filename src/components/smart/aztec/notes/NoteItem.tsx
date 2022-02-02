@@ -1,5 +1,5 @@
 import Loading from '../../../Loading';
-import WalletClient from '../../../../client/WalletClient';
+import WalletClient from '../../../../client/wallet/WalletClient';
 import { Button, TableRow, TableCell } from '@mui/material';
 import { useState, useEffect } from 'react';
 import SendNote from '../SendNote';
@@ -17,9 +17,11 @@ const TIME_OPTIONS = { hour: '2-digit', minute: '2-digit' };
 
 export default function NoteItem(props: PropTypes) {
 
+    
     const [loading, setLoading] = useState<boolean>(true);
     const [wallet, setWallet] = useState<WalletClient>();
     const [result, setResult] = useState<{addresses:[any], decrypted:any, note:any, date:any}>();
+    const [openSend, setOpenSend] = useState<boolean>(false);
 
     const init = async () => {
       //init 
@@ -79,16 +81,19 @@ export default function NoteItem(props: PropTypes) {
             <TableCell>{props.note.currencyAddress.substring(0, 7)}</TableCell>
             <TableCell sx={{ textAlign : "center"}}>
                 {(loading && <Loading/>)} 
-                {(!loading && !result?.note?.k && <Button variant="contained"
+                {(!loading && !result?.note?.k && <Button variant="outlined"
                                                       onClick={() => action()}
                                                       >Decrypt</Button>)}
                 {(!loading && result?.note?.k && <span>${result?.note?.k.toNumber() / 10}</span>)}
             </TableCell>
             <TableCell>
-              <SendNote note={result?.note} wallet={props.wallet} allwallets={props.allwallets} onUpdate={props.onUpdate}/>
+              <SendNote open={openSend} onClose={() => { setOpenSend(false) }}  note={result?.note} wallet={props.wallet} allwallets={props.allwallets} onUpdate={props.onUpdate}/>
+              <Button variant="contained" disabled={!result?.note?.k || props?.note?.status != "CREATED"} onClick={() => { setOpenSend(true) }}>
+                Send 
+              </Button>
             </TableCell>
             <TableCell>
-              <Button variant="contained" disabled={!result?.note?.k}
+              <Button variant="contained" disabled={!result?.note?.k || props?.note?.status != "CREATED"}
                               onClick={() => withdraw()}
                               >Withdraw</Button>
             </TableCell>

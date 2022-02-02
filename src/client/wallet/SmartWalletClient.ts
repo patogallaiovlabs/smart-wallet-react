@@ -1,9 +1,9 @@
 import { ethers, Contract } from 'ethers';
-import ISmartWalletFactory from './contracts/ISmartWalletFactory.json';
-import SmartWallet from './contracts/SmartWallet.json';
+import ISmartWalletFactory from '../contracts/ISmartWalletFactory.json';
+import SmartWallet from '../contracts/SmartWallet.json';
 import EtherClient from './EtherClient';
 import web3 from 'web3';
-import appconfig from '../config/config'
+import appconfig from '../../config/config'
 import WalletClient from './WalletClient';
 import { TransactionResponse } from '@ethersproject/providers';
 
@@ -98,6 +98,7 @@ export default class SmartWalletClient extends WalletClient {
     }
 
     async init() {
+        super.init();
         let result = await super.getClient().getCode(this.address);
         this.active = (result !== '0x' && result !== '0x00');
     }

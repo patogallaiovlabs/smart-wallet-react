@@ -15,11 +15,11 @@ module.exports = {
   },
   networks: {
     development: {
-      host: '18.195.70.216',
-      network_id: '31',
+      host: 'localhost',
+      network_id: '33',
       port: 4444,
-      gasPrice: 59240000,
-      from: "0x20f51908c8ce306ee805abea650c2f23a1148908"
+      gasPrice: 130000000,
+      from: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826"
     }
   },
 };

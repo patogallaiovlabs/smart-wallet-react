@@ -504,4 +504,22 @@ contract ZkAssetBase is IZkAsset, IAZTEC, LibEIP712 {
             emit CreateNote(noteOwner, noteHash, metaData);
         }
     }
+
+    /**
+    * @dev Used to publish the PK for encrypt msg. Since the encryption PK is diff from the main PK. 
+    * (could be the same but not best practice).
+    * As we are using theGraphQl, emiting as an event is a good way of indexing this.
+    *
+    * @param encryptionPK - the encryption PK
+    */
+    function setEncryptionPK(
+        bytes memory encryptionPK
+    ) public {
+        emit SetEncryptionPK(msg.sender, encryptionPK);
+    }
+
+    event SetEncryptionPK(
+        address indexed userAddress,
+        bytes encryptionPK
+    );
 }

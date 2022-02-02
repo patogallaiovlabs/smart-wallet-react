@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material';
-import ERC20Client from '../../client/ERC20Client';
+import ERC20Client from '../../client/wallet/ERC20Client';
 import { ethers } from 'ethers';
 
 export default function Balances() {

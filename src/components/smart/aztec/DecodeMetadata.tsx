@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, FormControl, TextField } from '@mui/material';
-import WalletClient from '../../../client/WalletClient';
+import WalletClient from '../../../client/wallet/WalletClient';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -28,14 +28,9 @@ export default function DecodeMetadata(prop:PropTypes) {
     const action = async () => {
       if (wallet) {
         setLoading(true);
-        let pk = '0x991a61c28759e9586ee6d065f2124e1c922fdd50d9f9bc68a2a6e27fdebe7c00';
-        let filtered = metadata;//.substring(196);
-        console.log(filtered);
+        let filtered = metadata;
         const decoded = await wallet.decodeMetadata(filtered);
-        //await note.derive(pk);
         setResult(decoded);
-        console.log('encoded metadata', metadata);
-        console.log('decode metadata', decoded);
         setLoading(false);
       }
     }

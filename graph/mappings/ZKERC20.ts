@@ -1,6 +1,7 @@
 import {
   CreateNote,
   DestroyNote,
+  SetEncryptionPK
 } from '../types/templates/ZKERC20/ZKERC20';
 import {
   Note,
@@ -37,3 +38,15 @@ export function destroyNote(event: DestroyNote): void {
   note.status = 'DESTROYED';
   note.save();
 }
+
+export function setEncryptionPK(event: SetEncryptionPK): void {
+  let userId = event.params.userAddress.toHex();
+  let user = User.load(userId);
+  if (user == null) {
+    user = new User(userId);
+    user.address = event.params.userAddress;
+  }
+  user.publicKey = event.params.encryptionPK.toHex();
+  user.save();
+}
+

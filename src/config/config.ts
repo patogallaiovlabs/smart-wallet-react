@@ -1,38 +1,29 @@
 
 /*
-|===================================|============================================|
-| Smart Wallet Contracts ========================================================|
-| SmartWallet                       | 0x20b87390b030717Af53aFB09C98D86e1EB74C11f |
-| SmartWalletFactory                | 0x4b1bFCd7ee2c457c35DE6351D90072C3893D50a5 |
-| Custom Smart Wallet Contracts =================================================|
-| CustomSmartWallet                 | 0xBFB42b5F390FAc806eF0787787aAd9a6F85E10F3 |
-| CustomSmartWalletFactory          | 0xB5A2dFeAB8C04374AE160BB83CC74F3E29C4189f |
-|===================================|============================================|
 DOC:
 - TESTNET: 0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0
-- Regtest: 0xC591D6b9238444A2ec22c8F1b54Eb995Ec2D4121
 */
 const appconfig = {
     regtest : {
         contracts: {
             smartWallet: {
-                template: "0x83C5541A6c8D2dBAD642f385d8d06Ca9B6C731ee",
-                factory: "0xE0825f57Dd05Ef62FF731c27222A86E104CC4Cad"
+                template: "0xCf11804B67222d4031B180EB70E3ef68318E73F5",
+                factory: "0x6fA7b244F8c94FE5750B09D3c8FeDF6115fD747e"
             },
             erc20: {
-                DOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED",
-                RDOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED"
+                DOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0",
+                RDOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0"
             },
             aztec: {
-                ACE: "0x4F7b5156094e8cFcda28821dC05c5d2Cea58448f",
-                JoinSplitFluid: "0x7b089cfE50C1a5fE5b0DA352348A43bBa81ADdd4",
-                Swap: "0x2a468fbfcfc86f84535d5631Bc1e591cF4f34CD0",
-                Dividend: "0xF76e6b7db78ac46BBDC7F9013CE4c761B7E7024e",
-                PrivateRange: "0xB7548b871f60dc23233521Cea54Acbb7F0CaDbA6",
-                JoinSplit: "0x423c8Ded907505378364eB52d5cbF1fC3b68dF19",
-                FactoryBase201907: "0x2820c09211a077A9d54E6fB9f5fd1e3faBe79e07",
-                FactoryAdjustable201907: "0x911F77160b2d4f929CD22De8EAa586b8761F1859",
-                ZkAsset: "0xA8eE9964B79f1D88E8DDC5A2821e6be0d31D0eb0"
+                ACE: "0xe2a85b7Cc30237aBFAaB2ea8bAE98978446Ae040",
+                JoinSplitFluid: "0x384b3f33C97c1c83116d5de3eff0cecb96cE840f",
+                Swap: "0xD5e314e9D43fd3eb687416d361Bdf399AA244D6F",
+                Dividend: "0xD08d3e653AC1B14a4c53bfD11d544944f6457FBf",
+                PrivateRange: "0xB91cC6cBA178a09B23430A1B402ff0F6726984B7",
+                JoinSplit: "0x72dD04c78952D3E13E354F8bAE2a8b8302Cf3334",
+                FactoryBase201907: "0x8001DF63fC16692d7E9C589Fc172d3afB8629BCe",
+                FactoryAdjustable201907: "0xC30591B73fb0c1B97EdE564560B417AA9Df32d85",
+                ZkAsset: "0xe94A57B896720F0e77d7AB7c573A9ecC886F093a"
             }
         }
     },
@@ -40,51 +31,49 @@ const appconfig = {
     testnet : {
         contracts: {
             smartWallet: {
-                template: "0x83C5541A6c8D2dBAD642f385d8d06Ca9B6C731ee",
-                factory: "0xE0825f57Dd05Ef62FF731c27222A86E104CC4Cad"
+                template: "0xCf11804B67222d4031B180EB70E3ef68318E73F5",
+                factory: "0x6fA7b244F8c94FE5750B09D3c8FeDF6115fD747e"
             },
             erc20: {
-                DOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED",
-                RDOC: "0x726ECC75d5D51356AA4d0a5B648790cC345985ED"
+                DOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0",
+                RDOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0"
             },
             aztec: {
-                ACE: "0x4F7b5156094e8cFcda28821dC05c5d2Cea58448f",
-                JoinSplitFluid: "0x7b089cfE50C1a5fE5b0DA352348A43bBa81ADdd4",
-                Swap: "0x2a468fbfcfc86f84535d5631Bc1e591cF4f34CD0",
-                Dividend: "0xF76e6b7db78ac46BBDC7F9013CE4c761B7E7024e",
-                PrivateRange: "0xB7548b871f60dc23233521Cea54Acbb7F0CaDbA6",
-                JoinSplit: "0x423c8Ded907505378364eB52d5cbF1fC3b68dF19",
-                FactoryBase201907: "0x2820c09211a077A9d54E6fB9f5fd1e3faBe79e07",
-                FactoryAdjustable201907: "0x911F77160b2d4f929CD22De8EAa586b8761F1859",
-                ZkAsset: "0xA8eE9964B79f1D88E8DDC5A2821e6be0d31D0eb0"
+                ACE: "0xe2a85b7Cc30237aBFAaB2ea8bAE98978446Ae040",
+                JoinSplitFluid: "0x384b3f33C97c1c83116d5de3eff0cecb96cE840f",
+                Swap: "0xD5e314e9D43fd3eb687416d361Bdf399AA244D6F",
+                Dividend: "0xD08d3e653AC1B14a4c53bfD11d544944f6457FBf",
+                PrivateRange: "0xB91cC6cBA178a09B23430A1B402ff0F6726984B7",
+                JoinSplit: "0x72dD04c78952D3E13E354F8bAE2a8b8302Cf3334",
+                FactoryBase201907: "0x8001DF63fC16692d7E9C589Fc172d3afB8629BCe",
+                FactoryAdjustable201907: "0xC30591B73fb0c1B97EdE564560B417AA9Df32d85",
+                ZkAsset: "0xe94A57B896720F0e77d7AB7c573A9ecC886F093a"
             }
         }
     },
     mainnet : {
         contracts: {
             smartWallet: {
-                factory: "",
-                template: ""
+                template: "0xCf11804B67222d4031B180EB70E3ef68318E73F5",
+                factory: "0x6fA7b244F8c94FE5750B09D3c8FeDF6115fD747e"
             },
             erc20: {
-                DOC: "",
-                RDOC: ""
+                DOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0",
+                RDOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0"
+            },
+            aztec: {
+                ACE: "0x848FD4E195dBb156F245E3E5FaB5b36706776Ba5",
+                JoinSplitFluid: "0x13cF0a53b6102b518e8b547d5E50b38C1b089E08",
+                Swap: "0xc3e75147D582fFc126590C537cEe894180aAcDDC",
+                Dividend: "0xb2e09ab18a1792025D8505B5722E527d5e90c8e7",
+                PrivateRange: "0x0Aa058aD63E36bC2f98806f2D638353AE89C3634",
+                JoinSplit: "0x7aeCf73CE97Bb46193B1bD1c8E9a6dA2EE2101c9",
+                FactoryBase201907: "0xc346A5F12388D254584C2bddd34816645D904F1d",
+                FactoryAdjustable201907: "0x3056D0B2379c86e6Be6771C34f39F5AFfB65D855",
+                ZkAsset: "0x3AFc8E02d35F6c64B24bAAD5B4097dcB49A488aE"
             }
         }
     }
 };
 
 export default appconfig;
-/*
-| AZTEC Contracts ===============================================================|
-| ACE                               | 0x65C500c4567C872D0101686E2e78ACE5218ad524 |
-| JoinSplitFluid                    | 0x392E58728862AE06C70ab81f78Bf05533310Dec3 |
-| Swap                              | 0x8cf8A513694fAfE644De43AA21e2987fBd2dd83B |
-| Dividend                          | 0xB82D20BFF14D11DE19DEA6863Db080ce0Af58856 |
-| PrivateRange                      | 0x5915ec5C3875c738376c2152A5EA04E02d592B3f |
-| JoinSplit                         | 0x8a89362e1C50DEC278bbDf0B5d2399a0740Bb550 |
-| BaseFactory                       | 0x40aA6BaC464944F062E68Fd6Da2Da08F473b42Dd |
-| AdjustableFactory                 | 0x63Db624F6Eb4B50a081c9B89222Bd13B96609193 |
-| ZkAsset                           | 0x9Fdfe0f1689991cCb834793BbF06Bb7613f52f78 |
-|===================================|============================================|
-*/
