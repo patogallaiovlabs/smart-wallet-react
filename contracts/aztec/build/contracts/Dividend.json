@@ -388,8 +388,8 @@
     "31": {
       "events": {},
       "links": {},
-      "address": "0xD08d3e653AC1B14a4c53bfD11d544944f6457FBf",
-      "transactionHash": "0x7fbbd65941e4a681cfcec5bee92600958bc451957e2ea5ff430894ce334928f6"
+      "address": "0x6a75380b4DB68da18c15B5Cf49feC6f7cE2fc0B3",
+      "transactionHash": "0xcf2e044e33c8beeef1f7bceef1f23448fa56d0f1b79110c38667f62d3007b9c1"
     },
     "33": {
       "events": {},
@@ -399,7 +399,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-28T16:15:37.504Z",
+  "updatedAt": "2022-02-07T19:25:21.019Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "AZTEC",

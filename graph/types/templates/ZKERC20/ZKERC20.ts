@@ -215,8 +215,12 @@ export class SetEncryptionPK__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get encryptionPK(): Bytes {
+  get publicKey(): Bytes {
     return this._event.parameters[1].value.toBytes();
+  }
+
+  get encryptionKey(): Bytes {
+    return this._event.parameters[2].value.toBytes();
   }
 }
 

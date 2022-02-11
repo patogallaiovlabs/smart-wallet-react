@@ -23,21 +23,17 @@ export default function NoteItem(props: PropTypes) {
     const [result, setResult] = useState<{addresses:[any], decrypted:any, note:any, date:any}>();
     const [openSend, setOpenSend] = useState<boolean>(false);
 
-    const init = async () => {
-      //init 
-      const w = props.wallet;
-      setWallet(w);
-      setLoading(false);
-      let filtered = props.note.metadata;//.substring(196);
-      const decoded = await w.decodeMetadata(filtered, false);
-      decoded.note.owner = w.address;
-      decoded.date = new Date(props.note.time * 1000);
-      setResult(decoded);
-    }
 
     useEffect(()=>{
-        init();
-    }, []);
+      const init = async () => {
+        //init 
+        const w = props.wallet;
+        setWallet(w);
+        setLoading(false);
+        setResult(props.note);
+      }
+      init();
+    }, [props.wallet, props.note]);
 
     const withdraw = async () => {
       setLoading(true);
@@ -61,9 +57,10 @@ export default function NoteItem(props: PropTypes) {
       if (wallet) {
         setLoading(true);
         try {
-          let filtered = props.note.metadata;//.substring(196);
+          let filtered = props?.note.metadata;//.substring(196);
           const decoded = await wallet.decodeMetadata(filtered, true);
           decoded.note.owner = wallet.address;
+          decoded.note.currencyAddress = props?.note?.note?.currencyAddress;
           decoded.date = new Date(props.note.time * 1000);
           setResult(decoded);
         } catch (e) {
@@ -78,7 +75,7 @@ export default function NoteItem(props: PropTypes) {
           <TableRow key={result?.note.noteHash}>
             <TableCell>{result?.date.toLocaleDateString('en-US', DATE_OPTIONS)}, {result?.date.toLocaleTimeString('en-US', TIME_OPTIONS)}</TableCell>
             <TableCell><Address value={result?.note.noteHash} length={5} tail={true}/></TableCell>
-            <TableCell>{props.note.currencyAddress.substring(0, 7)}</TableCell>
+            <TableCell>{result?.note?.currencyAddress?.substring(0, 7)}</TableCell>
             <TableCell sx={{ textAlign : "center"}}>
                 {(loading && <Loading/>)} 
                 {(!loading && !result?.note?.k && <Button variant="outlined"
@@ -88,12 +85,12 @@ export default function NoteItem(props: PropTypes) {
             </TableCell>
             <TableCell>
               <SendNote open={openSend} onClose={() => { setOpenSend(false) }}  note={result?.note} wallet={props.wallet} allwallets={props.allwallets} onUpdate={props.onUpdate}/>
-              <Button variant="contained" disabled={!result?.note?.k || props?.note?.status != "CREATED"} onClick={() => { setOpenSend(true) }}>
+              <Button variant="contained" disabled={!result?.note?.k || result?.note?.status !== "CREATED"} onClick={() => { setOpenSend(true) }}>
                 Send 
               </Button>
             </TableCell>
             <TableCell>
-              <Button variant="contained" disabled={!result?.note?.k || props?.note?.status != "CREATED"}
+              <Button variant="contained" disabled={!result?.note?.k || result?.note?.status !== "CREATED"}
                               onClick={() => withdraw()}
                               >Withdraw</Button>
             </TableCell>

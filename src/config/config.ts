@@ -15,15 +15,15 @@ const appconfig = {
                 RDOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0"
             },
             aztec: {
-                ACE: "0xe2a85b7Cc30237aBFAaB2ea8bAE98978446Ae040",
-                JoinSplitFluid: "0x384b3f33C97c1c83116d5de3eff0cecb96cE840f",
-                Swap: "0xD5e314e9D43fd3eb687416d361Bdf399AA244D6F",
-                Dividend: "0xD08d3e653AC1B14a4c53bfD11d544944f6457FBf",
-                PrivateRange: "0xB91cC6cBA178a09B23430A1B402ff0F6726984B7",
-                JoinSplit: "0x72dD04c78952D3E13E354F8bAE2a8b8302Cf3334",
-                FactoryBase201907: "0x8001DF63fC16692d7E9C589Fc172d3afB8629BCe",
-                FactoryAdjustable201907: "0xC30591B73fb0c1B97EdE564560B417AA9Df32d85",
-                ZkAsset: "0xe94A57B896720F0e77d7AB7c573A9ecC886F093a"
+                ACE: "0xDDbaBE174FfA9990B27768BB83D3af0D1277206f",
+                JoinSplitFluid: "0xD0993368A138d324401EDc1e3E60C9244709159F",
+                Swap: "0x1AB3336CA48CfcD69205bF3db33a1Fb1F1e9a54D",
+                Dividend: "0x6a75380b4DB68da18c15B5Cf49feC6f7cE2fc0B3",
+                PrivateRange: "0xEf227A0265d7Af2B12db9FCf04A965b1Ab6567d2",
+                JoinSplit: "0x5b7AB62f22fa44Ba130caeCc86AcEf53F71C7368",
+                FactoryBase201907: "0x1cc3C934da0264B84D9A6823BA9B11356c7f47a3",
+                FactoryAdjustable201907: "0xfaE486583842BEa809255d80F9bD1393Ce364895",
+                ZkAsset: "0x0B6FE89fb4D894cAa66E17B43F7833e66C8D99c7"
             }
         }
     },
@@ -39,15 +39,15 @@ const appconfig = {
                 RDOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0"
             },
             aztec: {
-                ACE: "0xe2a85b7Cc30237aBFAaB2ea8bAE98978446Ae040",
-                JoinSplitFluid: "0x384b3f33C97c1c83116d5de3eff0cecb96cE840f",
-                Swap: "0xD5e314e9D43fd3eb687416d361Bdf399AA244D6F",
-                Dividend: "0xD08d3e653AC1B14a4c53bfD11d544944f6457FBf",
-                PrivateRange: "0xB91cC6cBA178a09B23430A1B402ff0F6726984B7",
-                JoinSplit: "0x72dD04c78952D3E13E354F8bAE2a8b8302Cf3334",
-                FactoryBase201907: "0x8001DF63fC16692d7E9C589Fc172d3afB8629BCe",
-                FactoryAdjustable201907: "0xC30591B73fb0c1B97EdE564560B417AA9Df32d85",
-                ZkAsset: "0xe94A57B896720F0e77d7AB7c573A9ecC886F093a"
+                ACE: "0xDDbaBE174FfA9990B27768BB83D3af0D1277206f",
+                JoinSplitFluid: "0xD0993368A138d324401EDc1e3E60C9244709159F",
+                Swap: "0x1AB3336CA48CfcD69205bF3db33a1Fb1F1e9a54D",
+                Dividend: "0x6a75380b4DB68da18c15B5Cf49feC6f7cE2fc0B3",
+                PrivateRange: "0xEf227A0265d7Af2B12db9FCf04A965b1Ab6567d2",
+                JoinSplit: "0x5b7AB62f22fa44Ba130caeCc86AcEf53F71C7368",
+                FactoryBase201907: "0x1cc3C934da0264B84D9A6823BA9B11356c7f47a3",
+                FactoryAdjustable201907: "0xfaE486583842BEa809255d80F9bD1393Ce364895",
+                ZkAsset: "0x0B6FE89fb4D894cAa66E17B43F7833e66C8D99c7"
             }
         }
     },
@@ -62,15 +62,15 @@ const appconfig = {
                 RDOC: "0xCB46c0ddc60D18eFEB0E586C17Af6ea36452Dae0"
             },
             aztec: {
-                ACE: "0x848FD4E195dBb156F245E3E5FaB5b36706776Ba5",
-                JoinSplitFluid: "0x13cF0a53b6102b518e8b547d5E50b38C1b089E08",
-                Swap: "0xc3e75147D582fFc126590C537cEe894180aAcDDC",
-                Dividend: "0xb2e09ab18a1792025D8505B5722E527d5e90c8e7",
-                PrivateRange: "0x0Aa058aD63E36bC2f98806f2D638353AE89C3634",
-                JoinSplit: "0x7aeCf73CE97Bb46193B1bD1c8E9a6dA2EE2101c9",
-                FactoryBase201907: "0xc346A5F12388D254584C2bddd34816645D904F1d",
-                FactoryAdjustable201907: "0x3056D0B2379c86e6Be6771C34f39F5AFfB65D855",
-                ZkAsset: "0x3AFc8E02d35F6c64B24bAAD5B4097dcB49A488aE"
+                ACE: "0xDDbaBE174FfA9990B27768BB83D3af0D1277206f",
+                JoinSplitFluid: "0xD0993368A138d324401EDc1e3E60C9244709159F",
+                Swap: "0x1AB3336CA48CfcD69205bF3db33a1Fb1F1e9a54D",
+                Dividend: "0x6a75380b4DB68da18c15B5Cf49feC6f7cE2fc0B3",
+                PrivateRange: "0xEf227A0265d7Af2B12db9FCf04A965b1Ab6567d2",
+                JoinSplit: "0x5b7AB62f22fa44Ba130caeCc86AcEf53F71C7368",
+                FactoryBase201907: "0x1cc3C934da0264B84D9A6823BA9B11356c7f47a3",
+                FactoryAdjustable201907: "0xfaE486583842BEa809255d80F9bD1393Ce364895",
+                ZkAsset: "0x0B6FE89fb4D894cAa66E17B43F7833e66C8D99c7"
             }
         }
     }

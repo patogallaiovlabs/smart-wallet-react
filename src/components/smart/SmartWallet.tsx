@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Alert as MuiAlert, Box, Grid, CircularProgress, Container, Paper, Button, Stack, FormControlLabel, Checkbox } from '@mui/material';
-import Address from '../account/Address';
+import Address from 'src/components/account/Address';
 import { ethers } from 'ethers';
-import ERC20Client from '../../client/wallet/ERC20Client';
-import WalletClient from '../../client/wallet/WalletClient';
-import SendToken from './SendToken';
-import ConvertToken from './ConvertToken';
+import ERC20Client from 'src/client/wallet/ERC20Client';
+import WalletClient from 'src/client/wallet/WalletClient';
 import NoteHistory from './aztec/notes/NoteHistory';
-import SmartWalletClient from '../../client/wallet/SmartWalletClient';
-import GiveMeToken from './GiveMeToken';
+import SmartWalletClient from 'src/client/wallet/SmartWalletClient';
+import GiveMeToken from './token/GiveMeToken';
 import { useQuery, gql } from '@apollo/client';
-import AztecClient from '../../client/aztec/AztecClient';
+import AztecClient from 'src/client/aztec/AztecClient';
+import ConvertAndSendToken from 'src/components/smart/token/ConvertAndSendToken';
+import SendToken from './token/SendToken';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -55,7 +55,7 @@ export default function SmartWallet(prop:PropTypes) {
           let b =  ethers.utils.formatUnits(balanceD, "ether");
           let formated = parseFloat(b).toFixed(2);
           setDocs(formated.toString());
-          setDefaultPrivate(prop.wallet.getDefaultPrivate());
+          setDefaultPrivate(prop.wallet.defaultPrivate);
         }catch(e) {
           console.log('error init', e);
         }finally{
@@ -76,11 +76,11 @@ export default function SmartWallet(prop:PropTypes) {
       }
     }
 
-    const onSaveUser = async (publicKey:string = '') => {
-        console.log('saving...');
+    const onSaveUser = async () => {
+        console.log('publishing user...');
         setLoading(true);
         const contract = AztecClient.getZkAsset();
-        const encoded = await AztecClient.encodeSetEncryptionKey(contract, publicKey);
+        const encoded = await AztecClient.encodeSetEncryptionKey(contract, wallet?.getPK(), wallet?.getEncryptionPK());
         const tx = await wallet?.execute(contract.address, encoded);
         await tx?.wait();
         setTimeout(()=>{
@@ -91,7 +91,7 @@ export default function SmartWallet(prop:PropTypes) {
 
     const updateDefaultPrivate = async (evt:any) => {
       setDefaultPrivate(evt.target.checked);
-      prop.wallet.setDefaultPrivate(evt.target.checked);
+      prop.wallet.defaultPrivate = evt.target.checked;
     }
 
     useEffect(()=>{
@@ -112,7 +112,7 @@ export default function SmartWallet(prop:PropTypes) {
         {((!data?.user || !data.user?.publicKey) && 
           <Stack spacing={2} sx={{ width: '100%', marginBottom: '20px' }}>
                 <MuiAlert elevation={6} variant="filled"  severity="warning" >Encryption key not published (other users may not be able to interact with you). <Button  variant="contained"
-                              onClick={() => onSaveUser(wallet?.getEncryptionPK())}>Publish</Button>
+                              onClick={() => onSaveUser()}>Publish</Button>
                 </MuiAlert>
           </Stack>
         )}
@@ -122,15 +122,17 @@ export default function SmartWallet(prop:PropTypes) {
               <Grid item xs={12} md={12} lg={12}>
                 <Paper
                   sx={{
-                    p: 2,
+                    p: 0,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 110,
+                    height: 80,
                   }}
                 >
-                  <div>Address: <Address value={prop.wallet?.address} /></div>
-                  <div> Tokens: $ {docs}</div>     
-                  <FormControlLabel control={<Checkbox checked={defaultPrivate} onChange={updateDefaultPrivate} />} label="Default private wallets" />     
+
+                  <ul>
+                    <li>Address: <Address value={prop.wallet?.address} /></li>
+                    <li>Tokens: $ {docs}</li>
+                  </ul>     
                 </Paper>
               </Grid>
             )}
@@ -158,8 +160,9 @@ export default function SmartWallet(prop:PropTypes) {
                     height: 280,
                   }}
                 >
-                  <SendToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate} />
-                </Paper>
+                
+                  <ConvertAndSendToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate} sendEnabled={true} />
+                 </Paper>
               </Grid>
             )}
             {(!loading && wallet && 
@@ -172,7 +175,7 @@ export default function SmartWallet(prop:PropTypes) {
                     height: 280,
                   }}
                 >
-                  <ConvertToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate}  />            
+                  <ConvertAndSendToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate}  />            
                 </Paper>
               </Grid>
             )}

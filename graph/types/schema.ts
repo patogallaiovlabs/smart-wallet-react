@@ -259,6 +259,23 @@ export class User extends Entity {
     }
   }
 
+  get encryptionKey(): string | null {
+    let value = this.get("encryptionKey");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set encryptionKey(value: string | null) {
+    if (value === null) {
+      this.unset("encryptionKey");
+    } else {
+      this.set("encryptionKey", Value.fromString(value as string));
+    }
+  }
+
   get balance(): Array<string> | null {
     let value = this.get("balance");
     if (value === null || value.kind == ValueKind.NULL) {

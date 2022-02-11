@@ -513,13 +513,15 @@ contract ZkAssetBase is IZkAsset, IAZTEC, LibEIP712 {
     * @param encryptionPK - the encryption PK
     */
     function setEncryptionPK(
+        bytes memory publicKey,
         bytes memory encryptionPK
     ) public {
-        emit SetEncryptionPK(msg.sender, encryptionPK);
+        emit SetEncryptionPK(msg.sender, publicKey, encryptionPK);
     }
 
     event SetEncryptionPK(
         address indexed userAddress,
+        bytes publicKey,
         bytes encryptionPK
     );
 }

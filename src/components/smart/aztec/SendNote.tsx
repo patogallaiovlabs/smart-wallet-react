@@ -26,24 +26,17 @@ export default function SendNote(prop:PropTypes) {
     const [wallet, setWallet] = useState<WalletClient>();
     const [sendTo, setSendTo] = useState<string>('');
     const [sendToOther, setSendToOther] = useState<string>('');
+    const [sendToOtherEK, setSendToOtherEK] = useState<string>('');
     const [sendToOtherPK, setSendToOtherPK] = useState<string>('');
     
-    const init = async () => {
-        //init 
-        const w = prop.wallet;
-        setWallet(w);
-        setSendTo(w.address);
-        setLoading(false);
-        setSendToOtherPK(data?.user?.publicKey ? data.user.publicKey : '');
-      }
 
 
     const send = async () => {
       setLoading(true);
       try {
         if(wallet) {
-          let destination = sendTo == 'other' ? sendToOther : sendTo;
-          const txPending = await wallet?.sendNote(prop.note, destination, sendToOtherPK);
+          let destination = sendTo === 'other' ? sendToOther : sendTo;
+          const txPending = await wallet?.sendNotes([prop.note], destination, sendToOtherPK, sendToOtherEK);
           const result = await txPending?.wait();
           console.log('result send note', result);
         }
@@ -63,9 +56,10 @@ export default function SendNote(prop:PropTypes) {
 
     const onSendTo = async (evt:any) => {
       setSendTo(evt.target.value);
-      if(evt.target.value != 'other') {
+      if(evt.target.value !== 'other') {
         variables.id = evt.target.value.toLowerCase();
         let result = await refetch(variables);
+        setSendToOtherEK(result.data?.user?.encryptionKey ? result.data.user.encryptionKey : '');
         setSendToOtherPK(result.data?.user?.publicKey ? result.data.user.publicKey : '');
       } else {
         setSendToOther('');
@@ -77,12 +71,22 @@ export default function SendNote(prop:PropTypes) {
       setSendToOther(evt.target.value);
       variables.id = evt.target.value.toLowerCase();
       let result = await refetch(variables);
+      setSendToOtherEK(result.data?.user?.encryptionKey ? result.data.user.encryptionKey : '');
       setSendToOtherPK(result.data?.user?.publicKey ? result.data.user.publicKey : '');
     }
 
     useEffect(()=>{
-        init();
-    }, []);
+      const init = async () => {
+        //init 
+        const w = prop.wallet;
+        setWallet(w);
+        setSendTo(w.address);
+        setLoading(false);
+        setSendToOtherEK(data?.user?.encryptionKey ? data.user.encryptionKey : '');
+        setSendToOtherPK(data?.user?.publicKey ? data.user.publicKey : '');
+      }
+      init();
+    }, [prop.wallet, data]);
 
     if(loadingQ) { return <Loading></Loading>}
 
@@ -118,7 +122,7 @@ export default function SendNote(prop:PropTypes) {
                           <MenuItem key={'i-1'} value={'other'}>Other Address</MenuItem>
                       </Select>
                       
-                      {(sendTo == 'other' && 
+                      {(sendTo === 'other' && 
                           <TextField  label="Address" 
                                       value={sendToOther} 
                                       onChange={onSendToOther} 
@@ -128,6 +132,12 @@ export default function SendNote(prop:PropTypes) {
                           </TextField>
                       )}
                       <TextField  label="Encryption Key" 
+                                  value={sendToOtherEK} 
+                                  onChange={(evt) => setSendToOtherEK(evt.target.value)} 
+                                  fullWidth
+                                  variant="standard">
+                      </TextField>
+                      <TextField  label="Public Key" 
                                   value={sendToOtherPK} 
                                   onChange={(evt) => setSendToOtherPK(evt.target.value)} 
                                   fullWidth

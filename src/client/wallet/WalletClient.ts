@@ -4,6 +4,8 @@ import ERC20Client from './ERC20Client';
 import { TransactionResponse } from '@ethersproject/providers';
 import AztecClient from '../aztec/AztecClient';
 import Note from '../aztec/note';
+import * as aztec from 'aztec.js';
+const { JoinSplitProof } = aztec;
 
 export default class WalletClient {
 
@@ -36,11 +38,11 @@ export default class WalletClient {
         }
     }
 
-    getDefaultPrivate(): boolean {
+    get defaultPrivate(): boolean {
         return this.config.defaultPrivate;
     }
 
-    setDefaultPrivate(defaultPrivate:boolean) {
+    set defaultPrivate(defaultPrivate:boolean) {
         const key = 'wallet-config-' + this.address;
         this.config.defaultPrivate = defaultPrivate;
         window.localStorage.setItem(key, JSON.stringify(this.config));
@@ -82,6 +84,10 @@ export default class WalletClient {
             window.localStorage.setItem(encrypted, '' + result);
             return Promise.resolve(result);
         }
+    }
+
+    decryptMessageFromCache(encrypted:string) {
+        return window.localStorage.getItem(encrypted);
     }
 
     get nonce() : Promise<number> {
@@ -144,7 +150,7 @@ export default class WalletClient {
         }
     }
 
-    async createDepositProof(amountFormatted: number) {
+    async createDepositProof(amountFormatted: number) : Promise<typeof JoinSplitProof>{
         const myaddress = this.address;
         const PK = this.getPK();
         const encryptionPK = this.getEncryptionPK();
@@ -176,11 +182,11 @@ export default class WalletClient {
         }
     }
 
-    async sendNote(note: Note, to:string, encryptionPK:string) { 
-        const encryptionPKString = ethers.utils.toUtf8String(encryptionPK);
+    async sendNotes(notes: Note[], to:string, publicKey:string, encryptionPK:string) { 
+        const encryptionPKString = ethers.utils.toUtf8String(encryptionPK); 
         const myaddress = this.address;
-        const PK = this.getPK();
-        const proof = await AztecClient.createJoinProof(PK, encryptionPKString, to, myaddress, [note], note.k.toNumber());
+        const total = notes.reduce((previous, current) => previous + current.k.toNumber(), 0);
+        const proof = await AztecClient.createJoinProof(publicKey, encryptionPKString, to, myaddress, notes, total);
         const zkAsset = AztecClient.getZkAsset();
         console.log('--------------------');
         

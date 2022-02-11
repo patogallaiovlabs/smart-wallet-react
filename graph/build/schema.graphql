@@ -25,6 +25,7 @@ type User @entity {
   id: ID!
   address: Bytes!
   publicKey: String
+  encryptionKey: String
   balance: [Note!]
   balanceAccess: [NoteAccess!]
 }

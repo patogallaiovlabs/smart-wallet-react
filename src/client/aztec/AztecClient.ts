@@ -28,7 +28,7 @@ const UTF8 = 'utf8';
 
 export default class AztecClient {
     
-    static async createDepositProof(PK:string, encryptionPK:any, publicOwner:string, sender:string, value:number) {
+    static async createDepositProof(PK:string, encryptionPK:any, publicOwner:string, sender:string, value:number): Promise<typeof JoinSplitProof> {
         const inputs:any[] = [];
         const access = null;
         const newNote = await note.create(PK, value, access, sender);
@@ -72,9 +72,9 @@ export default class AztecClient {
         return EtherClient.encode(zkAsset, "confidentialTransfer(bytes,bytes)", [data, signatures]);
     }
 
-    static async encodeSetEncryptionKey(zkAsset:Contract, key:string) {
-        const param = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(key));
-        return EtherClient.encode(zkAsset, "setEncryptionPK(bytes)", [param]);
+    static async encodeSetEncryptionKey(zkAsset:Contract, pkey:string = '', ekey:string = '') {
+        const eparam = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ekey));
+        return EtherClient.encode(zkAsset, "setEncryptionPK(bytes,bytes)", [pkey, eparam]);
     }
 
     static getACE() {
@@ -125,7 +125,7 @@ export default class AztecClient {
         let filtered = data.substring(196);
         const metadata = notelib.metadata(filtered);
         metadata.note = noteLog;
-        if(decrypt) {
+        if(metadata && metadata.getAccess(wallet.address)) {
             const viewKey = metadata.getAccess(wallet.address);
             const encryptedObjt = notelib.fromHexString(viewKey.viewingKey).export();
             encryptedObjt.ciphertext = this.hexToString(encryptedObjt.ciphertext);
@@ -133,8 +133,15 @@ export default class AztecClient {
             encryptedObjt.nonce = this.hexToString(encryptedObjt.nonce);
             encryptedObjt.version = ENCRYPTION_ALGO;
             metadata.encrypted = this._encodeData(encryptedObjt);
-            metadata.decrypted = await wallet.decryptMessage(metadata.encrypted);
-            metadata.note = await aztec.note.fromViewKey(metadata.decrypted);
+
+            if(decrypt) {
+                metadata.decrypted = await wallet.decryptMessage(metadata.encrypted);
+            } else {
+                metadata.decrypted = wallet.decryptMessageFromCache(metadata.encrypted);
+            }
+            if(metadata.decrypted) {
+                metadata.note = await aztec.note.fromViewKey(metadata.decrypted);
+            }
         }
         return metadata;
     }

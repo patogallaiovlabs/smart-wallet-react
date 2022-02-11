@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, FormControl, InputLabel, Select, TextField, MenuItem, ButtonGroup, InputAdornment } from '@mui/material';
+import { Box, Button, CircularProgress, FormControl, InputLabel, Select, TextField, MenuItem, ButtonGroup, InputAdornment, IconButton } from '@mui/material';
 import { ethers } from 'ethers';
-import ERC20Client from '../../client/wallet/ERC20Client';
-import WalletClient from '../../client/wallet/WalletClient';
+import ERC20Client from 'src/client/wallet/ERC20Client';
+import WalletClient from 'src/client/wallet/WalletClient';
+import Tooltip from '@mui/material/Tooltip';
+import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -16,18 +18,19 @@ export default function SendToken(prop:PropTypes) {
     const [wallet, setWallet] = useState<WalletClient>();
     const [sendTo, setSendTo] = useState<string>();
     const [amount, setAmount] = useState<string>('1');
+    const [defaultPrivate, setDefaultPrivate] = useState<boolean>();
     
-    const init = async () => {
+    useEffect(()=>{
+      const init = async () => {
         //init 
         const w = prop.wallet;
         setWallet(w);
         setSendTo(w.address);
         setLoading(false);
+        setDefaultPrivate(w.defaultPrivate)
       }
-
-    useEffect(()=>{
-        init();
-    }, []);
+      init();
+    }, [prop.wallet]);
 
 
     const sendDoc = async () => {
@@ -50,7 +53,17 @@ export default function SendToken(prop:PropTypes) {
         <div>
             {(!loading && wallet && 
               <div> 
-                <h3>Send Tokens</h3>
+                <h3>
+                  <Tooltip title={defaultPrivate ? 'Private Mode' : 'Public Mode'}>
+                    <IconButton onClick={() => {
+                      wallet.defaultPrivate = !defaultPrivate;
+                      setDefaultPrivate(!defaultPrivate);
+                    }
+                  }>
+                      {(wallet.defaultPrivate && <VisibilityOffIcon/>)}
+                      {(!wallet.defaultPrivate && <VisibilityIcon/>)}
+                    </IconButton>
+                  </Tooltip> Send Tokens</h3>
                 <FormControl>
                     <InputLabel id="toLabel">To</InputLabel>
                     <Select 

@@ -388,8 +388,8 @@
     "31": {
       "events": {},
       "links": {},
-      "address": "0x72dD04c78952D3E13E354F8bAE2a8b8302Cf3334",
-      "transactionHash": "0x0f6a712ffeba3dddc5ea8b6f063bd0a48a53ec8b84a6e6bbf469d549f01686d1"
+      "address": "0x5b7AB62f22fa44Ba130caeCc86AcEf53F71C7368",
+      "transactionHash": "0xe8b94d5c657235a9758fc749e5b0e46bc59df4b923ab0ab5bea0fc23cf0da41e"
     },
     "33": {
       "events": {},
@@ -399,7 +399,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-28T16:15:37.509Z",
+  "updatedAt": "2022-02-07T19:25:21.024Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Zachary Williamson, AZTEC",

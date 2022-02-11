@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, FormControl, InputLabel, Select, TextField, MenuItem, ButtonGroup, InputAdornment } from '@mui/material';
 import { ethers } from 'ethers';
-import ERC20Client from '../../client/wallet/ERC20Client';
-import WalletClient from '../../client/wallet/WalletClient';
+import ERC20Client from 'src/client/wallet/ERC20Client';
+import WalletClient from 'src/client/wallet/WalletClient';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -17,17 +17,17 @@ export default function GiveMeToken(prop:PropTypes) {
     const [sendTo, setSendTo] = useState<string>();
     const [amount, setAmount] = useState<string>('1');
     
-    const init = async () => {
+
+    useEffect(()=>{
+      const init = async () => {
         //init 
         const w = prop.wallet;
         setWallet(w);
         setSendTo(w.address);
         setLoading(false);
       }
-
-    useEffect(()=>{
-        init();
-    }, []);
+      init();
+    }, [prop.wallet]);
 
 
     const sendDoc = async () => {

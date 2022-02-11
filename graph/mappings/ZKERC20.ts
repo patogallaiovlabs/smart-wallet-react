@@ -46,7 +46,8 @@ export function setEncryptionPK(event: SetEncryptionPK): void {
     user = new User(userId);
     user.address = event.params.userAddress;
   }
-  user.publicKey = event.params.encryptionPK.toHex();
+  user.publicKey = event.params.publicKey.toHex();
+  user.encryptionKey = event.params.encryptionKey.toHex();
   user.save();
 }
 

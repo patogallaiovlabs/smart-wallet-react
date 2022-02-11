@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, FormControl, TextField, ButtonGroup, InputAdornment, Stepper, Step, StepLabel, Dialog, DialogTitle, Paper, Typography, DialogActions, LinearProgress } from '@mui/material';
-import WalletClient from '../../client/wallet/WalletClient';
+import WalletClient from 'src/client/wallet/WalletClient';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -107,7 +107,7 @@ export default function ConvertToken(prop:PropTypes) {
                           optional?: React.ReactNode;
                           error?: boolean;
                         } = {};
-                        if (error && activeStep == index) {
+                        if (error && activeStep === index) {
                           labelProps.optional = (
                             <Typography variant="caption" color="error">
                               {error.message}

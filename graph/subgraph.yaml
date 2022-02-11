@@ -9,7 +9,7 @@ dataSources:
     network: development
     source:
       abi: ZKERC20
-      startBlock: 2536200
+      startBlock: 2565153
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -26,5 +26,5 @@ dataSources:
           handler: createNote
         - event: DestroyNote(indexed address,indexed bytes32)
           handler: destroyNote
-        - event: SetEncryptionPK(indexed address,bytes)
+        - event: SetEncryptionPK(indexed address,bytes,bytes)
           handler: setEncryptionPK

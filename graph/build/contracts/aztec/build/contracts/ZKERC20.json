@@ -198,6 +198,12 @@
       {
         "indexed": false,
         "internalType": "bytes",
+        "name": "publicKey",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
         "name": "encryptionPK",
         "type": "bytes"
       }
@@ -581,6 +587,11 @@
   {
     "constant": false,
     "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "publicKey",
+        "type": "bytes"
+      },
       {
         "internalType": "bytes",
         "name": "encryptionPK",

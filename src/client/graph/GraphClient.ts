@@ -24,6 +24,7 @@ export default class GraphClient {
                     id
                     address
                     publicKey
+                    encryptionKey
                 }
             }
         `;

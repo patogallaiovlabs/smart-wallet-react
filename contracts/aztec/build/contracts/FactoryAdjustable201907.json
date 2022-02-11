@@ -1344,8 +1344,8 @@
         }
       },
       "links": {},
-      "address": "0xC30591B73fb0c1B97EdE564560B417AA9Df32d85",
-      "transactionHash": "0x1f53e8f7d61b2d8a2d48af2cdecbe56fa49f7749b494e68a2d9f78e53993160c"
+      "address": "0xfaE486583842BEa809255d80F9bD1393Ce364895",
+      "transactionHash": "0x9cd49f9d33567012761264bd7ac555e273c2c4eed59b6a049c58d50b5a28e83c"
     },
     "33": {
       "events": {
@@ -1388,7 +1388,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-28T16:15:37.512Z",
+  "updatedAt": "2022-02-07T19:25:21.029Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "AZTEC",
