@@ -182,11 +182,10 @@ export default class WalletClient {
         }
     }
 
-    async sendNotes(notes: Note[], to:string, publicKey:string, encryptionPK:string) { 
-        const encryptionPKString = ethers.utils.toUtf8String(encryptionPK); 
+    async sendNotes(notes: Note[], to:string, publicKey:string, encryptionPK:string, outputs?:Note[]) { 
         const myaddress = this.address;
         const total = notes.reduce((previous, current) => previous + current.k.toNumber(), 0);
-        const proof = await AztecClient.createJoinProof(publicKey, encryptionPKString, to, myaddress, notes, total);
+        const proof = await AztecClient.createJoinProof(publicKey, encryptionPK, to, myaddress, notes, total, outputs);
         const zkAsset = AztecClient.getZkAsset();
         console.log('--------------------');
         

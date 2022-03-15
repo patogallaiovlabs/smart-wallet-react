@@ -7,23 +7,31 @@ import Tooltip from '@mui/material/Tooltip';
 import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
 import ERC20Client from 'src/client/wallet/ERC20Client';
 import { ethers } from 'ethers';
+import Knapsack from 'src/client/knapsack/Knapsack';
+import KnapsackItem from 'src/client/knapsack/KnapsackItem';
+import AztecClient from 'src/client/aztec/AztecClient';
 
 interface PropTypes {
   wallet:WalletClient;
   allwallets?:WalletClient[];
   onUpdate: any;
   sendEnabled?: boolean;
+  notes:any;
+  total:any;
 }
 const stepsSendPublic = ['Select Receiver', 'Send Token'];
-const stepsSendPrivate = ['Select Receiver', 'Approve ERC20', 'Aztec Public Approve', 'Confidential Transfer', 'Send Note'];
-const stepsConvert = ['Approve ERC20', 'Aztec Public Approve', 'Confidential Transfer'];
+const stepsSendPrivate = ['Select Receiver', 'Send ZkTokens'];
+const stepsSendConvertPrivate = ['Select Receiver', 'Approve ERC20', 'Aztec Public Approve', 'Convert', 'Send ZkTokens'];
+const stepsConvert = ['Approve ERC20', 'Aztec Public Approve', 'Convert'];
 
 export default function ConvertAndSendToken(prop:PropTypes) {
     
     const [loading, setLoading] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
-    const [wallet, setWallet] = useState<WalletClient>();
+    const [wallet, setWallet] = useState<WalletClient>(prop.wallet);
     const [amount, setAmount] = useState<string>('1');
+    const [converted, setConverted] = useState<number>();
+    const [converting, setConverting] = useState<number>();
     const [error, setError] = useState<any>();
     const [activeStep, setActiveStep] = useState(0);
     const [sendTo, setSendTo] = useState<string>('');
@@ -58,8 +66,8 @@ export default function ConvertAndSendToken(prop:PropTypes) {
     }, []);
 
 
-    const convertDoc = async (finish:boolean = true) => {
-      let amountFormatted:number = (amount?+amount:0) * 10; // ethers.utils.parseEther(amount??'0');
+    const convertDoc = async (finish:boolean = true, amount?:number) => {
+      let amountFormatted:number = amount ? amount : getAmount();
       if (wallet) {
         setOpen(true);
         setLoading(true);
@@ -84,6 +92,14 @@ export default function ConvertAndSendToken(prop:PropTypes) {
       }
     };
 
+    const getDestination = () : string => {
+      return sendTo === 'other' ? sendToOther : sendTo;
+    }
+
+    const getAmount = () : number => {
+      return (amount?+amount:0) * 10;;
+    }
+
     const success = async () => {
       setLoading(false);
       setTimeout(()=>{
@@ -93,24 +109,59 @@ export default function ConvertAndSendToken(prop:PropTypes) {
       }, 3000);
     }
 
+    const getNotes = (amountFormatted:number) => {
+      const items = prop.notes
+      .filter((note:any)=>{
+        return note.note.k? true : false;
+      })
+      .map((note:any)=>{
+        return new KnapsackItem(1, note.note.k.toNumber(), 1, note );
+      });
+      const result = new Knapsack(items, amountFormatted);
+      result.solveUnboundedKnapsackProblem();
+      return result.selectedItems.map((i:KnapsackItem) => i.object.note);
+    }
+
     const startConvertAndSend = async () => {
+      const totalToSend:number = getAmount();
+      const existingInputs = getNotes(totalToSend);
+      const totalInNotes = existingInputs.reduce((partialSum, a) => partialSum + a.k.toNumber(), 0);
+      const diff = totalInNotes - totalToSend;
+      setConverted((diff >= 0) ? ((totalInNotes - diff) / 10) : (totalInNotes / 10));
+      
+      setConverting((diff<0) ? Math.abs(diff / 10) : 0);
+      setSteps((diff<0) ? stepsSendConvertPrivate : stepsSendPrivate);
       setOpen(true);
     };
 
     const convertAndSend = async () => {
       setActiveStep((current) => current + 1);
       setOpen(true);
-      const outputNotes = await convertDoc(false);
-      if (outputNotes) {
-        setLoading(true);
-        console.log('outputNotes', outputNotes);
-        let destination = sendTo === 'other' ? sendToOther : sendTo;
-        const txPending = await wallet?.sendNotes(outputNotes, destination, sendToOtherPK, sendToOtherEK );
-        const result = await txPending?.wait();
-        setActiveStep((current) => current + 1);
-        console.log('result send note', result);
-        success();
-      }
+      const totalToSend:number = getAmount();
+      const existingInputs = getNotes(totalToSend);
+      const totalInNotes = existingInputs.reduce((partialSum, a) => partialSum + a.k.toNumber(), 0);
+      const diff = totalInNotes - totalToSend;
+
+      const destination = getDestination();
+      const outputNotes = [];
+      const finalNote = await AztecClient.createNote(sendToOtherPK, sendToOtherEK, destination, totalToSend);
+      outputNotes.push(finalNote);
+
+      if (diff > 0 ) {
+        // we need an extra new note, for the rest to go back to the origin wallet.
+        const changeNote = await AztecClient.createNote(wallet.getPK(), wallet.getEncryptionPK(), wallet.address, diff);
+        outputNotes.push(changeNote);
+      } else if (diff < 0) {
+        // we dont have enough amount, we need to convert some amount first
+        // (in the future we could ask the user what to do)
+        const newInputs = await convertDoc(false, Math.abs(diff));
+        existingInputs.push(...newInputs);
+      } 
+      const txPending = await wallet?.sendNotes(existingInputs, destination, sendToOtherPK, sendToOtherEK, outputNotes );
+      const result = await txPending?.wait();
+      setActiveStep((current) => current + 1);
+      console.log('result send note', result);
+      success();
     };
 
     const onClose = async (update:boolean) => {
@@ -147,15 +198,23 @@ export default function ConvertAndSendToken(prop:PropTypes) {
 
 
     const sendDoc = async () => {
-      setLoading(true);
-      const doc = ERC20Client.getDOC();
-      let amountFormatted = ethers.utils.parseEther(amount??'0');
-      let result = await wallet?.execute(doc.contract.address, doc.encodeTransfer(sendTo, amountFormatted));
-      if(result) {
-        await result.wait();
-        prop.onUpdate();
-      }
-      setLoading(false);
+      try {
+        setLoading(true);
+        setActiveStep((current) => current + 1);
+        const doc = ERC20Client.getDOC();
+        let amountFormatted = ethers.utils.parseEther(amount??'0');
+        let result = await wallet?.execute(doc.contract.address, doc.encodeTransfer(sendTo, amountFormatted));
+        if(result) {
+          await result.wait();
+          prop.onUpdate();
+        }
+        success();  
+      } catch (e) {
+        console.warn('error convertDoc', e);
+        setError(e);
+        setLoading(false);
+        return false;
+      } 
     }
 
     return (
@@ -214,7 +273,11 @@ export default function ConvertAndSendToken(prop:PropTypes) {
                 <DialogTitle color='black' >{prop.sendEnabled ? 'Send' : 'Convert'} Tokens</DialogTitle>
                 <Paper>
                   <Box sx={{ m: 1, position: 'relative' }}>
-                      <ul><li>Amount: $ {amount}</li></ul>
+                      <ul>
+                      {(prop.wallet?.defaultPrivate && <li>Converting: $ {converting}</li>)}
+                      {(prop.wallet?.defaultPrivate && <li>Converted: $ {converted}</li>)}
+                        <li>Total: $ {amount}</li>
+                      </ul>
                   </Box>
                   <Box sx={{ m: 1, position: 'relative' }}>
 
@@ -329,7 +392,6 @@ export default function ConvertAndSendToken(prop:PropTypes) {
                           flexDirection: 'column',
                           height: '100px',
                         }}>
-                        <div>Converting {amount} DOCs to ZkDOCs...</div>
                         <div>This could take several minutes, please don't close the window.</div>
                         <LinearProgress color="warning" placeholder="Loading..." />
                       </Paper>

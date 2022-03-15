@@ -7,6 +7,7 @@ import * as aztec from 'aztec.js';
 import * as notelib from '@aztec/note-access';
 import WalletClient from '../wallet/WalletClient';
 import EtherClient from '../wallet/EtherClient';
+import Note from "./note";
 const { JoinSplitProof, note } = aztec;
 
 const sigUtil = require('eth-sig-util');
@@ -48,14 +49,29 @@ export default class AztecClient {
 
         return new JoinSplitProof(wnotes, outputs, sender, publicValue, publicOwner);
     }
-     
-    static async createJoinProof(PK:string, encryptionPK:any, toAddress:string, fromAddress:string, inputs:any[], value:number) {
-        const access = null;
-        const newNote = await note.create(PK, value, access, toAddress);
-        this.grantViewAccess([{address: toAddress, encryptionPK}], newNote);
-        const depositOutputNotes = [newNote];
+    /**
+     * Create Proof for inputs and outputs
+     * Outputs can be a "value" or an array of notes "outputs"
+     * 
+     * @param PK 
+     * @param encryptionPK 
+     * @param toAddress 
+     * @param fromAddress 
+     * @param inputs 
+     * @param value 
+     * @param outputs 
+     * @returns 
+     */
+    static async createJoinProof(PK:string, encryptionPK:any, toAddress:string, fromAddress:string, inputs:any[], value?:number, outputs?:Note[]) {
+        const outputNotes:Note[] = [];
+        if (outputs) {
+            outputNotes.push(...outputs);
+        } else if (value) {
+            const outputNote = await this.createNote(PK, encryptionPK, toAddress, value);
+            outputNotes.push(outputNote);
+        }
         const publicValue = 0;
-        return new JoinSplitProof(inputs, depositOutputNotes, fromAddress, publicValue, toAddress);
+        return new JoinSplitProof(inputs, outputNotes, fromAddress, publicValue, toAddress);
     }
 
     static async publicApprove(approvee:string, depositProof: typeof JoinSplitProof, amount:any) {
@@ -75,6 +91,13 @@ export default class AztecClient {
     static async encodeSetEncryptionKey(zkAsset:Contract, pkey:string = '', ekey:string = '') {
         const eparam = ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ekey));
         return EtherClient.encode(zkAsset, "setEncryptionPK(bytes,bytes)", [pkey, eparam]);
+    }
+    
+    static async createNote(PK:string, encryptionPK:any, ownerAddress:string, value:number): Promise<Note> {
+        const access = null;
+        const newNote = await note.create(PK, value, access, ownerAddress);
+        this.grantViewAccess([{address: ownerAddress, encryptionPK}], newNote);
+        return newNote;
     }
 
     static getACE() {
@@ -107,7 +130,8 @@ export default class AztecClient {
      */
      static generateAccessMetaData(access:any, noteViewKey:any) {
         const noteAccess = access.map(({ address, encryptionPK }:any) => {
-            const viewingKey = this.encryptMessage(noteViewKey, encryptionPK);
+            const encryptionPKString = encryptionPK.startsWith("0x") ? ethers.utils.toUtf8String(encryptionPK) : encryptionPK; 
+            const viewingKey = this.encryptMessage(noteViewKey, encryptionPKString);
             return {
                 address,
                 viewingKey: this.toHexString(viewingKey),

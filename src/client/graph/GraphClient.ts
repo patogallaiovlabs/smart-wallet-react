@@ -8,6 +8,7 @@ export default class GraphClient {
             user($id: ID!, $status: String!) {
                 user(id: $id) {
                     id
+                    publicKey
                     balance (where: {status: $status}, orderBy:time,orderDirection:desc){
                         status
                         metadata

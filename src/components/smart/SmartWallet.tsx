@@ -10,7 +10,7 @@ import GiveMeToken from './token/GiveMeToken';
 import { useQuery, gql } from '@apollo/client';
 import AztecClient from 'src/client/aztec/AztecClient';
 import ConvertAndSendToken from 'src/components/smart/token/ConvertAndSendToken';
-import SendToken from './token/SendToken';
+import GraphClient from 'src/client/graph/GraphClient';
 
 interface PropTypes {
   wallet:WalletClient;
@@ -18,17 +18,9 @@ interface PropTypes {
   onUpdate: any;
   identifier: number;
 }
-const userQuery = `
-user($id: ID!) {
-  user(id: $id) {
-    id
-    publicKey
-  }
-}
-`;
-const LOAD_QUERY = (query:any) => gql`
-  query ${query}
-`;
+
+const CREATED = 'CREATED';
+const DESTROYED = 'DESTROYED';
 
 export default function SmartWallet(prop:PropTypes) {
     
@@ -36,13 +28,40 @@ export default function SmartWallet(prop:PropTypes) {
     const [wallet, setWallet] = useState<WalletClient>();
     const [allwallets, setAllwallet] = useState<WalletClient[]>();
     const [docs, setDocs] = useState<string>('-');
-    const [defaultPrivate, setDefaultPrivate] = useState<boolean>(true);
-    const address = prop.wallet.address.toLowerCase();
+    const [total, setTotal] = useState<number>();
+    const [notes, setNotes] = useState<any>();
+    const [data, setData] = useState<any>();
     const variables = {
-        id: address
+      id: '',
+      status: CREATED
     };
-  
-    let { loading:loadingQ, error, data, refetch} = useQuery(LOAD_QUERY(userQuery), {variables});
+    variables.id = prop.wallet.address?.toLowerCase();
+    
+    const { loading:loadingUser, error, refetch} = useQuery(GraphClient.LOAD_QUERY(GraphClient.USER_BALANCE_QUERY), {
+      variables,
+      onCompleted: async (result:any) => {
+        setData(result);
+        if(result.user?.balance) {
+          let temptotal = 0;
+          const notes = await Promise.all(result.user?.balance?.map(async (note:any) => {
+            let filtered = note.metadata;//.substring(196);
+            const decoded = await prop.wallet.decodeMetadata(filtered, false);
+            decoded.note.owner = prop.wallet.address;
+            decoded.note.status = note.status;
+            decoded.note.currencyAddress = note.currencyAddress;
+            decoded.date = new Date(note.time * 1000);
+            decoded.metadata = note.metadata;
+            temptotal+= decoded.note.k ? (decoded.note.k.toNumber() / 10) : 0;
+            return decoded;
+          }));
+          setNotes(notes);
+          setTotal(temptotal);
+        }
+      },
+      onError: err => {
+        console.log(err);
+      }
+    });
 
     const init = async () => {
         //init 
@@ -55,7 +74,6 @@ export default function SmartWallet(prop:PropTypes) {
           let b =  ethers.utils.formatUnits(balanceD, "ether");
           let formated = parseFloat(b).toFixed(2);
           setDocs(formated.toString());
-          setDefaultPrivate(prop.wallet.defaultPrivate);
         }catch(e) {
           console.log('error init', e);
         }finally{
@@ -89,11 +107,6 @@ export default function SmartWallet(prop:PropTypes) {
         }, 1000)
     };
 
-    const updateDefaultPrivate = async (evt:any) => {
-      setDefaultPrivate(evt.target.checked);
-      prop.wallet.defaultPrivate = evt.target.checked;
-    }
-
     useEffect(()=>{
         init();
     }, []);
@@ -125,13 +138,14 @@ export default function SmartWallet(prop:PropTypes) {
                     p: 0,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 80,
+                    height: 100,
                   }}
                 >
 
                   <ul>
                     <li>Address: <Address value={prop.wallet?.address} /></li>
                     <li>Tokens: $ {docs}</li>
+                    <li>ZkTokens: $ {total}</li>
                   </ul>     
                 </Paper>
               </Grid>
@@ -161,7 +175,7 @@ export default function SmartWallet(prop:PropTypes) {
                   }}
                 >
                 
-                  <ConvertAndSendToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate} sendEnabled={true} />
+                  <ConvertAndSendToken total={total} notes={notes} wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate} sendEnabled={true} />
                  </Paper>
               </Grid>
             )}
@@ -175,7 +189,7 @@ export default function SmartWallet(prop:PropTypes) {
                     height: 280,
                   }}
                 >
-                  <ConvertAndSendToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate}  />            
+                  <ConvertAndSendToken total={total} notes={notes} wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate}  />            
                 </Paper>
               </Grid>
             )}
@@ -190,7 +204,7 @@ export default function SmartWallet(prop:PropTypes) {
                     overflow: 'auto'
                   }}
                 >
-                  <NoteHistory wallet={wallet} allwallets={prop.allwallets} onUpdate={prop.onUpdate}  />
+                  <NoteHistory notes={notes} wallet={wallet} allwallets={prop.allwallets} onUpdate={prop.onUpdate}  />
                 </Paper>
               </Grid>
             )}

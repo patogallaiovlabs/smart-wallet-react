@@ -24,6 +24,8 @@ import dotenv from 'dotenv';
 import Balances from './components/balance/Balances';
 import Settings from './components/account/Settings';
 
+declare const window: any;
+
 export default function App() {
 
   dotenv.config();
@@ -85,9 +87,16 @@ export default function App() {
     setOpen(!open);
   };
 
+  window.ethereum.enable();
+  console.log('net version', window.ethereum.networkVersion);
 
   return (
     <ThemeProvider theme={mdTheme}>
+
+      {(window.ethereum.networkVersion != 31 &&
+        <div>Please change to RSK Testnet Network!</div>
+      )}
+     {(window.ethereum.networkVersion == 31 &&
       <Router>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
@@ -168,6 +177,7 @@ export default function App() {
           </Box>
         </Box>
       </Router>
+     )}
     </ThemeProvider>
   );
 }

@@ -61,8 +61,9 @@ export default function NoteItem(props: PropTypes) {
           const decoded = await wallet.decodeMetadata(filtered, true);
           decoded.note.owner = wallet.address;
           decoded.note.currencyAddress = props?.note?.note?.currencyAddress;
-          decoded.date = new Date(props.note.time * 1000);
+          decoded.date = props.note.date;
           setResult(decoded);
+          props.onUpdate();
         } catch (e) {
           console.log(e);
         }finally {

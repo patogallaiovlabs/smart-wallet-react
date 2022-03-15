@@ -16,7 +16,7 @@ export default function Balances() {
     console.log("init balances")
     setItems(await Promise.all([
       { address: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826", name:"wallet"}, 
-      { address: "0xeFb80DB9E2d943A492Bd988f4c619495cA815643", name:"ACE"}, 
+      { address: "0xe2a85b7Cc30237aBFAaB2ea8bAE98978446Ae040", name:"ACE"}, 
       { address: "0x4F7b5156094e8cFcda28821dC05c5d2Cea58448f", name:"ACE2"}
       
       

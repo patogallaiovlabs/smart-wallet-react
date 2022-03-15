@@ -31,7 +31,6 @@ export default class EtherClient {
     }
 
     private async initialize() {
-        window.ethereum.enable();
         this.on('accountsChanged', (accounts:any) => {
             console.log('accounts changed', accounts);
             if (accounts.length === 0) {
