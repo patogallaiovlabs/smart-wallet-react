@@ -100,7 +100,7 @@ export default function SmartWalletList() {
                   aria-label="secondary tabs example"
                 >
                 {wallets?.map((a, i)=>{
-                  return <Tab key={i} value={i} label={"Wallet " + i + (!a.isActive()?' (inactive)':'')} />
+                  return <Tab key={i} value={i} label={"Wallet " + (i + 1) + (!a.isActive()?' (inactive)':'')} />
                 })}
                 </Tabs>
               </AppBar>

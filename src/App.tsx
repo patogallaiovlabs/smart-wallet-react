@@ -23,6 +23,7 @@ import Sign from './components/sign/Sign';
 import dotenv from 'dotenv';
 import Balances from './components/balance/Balances';
 import Settings from './components/account/Settings';
+import Loading from './components/Loading';
 
 declare const window: any;
 
@@ -83,20 +84,27 @@ export default function App() {
   );
 
   const [open, setOpen] = React.useState(false);
+  const [networkVersion, setNetworkVersion] = React.useState(0);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  window.ethereum.enable();
-  console.log('net version', window.ethereum.networkVersion);
+  
+  window.ethereum.request({ method: 'eth_requestAccounts' });
+
+  setTimeout(()=>{
+    setNetworkVersion(window.ethereum.networkVersion);
+    console.log('net version', networkVersion);
+  }, 1000);
+  console.log('net version', networkVersion);
 
   return (
     <ThemeProvider theme={mdTheme}>
 
-      {(window.ethereum.networkVersion != 31 &&
-        <div>Please change to RSK Testnet Network!</div>
+      {(networkVersion != 31 &&
+        <div> <Loading /></div>
       )}
-     {(window.ethereum.networkVersion == 31 &&
+     {(networkVersion == 31 &&
       <Router>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />

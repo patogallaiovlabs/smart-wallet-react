@@ -149,6 +149,11 @@ export default class EtherClient {
         return this.getProvider().getCode(address, "pending");
     }
 
+    async getBalance(address: string) : Promise<string> {
+        const balance =  await this.getProvider().getBalance(address);
+        return ethers.utils.formatEther(balance);
+    }
+    
     close(): void {
         this.ethereum.removeAllListeners();
     }

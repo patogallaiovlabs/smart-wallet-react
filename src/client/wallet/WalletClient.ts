@@ -72,6 +72,10 @@ export default class WalletClient {
         return this.client.getEncryptionPK();
     }
 
+    async getBalance() {
+        return await this.client.getBalance(this._address);
+    }
+
     async decryptMessage(encrypted:string) {
         const cache = window.localStorage.getItem(encrypted);
         if(cache) {

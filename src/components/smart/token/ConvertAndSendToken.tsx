@@ -230,7 +230,7 @@ export default function ConvertAndSendToken(prop:PropTypes) {
                     {(prop.wallet?.defaultPrivate && <VisibilityOffIcon/>)}
                     {(!prop.wallet?.defaultPrivate && <VisibilityIcon/>)}
                   </IconButton>
-                </Tooltip> 
+                </Tooltip>
             </div>
               
               )} 
@@ -260,7 +260,7 @@ export default function ConvertAndSendToken(prop:PropTypes) {
                     )}
                     {(prop.sendEnabled &&
                       <Button variant="contained"
-                            onClick={() => startConvertAndSend()}
+                            onClick={() => prop.wallet.defaultPrivate ? startConvertAndSend() : setOpen(true)}
                             >Send 
                       </Button>
                     )}
@@ -313,7 +313,7 @@ export default function ConvertAndSendToken(prop:PropTypes) {
                                     fullWidth
                                   >
                                       {prop.allwallets?.map((item:WalletClient,i)=>
-                                        <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 1} - {item.address}</MenuItem>
+                                        <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 2} - {item.address}</MenuItem>
                                       )}
                                       <MenuItem key={'i-1'} value={'other'}>Other Address</MenuItem>
                                   </Select>
@@ -359,7 +359,7 @@ export default function ConvertAndSendToken(prop:PropTypes) {
                                     fullWidth
                                   >
                                       {prop.allwallets?.map((item:WalletClient,i)=>
-                                        <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 1} - {item.address}</MenuItem>
+                                        <MenuItem key={i} value={item.address}>Wallet {item.getIndex()<0?'(EOA)':item?.getIndex() + 2} - {item.address}</MenuItem>
                                       )}
                                       <MenuItem key={'i-1'} value={'other'}>Other Address</MenuItem>
                                   </Select>

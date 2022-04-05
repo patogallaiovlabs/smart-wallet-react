@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Alert as MuiAlert, Box, Grid, CircularProgress, Container, Paper, Button, Stack, FormControlLabel, Checkbox } from '@mui/material';
+import { Alert as MuiAlert, Box, Grid, CircularProgress, Container, Paper, Button, Stack, IconButton, Tooltip, Popover, Typography } from '@mui/material';
+import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
 import Address from 'src/components/account/Address';
 import { ethers } from 'ethers';
 import ERC20Client from 'src/client/wallet/ERC20Client';
@@ -25,10 +26,13 @@ const DESTROYED = 'DESTROYED';
 export default function SmartWallet(prop:PropTypes) {
     
     const [loading, setLoading] = useState<boolean>(true);
+    const [showKeys, setShowKeys] = useState<boolean>(false);
+    const [anchorKeys, setAnchorKeys] = useState<any>(null);
     const [wallet, setWallet] = useState<WalletClient>();
     const [allwallets, setAllwallet] = useState<WalletClient[]>();
     const [docs, setDocs] = useState<string>('-');
-    const [total, setTotal] = useState<number>();
+    const [balance, setBalance] = useState<string>('-');
+    const [total, setTotal] = useState<number>(0);
     const [notes, setNotes] = useState<any>();
     const [data, setData] = useState<any>();
     const variables = {
@@ -74,6 +78,7 @@ export default function SmartWallet(prop:PropTypes) {
           let b =  ethers.utils.formatUnits(balanceD, "ether");
           let formated = parseFloat(b).toFixed(2);
           setDocs(formated.toString());
+          setBalance(await w.getBalance());
         }catch(e) {
           console.log('error init', e);
         }finally{
@@ -106,6 +111,9 @@ export default function SmartWallet(prop:PropTypes) {
           refetch();
         }, 1000)
     };
+    const onViewKeys =  () => {
+
+    }
 
     useEffect(()=>{
         init();
@@ -126,6 +134,42 @@ export default function SmartWallet(prop:PropTypes) {
           <Stack spacing={2} sx={{ width: '100%', marginBottom: '20px' }}>
                 <MuiAlert elevation={6} variant="filled"  severity="warning" >Encryption key not published (other users may not be able to interact with you). <Button  variant="contained"
                               onClick={() => onSaveUser()}>Publish</Button>
+
+                              <Tooltip title={'Show keys'}>
+                                <Button aria-describedby={'simple-popover'} onClick={(event) => {
+                                      setShowKeys(true);
+                                      setAnchorKeys(event.currentTarget);
+                                    }
+                                  }>
+                                  <VisibilityIcon /> Show Keys 
+                                </Button>
+                              </Tooltip>
+                              <Popover
+                                id={'keys-popup-id'}
+                                open={showKeys}
+                                anchorEl={anchorKeys}
+                                onClose={()=> { 
+                                    setShowKeys(false);
+                                    setAnchorKeys(null);
+                                  }
+                                }
+                                anchorOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'left',
+                                }}
+                              >
+                                <Typography sx={{ p: 2,
+                                          width: 500,
+                                          overflow: 'auto',
+                                          whiteSpace: 'initial',
+                                          wordWrap: 'break-word'
+                                        }}>
+                                  <ul>
+                                    <li>Public Key: {wallet?.getPK()}</li>
+                                    <li>Encryption Key: {wallet?.getEncryptionPK()}</li>  
+                                  </ul> 
+                                </Typography>
+                              </Popover>
                 </MuiAlert>
           </Stack>
         )}
@@ -138,19 +182,15 @@ export default function SmartWallet(prop:PropTypes) {
                     p: 0,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 100,
+                    height: 60,
+                    padding: 2
                   }}
                 >
-
-                  <ul>
-                    <li>Address: <Address value={prop.wallet?.address} /></li>
-                    <li>Tokens: $ {docs}</li>
-                    <li>ZkTokens: $ {total}</li>
-                  </ul>     
+                    <div> Address: <Address value={prop.wallet?.address} /></div>
                 </Paper>
               </Grid>
             )}
-            {(!loading && wallet && 
+            {(!loading && wallet &&
                 <Grid item xs={12} md={4} lg={4}>
                   <Paper
                     sx={{
@@ -159,8 +199,14 @@ export default function SmartWallet(prop:PropTypes) {
                       flexDirection: 'column',
                       height: 280,
                     }}
-                  >
-                    <GiveMeToken wallet={wallet} allwallets={allwallets} onUpdate={prop.onUpdate} />
+                  ><h3> 
+                    Balance
+                  </h3>
+                    <ul>
+                      <li>rBTC: $ {balance}</li>
+                      <li>Tokens: $ {docs}</li>
+                      <li>ZkTokens: $ {total}</li>
+                    </ul>    
                   </Paper>
                 </Grid>
               )}
